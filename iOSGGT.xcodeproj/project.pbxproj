@@ -17,12 +17,16 @@
 		D7806F68170A306900D5598A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7806F67170A306900D5598A /* Default@2x.png */; };
 		D7806F6A170A306900D5598A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7806F69170A306900D5598A /* Default-568h@2x.png */; };
 		D7806F6D170A306900D5598A /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7806F6B170A306900D5598A /* MainStoryboard.storyboard */; };
-		D7806F70170A306900D5598A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806F6F170A306900D5598A /* ViewController.m */; };
 		D7806F78170A306A00D5598A /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7806F77170A306A00D5598A /* SenTestingKit.framework */; };
 		D7806F79170A306A00D5598A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7806F53170A306900D5598A /* UIKit.framework */; };
 		D7806F7A170A306A00D5598A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7806F55170A306900D5598A /* Foundation.framework */; };
 		D7806F82170A306A00D5598A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7806F80170A306A00D5598A /* InfoPlist.strings */; };
 		D7806F85170A306A00D5598A /* iOSGGTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806F84170A306A00D5598A /* iOSGGTTests.m */; };
+		D7806F99170A34A900D5598A /* MainGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806F98170A34A900D5598A /* MainGraphViewController.m */; };
+		D7806FA2170A390300D5598A /* RootTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806FA1170A390300D5598A /* RootTableViewController.m */; };
+		D7806FAC170A3C0A00D5598A /* GrantTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806FAB170A3C0A00D5598A /* GrantTableViewCell.m */; };
+		D7A917B3170A4F1700B005E5 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B2170A4F1700B005E5 /* AccountViewController.m */; };
+		D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B5170A587500B005E5 /* MenuViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,14 +54,22 @@
 		D7806F67170A306900D5598A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		D7806F69170A306900D5598A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		D7806F6C170A306900D5598A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		D7806F6E170A306900D5598A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		D7806F6F170A306900D5598A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		D7806F76170A306A00D5598A /* iOSGGTTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSGGTTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7806F77170A306A00D5598A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		D7806F7F170A306A00D5598A /* iOSGGTTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOSGGTTests-Info.plist"; sourceTree = "<group>"; };
 		D7806F81170A306A00D5598A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D7806F83170A306A00D5598A /* iOSGGTTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOSGGTTests.h; sourceTree = "<group>"; };
 		D7806F84170A306A00D5598A /* iOSGGTTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOSGGTTests.m; sourceTree = "<group>"; };
+		D7806F97170A34A900D5598A /* MainGraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainGraphViewController.h; path = ../MainGraphViewController.h; sourceTree = "<group>"; };
+		D7806F98170A34A900D5598A /* MainGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainGraphViewController.m; path = ../MainGraphViewController.m; sourceTree = "<group>"; };
+		D7806FA0170A390200D5598A /* RootTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootTableViewController.h; sourceTree = "<group>"; };
+		D7806FA1170A390300D5598A /* RootTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootTableViewController.m; sourceTree = "<group>"; };
+		D7806FAA170A3C0A00D5598A /* GrantTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrantTableViewCell.h; sourceTree = "<group>"; };
+		D7806FAB170A3C0A00D5598A /* GrantTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrantTableViewCell.m; sourceTree = "<group>"; };
+		D7A917B1170A4F1700B005E5 /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountViewController.h; path = ../AccountViewController.h; sourceTree = "<group>"; };
+		D7A917B2170A4F1700B005E5 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountViewController.m; path = ../AccountViewController.m; sourceTree = "<group>"; };
+		D7A917B4170A587500B005E5 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		D7A917B5170A587500B005E5 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,9 +131,11 @@
 			children = (
 				D7806F62170A306900D5598A /* AppDelegate.h */,
 				D7806F63170A306900D5598A /* AppDelegate.m */,
-				D7806F6B170A306900D5598A /* MainStoryboard.storyboard */,
-				D7806F6E170A306900D5598A /* ViewController.h */,
-				D7806F6F170A306900D5598A /* ViewController.m */,
+				D7806FA0170A390200D5598A /* RootTableViewController.h */,
+				D7806FA1170A390300D5598A /* RootTableViewController.m */,
+				D7806F8E170A309300D5598A /* Pushed View Controllers */,
+				D7A917B7170A589000B005E5 /* Modal View Controllers */,
+				D7806F93170A310C00D5598A /* Auxilliary Classes */,
 				D7806F5A170A306900D5598A /* Supporting Files */,
 			);
 			path = iOSGGT;
@@ -130,6 +144,7 @@
 		D7806F5A170A306900D5598A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D7806F6B170A306900D5598A /* MainStoryboard.storyboard */,
 				D7806F5B170A306900D5598A /* iOSGGT-Info.plist */,
 				D7806F5C170A306900D5598A /* InfoPlist.strings */,
 				D7806F5F170A306900D5598A /* main.m */,
@@ -158,6 +173,35 @@
 				D7806F80170A306A00D5598A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D7806F8E170A309300D5598A /* Pushed View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D7A917B1170A4F1700B005E5 /* AccountViewController.h */,
+				D7A917B2170A4F1700B005E5 /* AccountViewController.m */,
+				D7806F97170A34A900D5598A /* MainGraphViewController.h */,
+				D7806F98170A34A900D5598A /* MainGraphViewController.m */,
+			);
+			name = "Pushed View Controllers";
+			sourceTree = "<group>";
+		};
+		D7806F93170A310C00D5598A /* Auxilliary Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D7806FAA170A3C0A00D5598A /* GrantTableViewCell.h */,
+				D7806FAB170A3C0A00D5598A /* GrantTableViewCell.m */,
+			);
+			name = "Auxilliary Classes";
+			sourceTree = "<group>";
+		};
+		D7A917B7170A589000B005E5 /* Modal View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D7A917B4170A587500B005E5 /* MenuViewController.h */,
+				D7A917B5170A587500B005E5 /* MenuViewController.m */,
+			);
+			name = "Modal View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -272,7 +316,11 @@
 			files = (
 				D7806F60170A306900D5598A /* main.m in Sources */,
 				D7806F64170A306900D5598A /* AppDelegate.m in Sources */,
-				D7806F70170A306900D5598A /* ViewController.m in Sources */,
+				D7806F99170A34A900D5598A /* MainGraphViewController.m in Sources */,
+				D7806FA2170A390300D5598A /* RootTableViewController.m in Sources */,
+				D7806FAC170A3C0A00D5598A /* GrantTableViewCell.m in Sources */,
+				D7A917B3170A4F1700B005E5 /* AccountViewController.m in Sources */,
+				D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,6 +426,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOSGGT/iOSGGT-Prefix.pch";
 				INFOPLIST_FILE = "iOSGGT/iOSGGT-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -389,6 +438,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOSGGT/iOSGGT-Prefix.pch";
 				INFOPLIST_FILE = "iOSGGT/iOSGGT-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -447,6 +497,7 @@
 				D7806F8A170A306A00D5598A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D7806F8B170A306A00D5598A /* Build configuration list for PBXNativeTarget "iOSGGTTests" */ = {
 			isa = XCConfigurationList;
@@ -455,6 +506,7 @@
 				D7806F8D170A306A00D5598A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
