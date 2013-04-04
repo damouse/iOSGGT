@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Mihnea Barboi. All rights reserved.
 
 #import "AccountViewController.h"
+#import "GrantTableViewCell.h"
 
 @interface AccountViewController () {
     NSString *accountName;

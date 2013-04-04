@@ -9,8 +9,12 @@
 #import "RootTableViewController.h"
 #import "GrantTableViewCell.h"
 #import "MainGraphViewController.h"
+#import "CHCSVParser.h"
+#import "GrantTableViewCell.h"
 
-@interface RootTableViewController ()
+@interface RootTableViewController () {
+    NSMutableArray *grants; //holds all grants
+}
 
 @end
 
@@ -34,6 +38,13 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    NSString *myFile = [mainBundle pathForResource: @"sample" ofType: @"csv"];
+    NSArray *parsed = [NSArray arrayWithContentsOfCSVFile:myFile];
+    GrantTableViewCell *grantObject = [[GrantTableViewCell alloc] init];
+    [grantObject initWithCSVArray:parsed];
+    
 }
 
 - (void)didReceiveMemoryWarning

@@ -27,6 +27,8 @@
 		D7806FAC170A3C0A00D5598A /* GrantTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806FAB170A3C0A00D5598A /* GrantTableViewCell.m */; };
 		D7A917B3170A4F1700B005E5 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B2170A4F1700B005E5 /* AccountViewController.m */; };
 		D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B5170A587500B005E5 /* MenuViewController.m */; };
+		D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */; };
+		D7F2E0BD170E20B200130C2E /* sample.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7F2E0BC170E20B200130C2E /* sample.csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,9 @@
 		D7A917B2170A4F1700B005E5 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountViewController.m; path = ../AccountViewController.m; sourceTree = "<group>"; };
 		D7A917B4170A587500B005E5 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		D7A917B5170A587500B005E5 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		D7DCBE39170E2F35009F40F2 /* CHCSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHCSVParser.h; sourceTree = "<group>"; };
+		D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHCSVParser.m; sourceTree = "<group>"; };
+		D7F2E0BC170E20B200130C2E /* sample.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +157,7 @@
 				D7806F65170A306900D5598A /* Default.png */,
 				D7806F67170A306900D5598A /* Default@2x.png */,
 				D7806F69170A306900D5598A /* Default-568h@2x.png */,
+				D7F2E0BC170E20B200130C2E /* sample.csv */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -189,6 +195,8 @@
 		D7806F93170A310C00D5598A /* Auxilliary Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D7DCBE39170E2F35009F40F2 /* CHCSVParser.h */,
+				D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */,
 				D7806FAA170A3C0A00D5598A /* GrantTableViewCell.h */,
 				D7806FAB170A3C0A00D5598A /* GrantTableViewCell.m */,
 			);
@@ -280,6 +288,7 @@
 				D7806F68170A306900D5598A /* Default@2x.png in Resources */,
 				D7806F6A170A306900D5598A /* Default-568h@2x.png in Resources */,
 				D7806F6D170A306900D5598A /* MainStoryboard.storyboard in Resources */,
+				D7F2E0BD170E20B200130C2E /* sample.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +330,7 @@
 				D7806FAC170A3C0A00D5598A /* GrantTableViewCell.m in Sources */,
 				D7A917B3170A4F1700B005E5 /* AccountViewController.m in Sources */,
 				D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */,
+				D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

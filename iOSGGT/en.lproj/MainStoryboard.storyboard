@@ -14,12 +14,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="5eg-HL-mbv" kind="relationship" relationship="rootViewController" id="NnH-3y-MGY"/>
+                        <segue destination="5eg-HL-mbv" kind="relationship" relationship="rootViewController" id="Az6-Kr-kjR"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NCi-xl-5i1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-205" y="86"/>
+            <point key="canvasLocation" x="-271" y="86"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="waq-T6-C51">
@@ -237,7 +237,7 @@ EE5hbWUgb2YgR3JhbnQ
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F1g-lE-hRN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="245" y="86"/>
+            <point key="canvasLocation" x="221" y="86"/>
         </scene>
         <!--Main Graph View Controller-->
         <scene sceneID="Lwz-IS-m14">

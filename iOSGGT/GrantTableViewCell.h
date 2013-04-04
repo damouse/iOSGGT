@@ -19,4 +19,6 @@
 -(NSString *)setDate:(NSString *)date;
 -(NSString *)setTotal:(NSString *)name;
 -(NSString *)setRemaining:(NSString *)name;
+
+-(void)initWithCSVArray:(NSArray *)csvFile;
 @end
