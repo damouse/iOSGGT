@@ -5,6 +5,12 @@
 //  Created by Mihnea Barboi on 4/1/13.
 //  Copyright (c) 2013 Mihnea Barboi. All rights reserved.
 //
+// QUESTIONS FOR Prof!
+// -Will the spreadsheet format change at all? will the columns and the metadata be in the same spots?
+// -What other graphs?
+// -How do we access the excel file? What can we put on the server?
+// -Do you want any sort of login system?
+//
 
 #import "AppDelegate.h"
 

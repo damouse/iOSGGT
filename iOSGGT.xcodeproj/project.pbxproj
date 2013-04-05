@@ -105,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				D7806F59170A306900D5598A /* iOSGGT */,
+				D7DCBE3D170E4A3B009F40F2 /* Core Plot */,
 				D7806F7D170A306A00D5598A /* iOSGGTTests */,
 				D7806F52170A306900D5598A /* Frameworks */,
 				D7806F50170A306900D5598A /* Products */,
@@ -210,6 +211,13 @@
 				D7A917B5170A587500B005E5 /* MenuViewController.m */,
 			);
 			name = "Modal View Controllers";
+			sourceTree = "<group>";
+		};
+		D7DCBE3D170E4A3B009F40F2 /* Core Plot */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Core Plot";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

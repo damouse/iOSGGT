@@ -12,13 +12,13 @@
 
 @implementation GrantTableViewCell {
     //NOTE: keys WILL NEED TO BE CHANGED. Dynamically add them from the column headers for different spreadsheets
-    //contains info from top 5 lines. Keys: {dateLastAccessed, datesOfGrant, name, accountNumber, grantor, title, overhead}
+    //contains info from top 5 lines. Keys: {dateLastAccessed, datesOfGrant, name, accountNumber, grantor, title, overhead, awardNumber}
     NSMutableDictionary *metadata;
 
     //contains budget amounts. Keys: {totalBudget, staff, otherPersonnel, fringeBenefits, tuitionRemission, supplies, travel}
-    NSDictionary *budget;
-    NSDictionary *balance;
-    NSDictionary *paid;
+    NSMutableDictionary *budget;
+    NSMutableDictionary *balance;
+    NSMutableDictionary *paid;
     
     //row 6 of the spreadsheets: holds the name of all the columns for reference
     NSArray *columnHeaders;
@@ -43,7 +43,38 @@
 //It is currently hardcoded just to test.
 -(void)initWithCSVArray:(NSArray *)csvFile
 {
+    metadata = [NSMutableDictionary dictionary];
+    budget = [NSMutableDictionary dictionary];
+    balance = [NSMutableDictionary dictionary];
+    paid = [NSMutableDictionary dictionary];
+    budgetAllocations = [NSArray array];
+    accountEntries = [NSArray array];
+    
     //metadata
+    [metadata setObject:[[csvFile objectAtIndex:0] objectAtIndex:0] forKey:@"dateLastAccessed"];
+    [metadata setObject:[[csvFile objectAtIndex:1] objectAtIndex:1] forKey:@"datesOfGrant"];
+    [metadata setObject:[[csvFile objectAtIndex:2] objectAtIndex:1] forKey:@"name"];
+    [metadata setObject:[[csvFile objectAtIndex:3] objectAtIndex:1] forKey:@"accountNumber"];
+    [metadata setObject:[[csvFile objectAtIndex:1] objectAtIndex:4] forKey:@"grantor"];
+    [metadata setObject:[[csvFile objectAtIndex:1] objectAtIndex:4] forKey:@"title"];
+    [metadata setObject:[[csvFile objectAtIndex:3] objectAtIndex:4] forKey:@"overhead"];
+    [metadata setObject:[[csvFile objectAtIndex:4] objectAtIndex:1] forKey:@"awardNumber"];
+    
+    //column headers, main three
+    columnHeaders = [csvFile objectAtIndex:5];
+    NSArray *budgetLine = [csvFile objectAtIndex:13]; //these are here so they can be replaced if we need to find them dynamically
+    NSArray *balanceLine = [csvFile objectAtIndex:14];
+    NSArray *paidLine = [csvFile objectAtIndex:15];
+    BOOL beginRecording = NO;
+    
+    for(NSString *header in columnHeaders) {
+        if([header isEqualToString:@"Amount"])
+            beginRecording = YES;
+        
+        if(beginRecording) {
+            [budget setObject:<#(id)#> forKey:<#(id<NSCopying>)#>]
+        }
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
