@@ -21,4 +21,6 @@
 -(NSString *)setRemaining:(NSString *)name;
 
 -(void)initWithCSVArray:(NSArray *)csvFile;
+-(NSDecimalNumber *)getBalance;
+-(NSDecimalNumber *)getBudget;
 @end

@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RootTableViewController : UITableViewController
+@interface RootTableViewController : UITableViewController {
+    
+    IBOutlet UITableView *tableMain;
+}
 
 
 @end

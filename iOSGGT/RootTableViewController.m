@@ -14,6 +14,8 @@
 
 @interface RootTableViewController () {
     NSMutableArray *grants; //holds all grants
+    NSArray *parsed;
+    int numberOfGrants; //the number f grants expected
 }
 
 @end
@@ -41,10 +43,11 @@
     
     NSBundle *mainBundle = [NSBundle mainBundle];
     NSString *myFile = [mainBundle pathForResource: @"sample" ofType: @"csv"];
-    NSArray *parsed = [NSArray arrayWithContentsOfCSVFile:myFile];
-    GrantTableViewCell *grantObject = [[GrantTableViewCell alloc] init];
-    [grantObject initWithCSVArray:parsed];
+    parsed = [NSArray arrayWithContentsOfCSVFile:myFile];
+    numberOfGrants = 1;
     
+    [tableMain reloadData];
+    grants = [NSMutableArray array];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,15 +63,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5; //hardcoded for testing
+    return numberOfGrants; //hardcoded for testing
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     GrantTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell" forIndexPath:indexPath];
-    if (cell ==nil) {
+
+    if (cell == nil) {
         cell = [[GrantTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AccountCell"];
     }
+    
+
     
     [cell setName:[NSString stringWithFormat:@"Grant #%i", indexPath.row]];
     [cell setDate:@"2/16/24"];
@@ -86,6 +92,9 @@
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];    
     MainGraphViewController *mainGraph = [mainStoryboard instantiateViewControllerWithIdentifier: @"MainGraphic"];
     GrantTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell" forIndexPath:indexPath];
+    
+    [cell initWithCSVArray:parsed];
+    [grants addObject:cell];
     
     [mainGraph setGrantObject:cell];
     
