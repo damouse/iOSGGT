@@ -51,7 +51,7 @@
     
     minimumValueForXAxis = 0;
     maximumValueForXAxis = 40;
-    minimumValueForYAxis = 0;
+    minimumValueForYAxis = -10000;
     maximumValueForYAxis = 100000;
     
     majorIntervalLengthForX = 1;
@@ -121,7 +121,7 @@
     graph.paddingRight  = 0.0;
     graph.paddingBottom = 0.0;
     
-    graph.plotAreaFrame.paddingLeft   = 60.0;
+    graph.plotAreaFrame.paddingLeft   = 70.0;
     graph.plotAreaFrame.paddingTop    = 20.0;
     graph.plotAreaFrame.paddingRight  = 20.0;
     graph.plotAreaFrame.paddingBottom = 35.0;
@@ -149,7 +149,7 @@
     [plotSpace setDelegate:self]; //set delegate form other file
     [plotSpace setAllowsUserInteraction:YES];
     
-    //set up axis
+    //set up x axis
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
     
     CPTXYAxis *x = axisSet.xAxis;
@@ -161,12 +161,17 @@
     x.labelOffset = 10.0f;
     x.labelingPolicy = CPTAxisLabelingPolicyAutomatic;
     
-    //format labels
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setFormatterBehavior:NSNumberFormatterBehaviorDefault];
     
-    x.labelFormatter = formatter;
+    // Date Formatting!
+    NSDate *refDate = [NSDate dateWithTimeIntervalSinceReferenceDate:31556926 * 10];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateStyle = kCFDateFormatterShortStyle;
+    CPTTimeFormatter *timeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter];
+    timeFormatter.referenceDate = refDate;
+    axisSet.xAxis.labelFormatter = timeFormatter;
+    x.labelFormatter = timeFormatter;
     
+    //set up y axis
     CPTXYAxis *y = axisSet.yAxis;
     y.minorTicksPerInterval = 1;
     y.majorIntervalLength   = CPTDecimalFromDouble(majorIntervalLengthForY);
@@ -214,20 +219,21 @@
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
-    NSLog(@"Getting populating plot for index: %i", index);
     GrantObject *grant = [grants objectAtIndex:0];
     AccountEntryObject *entry = [[grant accountEntries] objectAtIndex:index];
     
-    if(fieldEnum == CPTScatterPlotFieldY)
+    if(fieldEnum == CPTScatterPlotFieldY) {
+        NSLog(@"amount: %i", [entry amount]);
         return [NSNumber numberWithInt:[entry amount]];
+    }
     else
-        return [NSNumber numberWithInt:index];
+        return [entry dateAsTimeInterval];
 }
 
 #pragma mark Plot Customization Methods
 -(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate
 {
-    CPTPlotRange *new = [CPTPlotRange plotRangeWithLocation:[[[NSDecimalNumber alloc] initWithInt:10] decimalValue] length:[[[NSDecimalNumber alloc] initWithInt:1] decimalValue]];
+    //CPTPlotRange *new = [CPTPlotRange plotRangeWithLocation:[[[NSDecimalNumber alloc] initWithInt:10] decimalValue] length:[[[NSDecimalNumber alloc] initWithInt:1] decimalValue]];
     
     if(coordinate == 0)
         return newRange;

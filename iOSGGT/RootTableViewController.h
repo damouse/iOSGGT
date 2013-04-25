@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CorePlot-CocoaTouch.h"
 
-@interface RootTableViewController : UITableViewController {
+@interface RootTableViewController : UITableViewController <CPTPlotDataSource, CPTPlotSpaceDelegate> {
     
     IBOutlet UITableView *tableMain;
 }

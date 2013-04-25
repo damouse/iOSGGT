@@ -81,7 +81,7 @@
             cell = [line objectAtIndex:1];
         
             //get the date, amount, and label of the entry. 
-            AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0] name:cell andAmount:[line objectAtIndex:6]];
+            AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0] name:cell andAmount:[[line objectAtIndex:6] intValue]];
             [accountEntries addObject:entry];
         }
         
@@ -108,7 +108,7 @@
         NSLog(@"Spinning 3: %i", i);
         if(![cell isEqualToString:@""]) {
             //get the date, amount, and label of the entry
-            AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0] name:cell andAmount:-[[line objectAtIndex:6] floatValue]];
+            AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0] name:cell andAmount:-[[line objectAtIndex:6] intValue]];
             [accountEntries addObject:entry];
         
             emptyCells = 0; //reset empty cell count
@@ -122,6 +122,9 @@
         line = [csvFile objectAtIndex:i];
         cell = [line objectAtIndex:1];
     }
+    
+    //sort the entries by date
+    [accountEntries sortUsingSelector:@selector(compare:)];
     
     return self;
 }

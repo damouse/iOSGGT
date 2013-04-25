@@ -10,10 +10,10 @@
 
 @interface AccountEntryObject : NSObject
 
-@property (weak, nonatomic) NSDate *date;
-@property (weak, nonatomic) NSString *label;
-@property int *amount;
+@property (strong, nonatomic) NSDate *date;
+@property (strong, nonatomic) NSString *label;
+@property NSInteger amount;
 
--(id) initWithDate:(NSString *)dateString name:(NSString *)name andAmount:(int)value;
-
+-(id) initWithDate:(NSString *)dateString name:(NSString *)name andAmount:(NSInteger)value;
+- (NSNumber *) dateAsTimeInterval;
 @end
