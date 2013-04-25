@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D7002B4F1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */; };
+		D7329A381729AA4700D64341 /* GrantObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D7329A371729AA4700D64341 /* GrantObject.m */; };
+		D7329A3C1729B0A600D64341 /* AccountEntryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D7329A3B1729B0A600D64341 /* AccountEntryObject.m */; };
 		D7806F54170A306900D5598A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7806F53170A306900D5598A /* UIKit.framework */; };
 		D7806F56170A306900D5598A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7806F55170A306900D5598A /* Foundation.framework */; };
 		D7806F58170A306900D5598A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7806F57170A306900D5598A /* CoreGraphics.framework */; };
@@ -24,7 +27,6 @@
 		D7806F85170A306A00D5598A /* iOSGGTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806F84170A306A00D5598A /* iOSGGTTests.m */; };
 		D7806F99170A34A900D5598A /* MainGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806F98170A34A900D5598A /* MainGraphViewController.m */; };
 		D7806FA2170A390300D5598A /* RootTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806FA1170A390300D5598A /* RootTableViewController.m */; };
-		D7806FAC170A3C0A00D5598A /* GrantTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806FAB170A3C0A00D5598A /* GrantTableViewCell.m */; };
 		D7A917B3170A4F1700B005E5 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B2170A4F1700B005E5 /* AccountViewController.m */; };
 		D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B5170A587500B005E5 /* MenuViewController.m */; };
 		D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */; };
@@ -47,6 +49,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D7002B4D1721FC5A00F6E6EA /* LandscapeMainGraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeMainGraphViewController.h; sourceTree = "<group>"; };
+		D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeMainGraphViewController.m; sourceTree = "<group>"; };
+		D7329A361729AA4700D64341 /* GrantObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrantObject.h; sourceTree = "<group>"; };
+		D7329A371729AA4700D64341 /* GrantObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrantObject.m; sourceTree = "<group>"; };
+		D7329A3A1729B0A600D64341 /* AccountEntryObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountEntryObject.h; sourceTree = "<group>"; };
+		D7329A3B1729B0A600D64341 /* AccountEntryObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountEntryObject.m; sourceTree = "<group>"; };
 		D7806F4F170A306900D5598A /* iOSGGT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSGGT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7806F53170A306900D5598A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D7806F55170A306900D5598A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -71,8 +79,6 @@
 		D7806F98170A34A900D5598A /* MainGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainGraphViewController.m; path = ../MainGraphViewController.m; sourceTree = "<group>"; };
 		D7806FA0170A390200D5598A /* RootTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootTableViewController.h; sourceTree = "<group>"; };
 		D7806FA1170A390300D5598A /* RootTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootTableViewController.m; sourceTree = "<group>"; };
-		D7806FAA170A3C0A00D5598A /* GrantTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrantTableViewCell.h; sourceTree = "<group>"; };
-		D7806FAB170A3C0A00D5598A /* GrantTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrantTableViewCell.m; sourceTree = "<group>"; };
 		D7A917B1170A4F1700B005E5 /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountViewController.h; path = ../AccountViewController.h; sourceTree = "<group>"; };
 		D7A917B2170A4F1700B005E5 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountViewController.m; path = ../AccountViewController.m; sourceTree = "<group>"; };
 		D7A917B4170A587500B005E5 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
@@ -188,6 +194,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D7002B511721FD2D00F6E6EA /* Testing Space */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Testing Space";
+			sourceTree = "<group>";
+		};
 		D7806F44170A306900D5598A = {
 			isa = PBXGroup;
 			children = (
@@ -224,10 +237,13 @@
 		D7806F59170A306900D5598A /* iOSGGT */ = {
 			isa = PBXGroup;
 			children = (
+				D7002B511721FD2D00F6E6EA /* Testing Space */,
 				D7806F62170A306900D5598A /* AppDelegate.h */,
 				D7806F63170A306900D5598A /* AppDelegate.m */,
 				D7806FA0170A390200D5598A /* RootTableViewController.h */,
 				D7806FA1170A390300D5598A /* RootTableViewController.m */,
+				D7002B4D1721FC5A00F6E6EA /* LandscapeMainGraphViewController.h */,
+				D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */,
 				D7806F8E170A309300D5598A /* Pushed View Controllers */,
 				D7A917B7170A589000B005E5 /* Modal View Controllers */,
 				D7806F93170A310C00D5598A /* Auxilliary Classes */,
@@ -285,10 +301,12 @@
 		D7806F93170A310C00D5598A /* Auxilliary Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D7329A3A1729B0A600D64341 /* AccountEntryObject.h */,
+				D7329A3B1729B0A600D64341 /* AccountEntryObject.m */,
+				D7329A361729AA4700D64341 /* GrantObject.h */,
+				D7329A371729AA4700D64341 /* GrantObject.m */,
 				D7DCBE39170E2F35009F40F2 /* CHCSVParser.h */,
 				D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */,
-				D7806FAA170A3C0A00D5598A /* GrantTableViewCell.h */,
-				D7806FAB170A3C0A00D5598A /* GrantTableViewCell.m */,
 			);
 			name = "Auxilliary Classes";
 			sourceTree = "<group>";
@@ -519,10 +537,12 @@
 				D7806F64170A306900D5598A /* AppDelegate.m in Sources */,
 				D7806F99170A34A900D5598A /* MainGraphViewController.m in Sources */,
 				D7806FA2170A390300D5598A /* RootTableViewController.m in Sources */,
-				D7806FAC170A3C0A00D5598A /* GrantTableViewCell.m in Sources */,
 				D7A917B3170A4F1700B005E5 /* AccountViewController.m in Sources */,
 				D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */,
 				D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */,
+				D7002B4F1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m in Sources */,
+				D7329A381729AA4700D64341 /* GrantObject.m in Sources */,
+				D7329A3C1729B0A600D64341 /* AccountEntryObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

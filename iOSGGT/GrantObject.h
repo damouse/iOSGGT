@@ -1,19 +1,14 @@
 //
-//  GrantTableViewCell.h
+//  GrantObject.h
 //  iOSGGT
 //
-//  Created by Mihnea Barboi on 4/1/13.
+//  Created by Mihnea Barboi on 4/25/13.
 //  Copyright (c) 2013 Mihnea Barboi. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-@interface GrantTableViewCell : UITableViewCell {
-    __weak IBOutlet UILabel *labelNameOfGrant;
-    __weak IBOutlet UILabel *labelEndDate;
-    __weak IBOutlet UILabel *labelTotal; //placeholder
-    __weak IBOutlet UILabel *labelRemaining; //placeholder
-}
+@interface GrantObject : NSObject
 
 -(NSString *)setName:(NSString *)name;
 -(NSString *)setDate:(NSString *)date;

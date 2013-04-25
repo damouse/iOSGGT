@@ -7,21 +7,28 @@
 //
 
 #import "RootTableViewController.h"
-#import "GrantTableViewCell.h"
 #import "MainGraphViewController.h"
 #import "CHCSVParser.h"
-#import "GrantTableViewCell.h"
+#import "GrantObject.h"
+
+#import "LandscapeMainGraphViewController.h"
+#import "AccountEntryObject.h"
 
 @interface RootTableViewController () {
     NSMutableArray *grants; //holds all grants
     NSArray *parsed;
+    
     int numberOfGrants; //the number f grants expected
+    BOOL isShowingLandscapeView;
+    
+    LandscapeMainGraphViewController *landscape;
 }
 
 @end
 
 @implementation RootTableViewController
 
+#pragma mark Standard Methods
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -31,31 +38,73 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    NSBundle *mainBundle = [NSBundle mainBundle];
-    NSString *myFile = [mainBundle pathForResource: @"sample" ofType: @"csv"];
-    parsed = [NSArray arrayWithContentsOfCSVFile:myFile];
-    numberOfGrants = 1;
-    
-    [tableMain reloadData];
-    grants = [NSMutableArray array];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (void)awakeFromNib
+{
+    isShowingLandscapeView = NO;
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+    
+    if (UIDeviceOrientationIsLandscape(deviceOrientation) && !isShowingLandscapeView) {
+        [self presentViewController:landscape animated:NO completion:nil];
+        isShowingLandscapeView = YES;
+    }
+    
+    else if (UIDeviceOrientationIsPortrait(deviceOrientation) && isShowingLandscapeView) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        isShowingLandscapeView = NO;
+    }
+}
+
+#pragma mark View Did Load
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
+    landscape = [mainStoryboard instantiateViewControllerWithIdentifier: @"rootLandscape"];
+    
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    NSString *myFile = [mainBundle pathForResource: @"sample" ofType: @"csv"];
+    
+    //make API calls here
+    
+    
+    //init array of grants
+    grants = [NSMutableArray array];
+    
+    //parse documents
+    parsed = [NSArray arrayWithContentsOfCSVFile:myFile];
+    GrantObject *tempGrant = [[GrantObject alloc] initWithCSVArray:parsed];
+    numberOfGrants = 1;
+    
+    [grants addObject:tempGrant];
+    [landscape setGrants:grants];
+    
+    [tableMain reloadData];
+    grants = [NSMutableArray array];
+}
+
+#pragma mark Parsing Methods
+//Given an array of the csv files from the API call, create grant objects for them and return the array of objects
+- (NSMutableArray *) parseCSVFiles:(NSMutableArray *)documents {
+    
+}
+
+
+#pragma mark Table Style
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1; 

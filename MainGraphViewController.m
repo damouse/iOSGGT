@@ -113,17 +113,20 @@
 	graph.paddingRight = 0.0f;
 	graph.paddingBottom = 0.0f;
 	graph.axisSet = nil;
+    
 	// 2 - Set up text style
 	CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
 	textStyle.color = [CPTColor grayColor];
 	textStyle.fontName = @"Helvetica-Bold";
 	textStyle.fontSize = 16.0f;
+    
 	// 3 - Configure title
 	NSString *title = @"Portfolio Prices: May 1, 2012";
 	graph.title = title;
 	graph.titleTextStyle = textStyle;
 	graph.titlePlotAreaFrameAnchor = CPTRectAnchorTop;
 	graph.titleDisplacement = CGPointMake(0.0f, -12.0f);
+    
 	// 4 - Set theme
 	self.selectedTheme = [CPTTheme themeNamed:kCPTPlainBlackTheme];
 	[graph applyTheme:self.selectedTheme];
@@ -132,6 +135,7 @@
 -(void)configureChart {
 	// 1 - Get reference to graph
 	CPTGraph *graph = self.hostView.hostedGraph;
+    
 	// 2 - Create chart
 	CPTPieChart *pieChart = [[CPTPieChart alloc] init];
 	pieChart.dataSource = self;
@@ -140,12 +144,14 @@
 	pieChart.identifier = graph.title;
 	pieChart.startAngle = M_PI_4;
 	pieChart.sliceDirection = CPTPieDirectionClockwise;
+    
 	// 3 - Create gradient
 	CPTGradient *overlayGradient = [[CPTGradient alloc] init];
 	overlayGradient.gradientType = CPTGradientTypeRadial;
 	overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.0] atPosition:0.9];
 	overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.4] atPosition:1.0];
 	pieChart.overlayFill = [CPTFill fillWithGradient:overlayGradient];
+    
 	// 4 - Add chart to graph
 	[graph addPlot:pieChart];
 }

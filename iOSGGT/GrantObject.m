@@ -1,20 +1,19 @@
 //
-//  GrantTableViewCell.m
+//  GrantObject.m
 //  iOSGGT
 //
-//  Created by Mihnea Barboi on 4/1/13.
+//  Created by Mihnea Barboi on 4/25/13.
 //  Copyright (c) 2013 Mihnea Barboi. All rights reserved.
 //
-//  This is a custom object used to handle the data fields within the custom, prototype cells.
-//  NOTE: this is also the abstract, "grant" object. Should change the name. 
 
-#import "GrantTableViewCell.h"
+#import "GrantObject.h"
+#import "AccountEntryObject.h"
 
-@implementation GrantTableViewCell {
+@implementation GrantObject {
     //NOTE: keys WILL NEED TO BE CHANGED. Dynamically add them from the column headers for different spreadsheets
     //contains info from top 5 lines. Keys: {dateLastAccessed, datesOfGrant, name, accountNumber, grantor, title, overhead, awardNumber}
     NSMutableDictionary *metadata;
-
+    
     //contains budget amounts. Keys: {totalBudget, staff, otherPersonnel, fringeBenefits, tuitionRemission, supplies, travel}
     NSMutableDictionary *budget;
     NSMutableDictionary *balance;
@@ -23,18 +22,10 @@
     //row 6 of the spreadsheets: holds the name of all the columns for reference
     NSArray *columnHeaders;
     
-    //array of arrays, holds the budget allocations and individual entries
+    //dictionary
     NSMutableArray *budgetAllocations;
     NSMutableArray *accountEntries;
-}
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
 }
 
 //take the whole slew of arrays from the csv and put all the info in the right places
@@ -68,58 +59,71 @@
     
     for(NSString *header in columnHeaders) {
         if(i > 5) {
-        [budget setValue:[[budgetLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
-        [balance setValue:[[balanceLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
-        [paid setValue:[[paidLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
+            [budget setValue:[[budgetLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
+            [balance setValue:[[balanceLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
+            [paid setValue:[[paidLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
         }
         i++;
     }
     
-    //budget lines and entry lines
-    for(int i = 6; i < 11; i++) 
-        [budgetAllocations addObject:[csvFile objectAtIndex:i]];
     
-    for(int i = 17; i < 40; i++) 
+    //Build an array of account entries
+    BOOL searching = YES; //keep going until it spills over into the next section
+    i = 6; //budget allocations start on row 7 of the spreadsheet
+    
+    NSString *name;
+    NSString *date;
+    CGFloat amount;
+
+    NSArray *line = [csvFile objectAtIndex:i];
+    NSString *cell = [line objectAtIndex:1];
+    
+    while(![cell isEqualToString:@"Current Budget:"]) {
+        if([[line objectAtIndex:1] isEqualToString:@"Budget Allocation"]) {
+            AccountEntryObject *entry = [AccountEntryObject alloc];
+            line = [csvFile objectAtIndex:i]; //get the next line
+            cell = [line objectAtIndex:1];
+        
+            //get the date, amount, and label of the entry. 
+            [entry initWithDate:[line objectAtIndex:0] name:cell andAmount:[[line objectAtIndex:6] floatValue]];
+            [budgetAllocations addObject:[csvFile objectAtIndex:i]];
+        
+            //get the next line
+            i++;
+            line = [csvFile objectAtIndex:i];
+            cell = [line objectAtIndex:1];
+        }
+    }
+    
+    //set the index to the first account withdrawl. New index references the first line with a withdrawl
+    cell = [line objectAtIndex:0];
+    while([cell isEqualToString:@""]) {
+        i++;
+        line = [csvFile objectAtIndex:i];
+        cell = [line objectAtIndex:1];
+    }
+    
+    while([cell isEqualToString:@"Current Budget:"]) {
+        AccountEntryObject *entry = [AccountEntryObject alloc];
+        line = [csvFile objectAtIndex:i]; //get the next line
+        cell = [line objectAtIndex:1];
+        
+        //get the date, amount, and label of the entry.
+        [entry initWithDate:[line objectAtIndex:0] name:cell andAmount:[[line objectAtIndex:6] floatValue]];
         [accountEntries addObject:[csvFile objectAtIndex:i]];
+        
+        //get the next line
+        i++;
+        line = [csvFile objectAtIndex:i];
+        cell = [line objectAtIndex:1];
+    }
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+//We have the total budget and the remaining balance, but it would be nice to have a historical representation of the balance.
+//This method takes in the budget allocations and the account entries and then rebuilds the balance history
+- (NSMutableArray *) reconstructBalanceHistory
 {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
-#pragma mark change labels
-//changes the name and returns the new name, returns the old name if nil is passed in instead
--(NSString *)setName:(NSString *)name
-{
-    if(name != nil)
-        labelNameOfGrant.text = name;
-    return labelNameOfGrant.text;
-}
-
--(NSString *)setDate:(NSString *)date
-{
-    if(date != nil)
-        labelEndDate.text = date;
-    return labelEndDate.text;
-}
-
-
-//VERY LIKELY TO BE A TEMPORARY METHOD
--(NSString *)setTotal:(NSString *)name
-{
-    if(name != nil)
-        labelTotal.text = name;
-    return labelTotal.text;
-}
-
--(NSString *)setRemaining:(NSString *)name
-{
-    if(name != nil)
-        labelRemaining.text = name;
-    return labelRemaining.text;
+    
 }
 
 #pragma mark retrieval funtions
@@ -137,5 +141,7 @@
 {
     return [NSDecimalNumber decimalNumberWithString:[[balance objectForKey:@"Amount"]stringByReplacingOccurrencesOfString:@"," withString:@""]];
 }
+
+
 
 @end
