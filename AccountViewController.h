@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GrantTableViewCell.h"
+#import "GrantObject.h"
 
 @interface AccountViewController : UIViewController {
     __weak IBOutlet UILabel *labelAccountName;
 }
 
--(void)setGrantObject:(GrantTableViewCell *)grant withAccount:(NSString *)account;
+-(void)setGrantObject:(GrantObject *)grant withAccount:(NSString *)account;
 @end

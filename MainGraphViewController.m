@@ -10,17 +10,16 @@
 #import <Foundation/Foundation.h>
 
 #import "MainGraphViewController.h"
-#import "GrantTableViewCell.h"
+#import "GrantObject.h"
 #import "AccountViewController.h"
 #import "CorePlot-CocoaTouch.h"
-#import "GrantTableViewCell.h"
 
 #import "CPDConstants.h"
 #import "CPDStockPriceStore.h"
 #import "CPTTheme.h"
 
 @interface MainGraphViewController () {
-    GrantTableViewCell *grant;
+    GrantObject *grant;
     NSArray *tempValues;
 }
 
@@ -47,10 +46,10 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    self.navigationItem.title = [grant setName:nil];
+    self.navigationItem.title = [grant getName];
 }
 
--(void)setGrantObject:(GrantTableViewCell *)grantObject
+-(void)setGrantObject:(GrantObject *)grantObject
 {
     grant = grantObject;
     tempValues = [NSArray arrayWithObjects:[grant getBalance], [grant getBudget], nil];

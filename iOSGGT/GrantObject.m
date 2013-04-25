@@ -21,23 +21,20 @@
     
     //row 6 of the spreadsheets: holds the name of all the columns for reference
     NSArray *columnHeaders;
-    
-    //dictionary
-    NSMutableArray *budgetAllocations;
-    NSMutableArray *accountEntries;
-
 }
+
+@synthesize accountEntries;
 
 //take the whole slew of arrays from the csv and put all the info in the right places
 //NOTE: again, this has to be rewritten to allow for differently styled spreadsheets or different sized columns
 //It is currently hardcoded just to test.
--(void)initWithCSVArray:(NSArray *)csvFile
+-(id)initWithCSVArray:(NSArray *)csvFile
 {
+    self = [super init];
     metadata = [NSMutableDictionary dictionary];
     budget = [NSMutableDictionary dictionary];
     balance = [NSMutableDictionary dictionary];
     paid = [NSMutableDictionary dictionary];
-    budgetAllocations = [NSMutableArray array];
     accountEntries = [NSMutableArray array];
     
     //metadata
@@ -68,55 +65,65 @@
     
     
     //Build an array of account entries
-    BOOL searching = YES; //keep going until it spills over into the next section
     i = 6; //budget allocations start on row 7 of the spreadsheet
     
-    NSString *name;
-    NSString *date;
-    CGFloat amount;
+    //NSString *name;
+    //NSString *date;
+    //CGFloat amount;
 
     NSArray *line = [csvFile objectAtIndex:i];
     NSString *cell = [line objectAtIndex:1];
     
     while(![cell isEqualToString:@"Current Budget:"]) {
+        NSLog(@"Spinning 1: %i", i);
         if([[line objectAtIndex:1] isEqualToString:@"Budget Allocation"]) {
-            AccountEntryObject *entry = [AccountEntryObject alloc];
             line = [csvFile objectAtIndex:i]; //get the next line
             cell = [line objectAtIndex:1];
         
             //get the date, amount, and label of the entry. 
-            [entry initWithDate:[line objectAtIndex:0] name:cell andAmount:[[line objectAtIndex:6] floatValue]];
-            [budgetAllocations addObject:[csvFile objectAtIndex:i]];
-        
-            //get the next line
-            i++;
-            line = [csvFile objectAtIndex:i];
-            cell = [line objectAtIndex:1];
+            AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0] name:cell andAmount:[line objectAtIndex:6]];
+            [accountEntries addObject:entry];
         }
-    }
-    
-    //set the index to the first account withdrawl. New index references the first line with a withdrawl
-    cell = [line objectAtIndex:0];
-    while([cell isEqualToString:@""]) {
-        i++;
-        line = [csvFile objectAtIndex:i];
-        cell = [line objectAtIndex:1];
-    }
-    
-    while([cell isEqualToString:@"Current Budget:"]) {
-        AccountEntryObject *entry = [AccountEntryObject alloc];
-        line = [csvFile objectAtIndex:i]; //get the next line
-        cell = [line objectAtIndex:1];
-        
-        //get the date, amount, and label of the entry.
-        [entry initWithDate:[line objectAtIndex:0] name:cell andAmount:[[line objectAtIndex:6] floatValue]];
-        [accountEntries addObject:[csvFile objectAtIndex:i]];
         
         //get the next line
         i++;
         line = [csvFile objectAtIndex:i];
         cell = [line objectAtIndex:1];
     }
+    
+    //set the index to the first account withdrawl. New index references the first line with a withdrawl
+    cell = [line objectAtIndex:0];
+    while([cell isEqualToString:@""]) {
+        NSLog(@"Spinning 2: %i", i);
+        i++;
+        line = [csvFile objectAtIndex:i];
+        cell = [line objectAtIndex:0];
+    }
+    
+    //build array of account withdrawls. Keep searching until three cells pass 
+    int emptyCells = 0;
+    cell = [line objectAtIndex:1];
+
+    while(emptyCells < 3) {
+        NSLog(@"Spinning 3: %i", i);
+        if(![cell isEqualToString:@""]) {
+            //get the date, amount, and label of the entry
+            AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0] name:cell andAmount:-[[line objectAtIndex:6] floatValue]];
+            [accountEntries addObject:entry];
+        
+            emptyCells = 0; //reset empty cell count
+        }
+        else {
+            emptyCells++; //start counting empty cells
+        }
+        
+        //move to the next line. 
+        i++;
+        line = [csvFile objectAtIndex:i];
+        cell = [line objectAtIndex:1];
+    }
+    
+    return self;
 }
 
 //We have the total budget and the remaining balance, but it would be nice to have a historical representation of the balance.
@@ -124,6 +131,12 @@
 - (NSMutableArray *) reconstructBalanceHistory
 {
     
+}
+
+#pragma mark accessor methods
+- (NSString *) getName
+{
+    return [metadata objectForKey:@"name"];
 }
 
 #pragma mark retrieval funtions

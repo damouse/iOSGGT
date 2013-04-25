@@ -7,15 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GrantTableViewCell.h"
 #import "CorePlot-CocoaTouch.h"
+#import "GrantObject.h"
 
 @interface MainGraphViewController : UIViewController <CPTPlotDataSource>{
 
 }
 
 - (IBAction)goToAccountPage:(id)sender;
--(void)setGrantObject:(GrantTableViewCell *)grantObject;
+-(void)setGrantObject:(GrantObject *)grantObject;
 
 //NEWNEWNEW
 @property (nonatomic, strong) CPTGraphHostingView *hostView;

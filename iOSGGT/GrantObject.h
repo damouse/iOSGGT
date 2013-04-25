@@ -10,12 +10,12 @@
 
 @interface GrantObject : NSObject
 
--(NSString *)setName:(NSString *)name;
--(NSString *)setDate:(NSString *)date;
--(NSString *)setTotal:(NSString *)name;
--(NSString *)setRemaining:(NSString *)name;
+//All changes in the value of the account. Array holds accountentryobjects
+@property (strong, nonatomic) NSMutableArray *accountEntries;
 
--(void)initWithCSVArray:(NSArray *)csvFile;
+-(id)initWithCSVArray:(NSArray *)csvFile;
 -(NSDecimalNumber *)getBalance;
 -(NSDecimalNumber *)getBudget;
+
+- (NSString *) getName;
 @end

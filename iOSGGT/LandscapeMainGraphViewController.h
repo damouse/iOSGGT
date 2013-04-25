@@ -16,4 +16,6 @@
 @property (nonatomic, strong) CPTTheme *selectedTheme;
 
 @property (nonatomic, strong) NSMutableArray *grants;
+
+-(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate;
 @end

@@ -12,8 +12,8 @@
 
 @property (weak, nonatomic) NSDate *date;
 @property (weak, nonatomic) NSString *label;
-@property CGFloat *amount;
+@property int *amount;
 
--(void) initWithDate:(NSString *)dateString name:(NSString *)name andAmount:(CGFloat)value;
+-(id) initWithDate:(NSString *)dateString name:(NSString *)name andAmount:(int)value;
 
 @end

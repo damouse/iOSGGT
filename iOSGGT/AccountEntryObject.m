@@ -13,14 +13,18 @@
 @implementation AccountEntryObject
 @synthesize date, label, amount;
 
--(void) initWithDate:(NSString *)dateString name:(NSString *)name andAmount:(CGFloat)value
+-(id) initWithDate:(NSString *)dateString name:(NSString *)name andAmount:(int)value
 {
+    self = [super init];
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MM/dd/YY"];
     date = [formatter dateFromString:dateString];
     
     label = name;
-    amount = &value;
+    amount = value;
+    
+    return self;
 }
 
 @end

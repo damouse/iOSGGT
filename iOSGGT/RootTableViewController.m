@@ -13,6 +13,7 @@
 
 #import "LandscapeMainGraphViewController.h"
 #import "AccountEntryObject.h"
+#import "GrantTableCell.h"
 
 @interface RootTableViewController () {
     NSMutableArray *grants; //holds all grants
@@ -117,18 +118,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GrantTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell" forIndexPath:indexPath];
+    GrantTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell" forIndexPath:indexPath];
 
     if (cell == nil) {
-        cell = [[GrantTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AccountCell"];
+        cell = [[GrantTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AccountCell"];
     }
-    
 
     
-    [cell setName:[NSString stringWithFormat:@"Grant #%i", indexPath.row]];
-    [cell setDate:@"2/16/24"];
-    [cell setRemaining:@"23,000"];
-    [cell setTotal:@"234,134"];
+    cell.name.text = [NSString stringWithFormat:@"Grant #%i", indexPath.row];
+    cell.date.text = @"2/16/24";
+    cell.remaining.text = @"23,000";
+    cell.total.text = @"234,134";
     
     return cell;
 }
@@ -140,9 +140,8 @@
 {
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];    
     MainGraphViewController *mainGraph = [mainStoryboard instantiateViewControllerWithIdentifier: @"MainGraphic"];
-    GrantTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell" forIndexPath:indexPath];
+    GrantObject *cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell" forIndexPath:indexPath];
     
-    [cell initWithCSVArray:parsed];
     [grants addObject:cell];
     
     [mainGraph setGrantObject:cell];

@@ -13,6 +13,10 @@
 #import "LandscapeMainGraphViewController.h"
 #import "CorePlot-CocoaTouch.h"
 
+#import "GrantObject.h"
+#import "AccountEntryObject.h"
+#import "CPTPlotRange.h"
+
 @interface LandscapeMainGraphViewController () {
     CPTGraph *graph;
     double minimumValueForXAxis;
@@ -23,7 +27,7 @@
     double majorIntervalLengthForX;
     double majorIntervalLengthForY;
     
-    NSMutableArray *dataPoints; // array of arrays 
+    CPTPlotRange *test;
 }
 
 @end
@@ -45,13 +49,13 @@
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES];
     
-    minimumValueForXAxis = -10;
-    maximumValueForXAxis = 10;
+    minimumValueForXAxis = 0;
+    maximumValueForXAxis = 40;
     minimumValueForYAxis = 0;
-    maximumValueForYAxis = 10;
+    maximumValueForYAxis = 100000;
     
     majorIntervalLengthForX = 1;
-    majorIntervalLengthForY = 1;
+    majorIntervalLengthForY = 10000;
     
     self.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
 }
@@ -117,7 +121,7 @@
     graph.paddingRight  = 0.0;
     graph.paddingBottom = 0.0;
     
-    graph.plotAreaFrame.paddingLeft   = 40.0;
+    graph.plotAreaFrame.paddingLeft   = 60.0;
     graph.plotAreaFrame.paddingTop    = 20.0;
     graph.plotAreaFrame.paddingRight  = 20.0;
     graph.plotAreaFrame.paddingBottom = 35.0;
@@ -138,6 +142,8 @@
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(minimumValueForXAxis) length:CPTDecimalFromDouble(ceil( (maximumValueForXAxis - minimumValueForXAxis) / majorIntervalLengthForX ) * majorIntervalLengthForX)];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(minimumValueForYAxis) length:CPTDecimalFromDouble(ceil( (maximumValueForYAxis - minimumValueForYAxis) / majorIntervalLengthForY ) * majorIntervalLengthForY)];
+    
+    test = plotSpace.yRange;
     
     // this allows the plot to respond to mouse events
     [plotSpace setDelegate:self]; //set delegate form other file
@@ -199,19 +205,37 @@
 }
 
 #pragma mark - CPTPlotDataSource methods
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
-	return dataPoints.count; //FOR TESTING PURPOSES
+-(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+{
+    GrantObject *grant = [grants objectAtIndex:0];
+    NSLog(@"Number of records: %i", [grant accountEntries].count);
+    return  [grant accountEntries].count;
 }
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
+    NSLog(@"Getting populating plot for index: %i", index);
+    GrantObject *grant = [grants objectAtIndex:0];
+    AccountEntryObject *entry = [[grant accountEntries] objectAtIndex:index];
+    
     if(fieldEnum == CPTScatterPlotFieldY)
-        return [dataPoints objectAtIndex:index];
+        return [NSNumber numberWithInt:[entry amount]];
     else
         return [NSNumber numberWithInt:index];
 }
 
--(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index {
+#pragma mark Plot Customization Methods
+-(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate
+{
+    CPTPlotRange *new = [CPTPlotRange plotRangeWithLocation:[[[NSDecimalNumber alloc] initWithInt:10] decimalValue] length:[[[NSDecimalNumber alloc] initWithInt:1] decimalValue]];
+    
+    if(coordinate == 0)
+        return newRange;
+    else
+        return test;
+}
+
+/*-(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index {
 	// 1 - Define label text style
 	static CPTMutableTextStyle *labelText = nil;
 	if (!labelText) {
@@ -233,9 +257,9 @@
     
 	// 5 - Create and return layer with label text
 	return [[CPTTextLayer alloc] initWithText:labelValue style:labelText]; //not this
-}
+}*/
 
--(NSString *)legendTitleForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)index {
+/*-(NSString *)legendTitleForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)index {
 	if (index < [dataPoints count]) {
 		if(index == 1)
             return @"Budget"; //HACKED FIX HERE
@@ -243,7 +267,7 @@
             return @"Remaining"; //HACKED FIX HERE
 	}
 	return @"N/A";
-}
+}*/
 
 ///////////////////////////////////// CODE from the other project, kepy around for referance on how to change
 
@@ -356,7 +380,7 @@
     maximumValueForYAxis = -MAXFLOAT;
     
     // get the ful range min and max values
-    for ( NSDictionary *xyValues in dataPoints ) {
+    for ( NSDictionary *xyValues in grants ) {
         xval = [[xyValues valueForKey:@"x"] doubleValue];
         
         minimumValueForXAxis = fmin(xval, minimumValueForXAxis);
