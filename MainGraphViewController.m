@@ -4,7 +4,7 @@
 //
 //  Created by Mihnea Barboi on 4/1/13.
 //  Copyright (c) 2013 Mihnea Barboi. All rights reserved.
-//
+// GSPROJECTVIEWDEMO to do the middle graph
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
@@ -14,8 +14,6 @@
 #import "AccountViewController.h"
 #import "CorePlot-CocoaTouch.h"
 
-#import "CPDConstants.h"
-#import "CPDStockPriceStore.h"
 #import "CPTTheme.h"
 
 @interface MainGraphViewController () {

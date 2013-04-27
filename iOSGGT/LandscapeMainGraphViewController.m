@@ -81,7 +81,8 @@
 
 -(void) viewWillAppear:(BOOL)animated
 {
-    [self initPlot];
+    if(graph == nil)
+        [self initPlot];
 }
 
 
@@ -147,6 +148,7 @@
 -(void)configureGraph {
 	// 1 - Create and initialise graph
 	graph = [[CPTXYGraph alloc] initWithFrame:self.hostView.bounds];
+    
 	self.hostView.hostedGraph = graph;
 	graph.paddingLeft = 10.0f;
 	graph.paddingTop = 10.0f;
@@ -155,12 +157,12 @@
     
 	// 2 - Set up text style
 	CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
-	textStyle.color = [CPTColor blackColor];
+	textStyle.color = [CPTColor whiteColor];
 	textStyle.fontName = @"Helvetica-Bold";
 	textStyle.fontSize = 20.0f;
     
 	// 3 - Configure title
-	NSString *title = @"TEST";
+	NSString *title = @"All Grants";
 	graph.title = title;
 	graph.titleTextStyle = textStyle;
 	graph.titlePlotAreaFrameAnchor = CPTRectAnchorTop;
@@ -182,7 +184,7 @@
     graph.plotAreaFrame.cornerRadius    = 0.0;
     
 	// 4 - Set theme
-	self.selectedTheme = [CPTTheme themeNamed:kCPTSlateTheme];
+	self.selectedTheme = [CPTTheme themeNamed:kCPTDarkGradientTheme];
 	[graph applyTheme:self.selectedTheme];
 }
 
@@ -222,12 +224,12 @@
     
     // X-axis parameters setting
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
-    axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX);
+    axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX * 2);
     axisSet.xAxis.minorTicksPerInterval = 0;
     axisSet.xAxis.orthogonalCoordinateDecimal = CPTDecimalFromString(@"1"); //added for date, adjust x line
-    axisSet.xAxis.majorTickLineStyle = lineStyle;
+    /*axisSet.xAxis.majorTickLineStyle = lineStyle;
     axisSet.xAxis.minorTickLineStyle = lineStyle;
-    axisSet.xAxis.axisLineStyle = lineStyle;
+    axisSet.xAxis.axisLineStyle = lineStyle;*/
     axisSet.xAxis.minorTickLength = 5.0f;
     axisSet.xAxis.majorTickLength = 7.0f;
     axisSet.xAxis.labelOffset = 3.0f;
@@ -239,20 +241,39 @@
     timeFormatter.referenceDate = refDate;
     axisSet.xAxis.labelFormatter = timeFormatter;
     
+    //number formatter for y
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [numberFormatter setMaximumFractionDigits:0];
+    [numberFormatter setMultiplier:[NSNumber numberWithDouble:.001]];
+    
     //set up y axis
     CPTXYAxis *y = axisSet.yAxis;
     y.minorTicksPerInterval = 1;
     y.majorIntervalLength   = CPTDecimalFromDouble(majorIntervalLengthForY);
     y.labelOffset           = 5.0;
     y.axisConstraints       = [CPTConstraints constraintWithLowerOffset:0.0];
+    y.labelFormatter = numberFormatter;
+    //y.title = @"(thousands)";
+    //y.titleLocation =
+    //y.titleRotation = 0.0; //this moves it to the top of the axis
+    //y.titleLocation = plotSpace.yRange.maxLimit
+    
+    //graph line style NOTE: this must be dynamic for multiple graphs
+    CPTMutableLineStyle *dataLineStyle = [CPTMutableLineStyle lineStyle];
+    dataLineStyle.lineWidth = 1.0f;
+    dataLineStyle.lineColor = [CPTColor redColor];
     
     // Create plots for every grant
     for(GrantObject *grant in grantObjects) {
         CPTScatterPlot *dataSourceLinePlot = [[CPTScatterPlot alloc] initWithFrame:graph.bounds];
         dataSourceLinePlot.identifier = [[grant getMetadata] objectForKey:@"title"];
         dataSourceLinePlot.dataSource = self;
-        [graph addPlot:dataSourceLinePlot];
+        dataSourceLinePlot.delegate = self;
+        dataSourceLinePlot.dataLineStyle = dataLineStyle;
+        dataSourceLinePlot.plotSymbolMarginForHitDetection = 10;
         
+        [graph addPlot:dataSourceLinePlot];
         [plots addObject:dataSourceLinePlot]; //the index at which this was added corresponds to the index of this grant in "grants" array
     }
     
@@ -275,8 +296,8 @@
 	// 4 - Add legend to graph
 	graph.legend = theLegend;
 	graph.legendAnchor = CPTRectAnchorRight;
-	CGFloat legendPadding = -(self.view.bounds.size.width / 10);
-	graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
+	//CGFloat legendPadding = -(self.view.bounds.size.width / 10);
+	//graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
 }
 
 #pragma mark - CPTPlotDataSource methods
@@ -293,22 +314,40 @@
     AccountEntryObject *entry = [grant objectAtIndex:index];
     
     if(fieldEnum == CPTScatterPlotFieldY) {
-        NSLog(@"amount: %i", [entry runningTotalToDate]);
+        //NSLog(@"amount: %i", [entry runningTotalToDate]);
         return [NSNumber numberWithInt:[entry runningTotalToDate]];
     }
     else {
-        NSLog(@"Date as Time Interval: %@  for entry: %@", [entry dateAsTimeInterval], [entry label]);
+        //NSLog(@"Date as Time Interval: %@  for entry: %@", [entry dateAsTimeInterval], [entry label]);
         return [entry dateAsTimeInterval];
     }
+}
+
+//allows the user to click on individual plot points. Consider a popup, or a transistion to another VC
+-(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:    (NSUInteger)index
+{
+    NSLog(@"plotSymbolWasSelectedAtRecordIndex %d", index);
 }
 
 #pragma mark Plot Customization Methods
 -(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate {
     //CPTPlotRange *new = [CPTPlotRange plotRangeWithLocation:[[[NSDecimalNumber alloc] initWithInt:10] decimalValue] length:[[[NSDecimalNumber alloc] initWithInt:1] decimalValue]];
     
-    if(coordinate == 0)
+    if(coordinate == 0) {//if x coordinate, allow modification
+        
+        //if the length passes a certain amount, resize the interval ticks to keep them readable
+        CPTXYAxisSet *axisSet = (id)graph.axisSet;
+        
+        if(newRange.lengthDouble > 140000000)
+            axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX*2);
+        else if(newRange.lengthDouble < 70000000)
+            axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX/2);
+        else
+            axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX);
+        
         return newRange;
-    else
+    }
+    else //dont let the y axis zoom or scroll
         return test;
 }
 
@@ -412,76 +451,6 @@
 -(BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
 {
     return YES;
-}
-
--(IBAction)zoomIn
-{
-    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
-    CPTPlotArea *plotArea     = graph.plotAreaFrame.plotArea;
-    
-    // convert the dragStart and dragEnd values to plot coordinates
-    //CGPoint dragStartInPlotArea = [graph convertPoint:dragStart toLayer:plotArea];
-    //CGPoint dragEndInPlotArea   = [graph convertPoint:dragEnd toLayer:plotArea];
-    
-    double start[2], end[2];
-    
-    // obtain the datapoints for the drag start and end
-    //[plotSpace doublePrecisionPlotPoint:start forPlotAreaViewPoint:dragStartInPlotArea];
-    //[plotSpace doublePrecisionPlotPoint:end forPlotAreaViewPoint:dragEndInPlotArea];
-    
-    // recalculate the min and max values
-    minimumValueForXAxis = MIN(start[CPTCoordinateX], end[CPTCoordinateX]);
-    maximumValueForXAxis = MAX(start[CPTCoordinateX], end[CPTCoordinateX]);
-    minimumValueForYAxis = MIN(start[CPTCoordinateY], end[CPTCoordinateY]);
-    maximumValueForYAxis = MAX(start[CPTCoordinateY], end[CPTCoordinateY]);
-    
-    // now adjust the plot range and axes
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(minimumValueForXAxis)
-                                                    length:CPTDecimalFromDouble(maximumValueForXAxis - minimumValueForXAxis)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(minimumValueForYAxis)
-                                                    length:CPTDecimalFromDouble(maximumValueForYAxis - minimumValueForYAxis)];
-    
-    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
-    axisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyAutomatic;
-    axisSet.yAxis.labelingPolicy = CPTAxisLabelingPolicyAutomatic;
-}
-
--(IBAction)zoomOut
-{
-    double xval, yval;
-    
-    minimumValueForXAxis = MAXFLOAT;
-    maximumValueForXAxis = -MAXFLOAT;
-    
-    minimumValueForYAxis = MAXFLOAT;
-    maximumValueForYAxis = -MAXFLOAT;
-    
-    // get the ful range min and max values
-    for ( NSDictionary *xyValues in grants ) {
-        xval = [[xyValues valueForKey:@"x"] doubleValue];
-        
-        minimumValueForXAxis = fmin(xval, minimumValueForXAxis);
-        maximumValueForXAxis = fmax(xval, maximumValueForXAxis);
-        
-        yval = [[xyValues valueForKey:@"y"] doubleValue];
-        
-        minimumValueForYAxis = fmin(yval, minimumValueForYAxis);
-        maximumValueForYAxis = fmax(yval, maximumValueForYAxis);
-    }
-    
-    minimumValueForXAxis = floor(minimumValueForXAxis / majorIntervalLengthForX) * majorIntervalLengthForX;
-    minimumValueForYAxis = floor(minimumValueForYAxis / majorIntervalLengthForY) * majorIntervalLengthForY;
-    
-    // now adjust the plot range and axes
-    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
-    
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(minimumValueForXAxis)
-                                                    length:CPTDecimalFromDouble(ceil( (maximumValueForXAxis - minimumValueForXAxis) / majorIntervalLengthForX ) * majorIntervalLengthForX)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(minimumValueForYAxis)
-                                                    length:CPTDecimalFromDouble(ceil( (maximumValueForYAxis - minimumValueForYAxis) / majorIntervalLengthForY ) * majorIntervalLengthForY)];
-    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
-    axisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyFixedInterval;
-    axisSet.yAxis.labelingPolicy = CPTAxisLabelingPolicyFixedInterval;
 }
 
 

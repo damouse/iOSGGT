@@ -33,11 +33,8 @@
 		D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */; };
 		D7E0F14D170E63A200386698 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E0F14C170E63A200386698 /* libCorePlot-CocoaTouch.a */; };
 		D7E0F14F170E63C400386698 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E0F14E170E63C400386698 /* QuartzCore.framework */; };
-		D7E0F156170E65C000386698 /* CPDConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E0F155170E65C000386698 /* CPDConstants.m */; };
-		D7E0F15E170E6FF800386698 /* CPDStockPriceStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E0F15D170E6FF800386698 /* CPDStockPriceStore.m */; };
-		D7E0F15F170E715600386698 /* CPDStockPriceStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E0F15D170E6FF800386698 /* CPDStockPriceStore.m */; };
 		D7F2E0BD170E20B200130C2E /* sample.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7F2E0BC170E20B200130C2E /* sample.csv */; };
-		D7FD6D4F172B4EF300A63DD1 /* TestingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FD6D4E172B4EF300A63DD1 /* TestingViewController.m */; };
+		D7FD6D56172B793800A63DD1 /* event_cell.png in Resources */ = {isa = PBXBuildFile; fileRef = D7FD6D55172B793800A63DD1 /* event_cell.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,13 +162,8 @@
 		D7E0F14B170E63A200386698 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		D7E0F14C170E63A200386698 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		D7E0F14E170E63C400386698 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		D7E0F154170E65C000386698 /* CPDConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPDConstants.h; path = CorePlotHeaders/CPDConstants.h; sourceTree = "<group>"; };
-		D7E0F155170E65C000386698 /* CPDConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CPDConstants.m; path = CorePlotHeaders/CPDConstants.m; sourceTree = "<group>"; };
-		D7E0F15C170E6FF800386698 /* CPDStockPriceStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDStockPriceStore.h; sourceTree = "<group>"; };
-		D7E0F15D170E6FF800386698 /* CPDStockPriceStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDStockPriceStore.m; sourceTree = "<group>"; };
 		D7F2E0BC170E20B200130C2E /* sample.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample.csv; sourceTree = "<group>"; };
-		D7FD6D4D172B4EF300A63DD1 /* TestingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestingViewController.h; path = iOSGGT/TestingViewController.h; sourceTree = "<group>"; };
-		D7FD6D4E172B4EF300A63DD1 /* TestingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestingViewController.m; path = iOSGGT/TestingViewController.m; sourceTree = "<group>"; };
+		D7FD6D55172B793800A63DD1 /* event_cell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = event_cell.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +204,7 @@
 			children = (
 				D7E0F14E170E63C400386698 /* QuartzCore.framework */,
 				D7806F59170A306900D5598A /* iOSGGT */,
+				D7FD6D54172B792700A63DD1 /* Assets */,
 				D7E0F157170E6C5500386698 /* TEMP CODE */,
 				D7E0F100170E637600386698 /* CorePlot */,
 				D7806F7D170A306A00D5598A /* iOSGGTTests */,
@@ -421,14 +414,17 @@
 		D7E0F157170E6C5500386698 /* TEMP CODE */ = {
 			isa = PBXGroup;
 			children = (
-				D7FD6D4D172B4EF300A63DD1 /* TestingViewController.h */,
-				D7FD6D4E172B4EF300A63DD1 /* TestingViewController.m */,
-				D7E0F15C170E6FF800386698 /* CPDStockPriceStore.h */,
-				D7E0F15D170E6FF800386698 /* CPDStockPriceStore.m */,
-				D7E0F154170E65C000386698 /* CPDConstants.h */,
-				D7E0F155170E65C000386698 /* CPDConstants.m */,
 			);
 			name = "TEMP CODE";
+			sourceTree = "<group>";
+		};
+		D7FD6D54172B792700A63DD1 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				D7FD6D55172B793800A63DD1 /* event_cell.png */,
+			);
+			name = Assets;
+			path = iOSGGT;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -508,6 +504,7 @@
 				D7806F6A170A306900D5598A /* Default-568h@2x.png in Resources */,
 				D7806F6D170A306900D5598A /* MainStoryboard.storyboard in Resources */,
 				D7F2E0BD170E20B200130C2E /* sample.csv in Resources */,
+				D7FD6D56172B793800A63DD1 /* event_cell.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -542,7 +539,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7E0F15F170E715600386698 /* CPDStockPriceStore.m in Sources */,
 				D7806F60170A306900D5598A /* main.m in Sources */,
 				D7806F64170A306900D5598A /* AppDelegate.m in Sources */,
 				D7806F99170A34A900D5598A /* MainGraphViewController.m in Sources */,
@@ -554,7 +550,6 @@
 				D7329A381729AA4700D64341 /* GrantObject.m in Sources */,
 				D7329A3C1729B0A600D64341 /* AccountEntryObject.m in Sources */,
 				D77078B71729C5D2001501AF /* GrantTableCell.m in Sources */,
-				D7FD6D4F172B4EF300A63DD1 /* TestingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,8 +558,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7806F85170A306A00D5598A /* iOSGGTTests.m in Sources */,
-				D7E0F156170E65C000386698 /* CPDConstants.m in Sources */,
-				D7E0F15E170E6FF800386698 /* CPDStockPriceStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
