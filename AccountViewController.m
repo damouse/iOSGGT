@@ -42,7 +42,7 @@
 //method recieves a grant object and the name of the account to be displayed
 -(void)setGrantObject:(GrantObject *)grant withAccount:(NSString *)account
 {
-    self.navigationItem.title = [grant getName]; //or should this be the account name?
+    self.navigationItem.title = [[grant getMetadata] objectForKey:@"title"]; //or should this be the account name?
     accountName = @"Placeholder text";
     
     //do all the drawing and data representation needed to display the data correctly here

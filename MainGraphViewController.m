@@ -46,7 +46,7 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    self.navigationItem.title = [grant getName];
+    self.navigationItem.title = [[grant getMetadata] objectForKey:@"title"];
 }
 
 -(void)setGrantObject:(GrantObject *)grantObject

@@ -43,7 +43,7 @@
     [metadata setObject:[[csvFile objectAtIndex:2] objectAtIndex:1] forKey:@"name"];
     [metadata setObject:[[csvFile objectAtIndex:3] objectAtIndex:1] forKey:@"accountNumber"];
     [metadata setObject:[[csvFile objectAtIndex:1] objectAtIndex:4] forKey:@"grantor"];
-    [metadata setObject:[[csvFile objectAtIndex:1] objectAtIndex:4] forKey:@"title"];
+    [metadata setObject:[[csvFile objectAtIndex:2] objectAtIndex:4] forKey:@"title"];
     [metadata setObject:[[csvFile objectAtIndex:3] objectAtIndex:4] forKey:@"overhead"];
     [metadata setObject:[[csvFile objectAtIndex:4] objectAtIndex:1] forKey:@"awardNumber"];
     
@@ -75,7 +75,7 @@
     NSString *cell = [line objectAtIndex:1];
     
     while(![cell isEqualToString:@"Current Budget:"]) {
-        NSLog(@"Spinning 1: %i", i);
+        //NSLog(@"Spinning 1: %i", i);
         if([[line objectAtIndex:1] isEqualToString:@"Budget Allocation"]) {
             line = [csvFile objectAtIndex:i]; //get the next line
             cell = [line objectAtIndex:1];
@@ -94,7 +94,7 @@
     //set the index to the first account withdrawl. New index references the first line with a withdrawl
     cell = [line objectAtIndex:0];
     while([cell isEqualToString:@""]) {
-        NSLog(@"Spinning 2: %i", i);
+        //NSLog(@"Spinning 2: %i", i);
         i++;
         line = [csvFile objectAtIndex:i];
         cell = [line objectAtIndex:0];
@@ -105,7 +105,7 @@
     cell = [line objectAtIndex:1];
 
     while(emptyCells < 3) {
-        NSLog(@"Spinning 3: %i", i);
+        //NSLog(@"Spinning 3: %i", i);
         if(![cell isEqualToString:@""]) {
             //get the date, amount, and label of the entry
             AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0] name:cell andAmount:-[[line objectAtIndex:6] intValue]];
@@ -126,20 +126,22 @@
     //sort the entries by date
     [accountEntries sortUsingSelector:@selector(compare:)];
     
+    //the account entries have all been added and sorted in order of date. This sets up the "running total" of the grant
+    int currentTotal = 0;
+    
+    for(AccountEntryObject *entry in accountEntries) {
+        currentTotal = currentTotal + [entry amount];
+        [entry setRunningTotalToDate:currentTotal];
+    }
+    
     return self;
 }
 
-//We have the total budget and the remaining balance, but it would be nice to have a historical representation of the balance.
-//This method takes in the budget allocations and the account entries and then rebuilds the balance history
-- (NSMutableArray *) reconstructBalanceHistory
-{
-    
-}
 
 #pragma mark accessor methods
-- (NSString *) getName
+- (NSDictionary *) getMetadata
 {
-    return [metadata objectForKey:@"name"];
+    return metadata;
 }
 
 #pragma mark retrieval funtions

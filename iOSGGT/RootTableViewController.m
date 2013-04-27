@@ -95,7 +95,7 @@
     numberOfGrants = 1;
     
     [grants addObject:tempGrant];
-    [landscape setGrants:grants];
+    [landscape initWithGrantArray:grants];
     
     [tableMain reloadData];
     grants = [NSMutableArray array];

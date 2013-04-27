@@ -37,6 +37,7 @@
 		D7E0F15E170E6FF800386698 /* CPDStockPriceStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E0F15D170E6FF800386698 /* CPDStockPriceStore.m */; };
 		D7E0F15F170E715600386698 /* CPDStockPriceStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E0F15D170E6FF800386698 /* CPDStockPriceStore.m */; };
 		D7F2E0BD170E20B200130C2E /* sample.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7F2E0BC170E20B200130C2E /* sample.csv */; };
+		D7FD6D4F172B4EF300A63DD1 /* TestingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FD6D4E172B4EF300A63DD1 /* TestingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -169,6 +170,8 @@
 		D7E0F15C170E6FF800386698 /* CPDStockPriceStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDStockPriceStore.h; sourceTree = "<group>"; };
 		D7E0F15D170E6FF800386698 /* CPDStockPriceStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDStockPriceStore.m; sourceTree = "<group>"; };
 		D7F2E0BC170E20B200130C2E /* sample.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample.csv; sourceTree = "<group>"; };
+		D7FD6D4D172B4EF300A63DD1 /* TestingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestingViewController.h; path = iOSGGT/TestingViewController.h; sourceTree = "<group>"; };
+		D7FD6D4E172B4EF300A63DD1 /* TestingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestingViewController.m; path = iOSGGT/TestingViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,13 +243,12 @@
 		D7806F59170A306900D5598A /* iOSGGT */ = {
 			isa = PBXGroup;
 			children = (
+				D7806F6B170A306900D5598A /* MainStoryboard.storyboard */,
 				D7002B511721FD2D00F6E6EA /* Testing Space */,
 				D7806F62170A306900D5598A /* AppDelegate.h */,
 				D7806F63170A306900D5598A /* AppDelegate.m */,
 				D7806FA0170A390200D5598A /* RootTableViewController.h */,
 				D7806FA1170A390300D5598A /* RootTableViewController.m */,
-				D7002B4D1721FC5A00F6E6EA /* LandscapeMainGraphViewController.h */,
-				D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */,
 				D7806F8E170A309300D5598A /* Pushed View Controllers */,
 				D7A917B7170A589000B005E5 /* Modal View Controllers */,
 				D7806F93170A310C00D5598A /* Auxilliary Classes */,
@@ -258,7 +260,6 @@
 		D7806F5A170A306900D5598A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D7806F6B170A306900D5598A /* MainStoryboard.storyboard */,
 				D7806F5B170A306900D5598A /* iOSGGT-Info.plist */,
 				D7806F5C170A306900D5598A /* InfoPlist.strings */,
 				D7806F5F170A306900D5598A /* main.m */,
@@ -297,6 +298,8 @@
 				D7A917B2170A4F1700B005E5 /* AccountViewController.m */,
 				D7806F97170A34A900D5598A /* MainGraphViewController.h */,
 				D7806F98170A34A900D5598A /* MainGraphViewController.m */,
+				D7002B4D1721FC5A00F6E6EA /* LandscapeMainGraphViewController.h */,
+				D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */,
 			);
 			name = "Pushed View Controllers";
 			sourceTree = "<group>";
@@ -418,6 +421,8 @@
 		D7E0F157170E6C5500386698 /* TEMP CODE */ = {
 			isa = PBXGroup;
 			children = (
+				D7FD6D4D172B4EF300A63DD1 /* TestingViewController.h */,
+				D7FD6D4E172B4EF300A63DD1 /* TestingViewController.m */,
 				D7E0F15C170E6FF800386698 /* CPDStockPriceStore.h */,
 				D7E0F15D170E6FF800386698 /* CPDStockPriceStore.m */,
 				D7E0F154170E65C000386698 /* CPDConstants.h */,
@@ -549,6 +554,7 @@
 				D7329A381729AA4700D64341 /* GrantObject.m in Sources */,
 				D7329A3C1729B0A600D64341 /* AccountEntryObject.m in Sources */,
 				D77078B71729C5D2001501AF /* GrantTableCell.m in Sources */,
+				D7FD6D4F172B4EF300A63DD1 /* TestingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

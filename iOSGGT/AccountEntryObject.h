@@ -13,6 +13,7 @@
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) NSString *label;
 @property NSInteger amount;
+@property NSInteger runningTotalToDate;
 
 -(id) initWithDate:(NSString *)dateString name:(NSString *)name andAmount:(NSInteger)value;
 - (NSNumber *) dateAsTimeInterval;

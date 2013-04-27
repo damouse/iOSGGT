@@ -17,5 +17,6 @@
 -(NSDecimalNumber *)getBalance;
 -(NSDecimalNumber *)getBudget;
 
-- (NSString *) getName;
+//Keys: {dateLastAccessed, datesOfGrant, name, accountNumber, grantor, title, overhead, awardNumber}
+- (NSDictionary *) getMetadata;
 @end
