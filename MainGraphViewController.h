@@ -7,18 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CorePlot-CocoaTouch.h"
 #import "GrantObject.h"
+#import "PieSliceView.h"
 
-@interface MainGraphViewController : UIViewController <CPTPlotDataSource>{
+@interface MainGraphViewController : UIViewController {
 
+    __weak IBOutlet UILabel *labelTitle;
 }
 
-- (IBAction)goToAccountPage:(id)sender;
 -(void)setGrantObject:(GrantObject *)grantObject;
-
-//NEWNEWNEW
-@property (nonatomic, strong) CPTGraphHostingView *hostView;
-@property (nonatomic, strong) CPTTheme *selectedTheme;
+- (void) touchFromSlice:(PieSliceView *)slice;
+- (IBAction)buttonBack:(id)sender;
 
 @end

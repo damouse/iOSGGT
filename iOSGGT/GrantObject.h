@@ -14,8 +14,13 @@
 @property (strong, nonatomic) NSMutableArray *accountEntries;
 
 -(id)initWithCSVArray:(NSArray *)csvFile;
--(NSDecimalNumber *)getBalance;
--(NSDecimalNumber *)getBudget;
+
+//return column headers, row 6 of the spreadsheet starting with "Amount"
+-(NSArray *)getAccounts;
+
+//retrieve the dictionaries that represent the totals rows in the table. Dictionaries are keyed by column headers
+-(NSDictionary *)getBalanceRow;
+-(NSDictionary *)getBudgetRow;
 
 //Keys: {dateLastAccessed, datesOfGrant, name, accountNumber, grantor, title, overhead, awardNumber}
 - (NSDictionary *) getMetadata;

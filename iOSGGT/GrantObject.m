@@ -20,7 +20,7 @@
     NSMutableDictionary *paid;
     
     //row 6 of the spreadsheets: holds the name of all the columns for reference
-    NSArray *columnHeaders;
+    NSMutableArray *columnHeaders;
 }
 
 @synthesize accountEntries;
@@ -54,12 +54,18 @@
     NSArray *paidLine = [csvFile objectAtIndex:15];
     int i = 0;
     
+    //remove the extraneous columns in headers
+    NSString *header = [columnHeaders objectAtIndex:0];
+    while(![header isEqualToString:@"Amount"]) {
+        i++;
+        [columnHeaders removeObjectAtIndex:0];
+        header = [columnHeaders objectAtIndex:0];
+    }
+    
     for(NSString *header in columnHeaders) {
-        if(i > 5) {
-            [budget setValue:[[budgetLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
-            [balance setValue:[[balanceLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
-            [paid setValue:[[paidLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
-        }
+        [budget setValue:[[budgetLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
+        [balance setValue:[[balanceLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
+        [paid setValue:[[paidLine objectAtIndex:i] stringByReplacingOccurrencesOfString:@"\"" withString:@""] forKey:header];
         i++;
     }
     
@@ -145,19 +151,19 @@
 }
 
 #pragma mark retrieval funtions
--(NSArray *)getDepartments
+-(NSArray *)getAccounts
 {
-    return nil;
+    return columnHeaders;
 }
 
--(NSDecimalNumber *)getBudget
+-(NSDictionary *)getBudgetRow
 {
-    return [NSDecimalNumber decimalNumberWithString:[[budget objectForKey:@"Amount"]stringByReplacingOccurrencesOfString:@"," withString:@""]];
+    return budget;
 }
 
--(NSDecimalNumber *)getBalance
+-(NSDictionary *)getBalanceRow
 {
-    return [NSDecimalNumber decimalNumberWithString:[[balance objectForKey:@"Amount"]stringByReplacingOccurrencesOfString:@"," withString:@""]];
+    return balance;
 }
 
 

@@ -6,27 +6,32 @@
 //  Copyright (c) 2013 Mihnea Barboi. All rights reserved.
 // GSPROJECTVIEWDEMO to do the middle graph
 
+/**
+    This class is the main controller for displaying all relevant information about each grant.
+    Each account should be displayed with a different gssprogressview, should animate well.
+    If a spinner is clicked, we should segue into account details controller
+ 
+    This view should only be used in portrait for now. 
+ */
+
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-
 #import "MainGraphViewController.h"
 #import "GrantObject.h"
 #import "AccountViewController.h"
-#import "CorePlot-CocoaTouch.h"
-
-#import "CPTTheme.h"
+#import "PieSliceView.h"
 
 @interface MainGraphViewController () {
     GrantObject *grant;
-    NSArray *tempValues;
+    NSMutableArray *slices;
+    NSMutableArray *sliceColors;
 }
 
 @end
 
 @implementation MainGraphViewController 
-@synthesize hostView = hostView_;
-@synthesize selectedTheme = selectedTheme_;
 
+#pragma mark General Class
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -34,24 +39,8 @@
         // Custom initialization
     }
     return self;
-}
+    
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-}
-
--(void) viewDidAppear:(BOOL)animated
-{
-    self.navigationItem.title = [[grant getMetadata] objectForKey:@"title"];
-}
-
--(void)setGrantObject:(GrantObject *)grantObject
-{
-    grant = grantObject;
-    tempValues = [NSArray arrayWithObjects:[grant getBalance], [grant getBudget], nil];
-    [self initPlot];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,6 +49,116 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.navigationController setNavigationBarHidden:YES]; //disabled because it throws off the coordinates (come on, apple).
+    
+    //array of colors used to uniquely color slices
+    sliceColors = [NSMutableArray arrayWithObjects:[UIColor redColor], [UIColor brownColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor],[UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], [UIColor grayColor], [UIColor brownColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor],[UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], nil];
+    
+    [self populatePieChart];
+}
+
+#pragma mark Data
+-(void)setGrantObject:(GrantObject *)grantObject
+{
+    grant = grantObject;
+    labelTitle.text = [[grant getMetadata] objectForKey:@"title"];
+}
+
+#pragma mark Pie Chart
+//use the array of slices to populate the pie chart. Slices animate when they are assigned percentFill!
+//Note: slices should be added onto a running total of the fraction of total budget.
+- (void) populatePieChart {
+    NSDictionary *budget = [grant getBudgetRow]; //used to figure out percentFills
+    NSDictionary *balance = [grant getBalanceRow]; //consider making an inside slice that expands outward based on remaining balance
+    NSArray *accounts = [grant getAccounts];
+    
+    float totalBudget = [[budget objectForKey:@"Amount"] floatValue]; //should this be dynamic on "amount?"
+    float runningTotal = 0; //this is how far into the total budget the accounts have taken us. Should add up to total budget.
+    float currentBudget;
+    float percentFill;
+    
+    PieSliceView *slice;
+    slices = [NSMutableArray array];
+    
+    for(NSString *account in accounts) { //TODO: put checks for negative numbers
+        if(![account isEqualToString:@""] && ![account isEqualToString:@"Amount"]) {
+            NSLog(@"creating slice for %@", account);
+            slice = [self createNewSlice];
+            [slice setAccountName:account];
+            
+            currentBudget = [[budget objectForKey:account] floatValue]; //fetch value
+            percentFill = (currentBudget + runningTotal) / totalBudget; //divide it by total (with current total)
+            runningTotal += currentBudget; //increment total
+            
+            [slice setPercentFill:percentFill];
+            [slices insertObject:slice atIndex:0];
+        }
+    }
+    
+    //[slices sortedArrayUsingSelector:@selector(compare:)];
+    
+    for(PieSliceView *slice in slices) {
+        NSLog(@"Slice Percent %f", [slice percentFill]);
+        [self.view bringSubviewToFront:slice]; //im not sure why this wasn't working... this should not have to be here. 
+        [slice animateSlice];
+    }
+}
+
+//create a new pieslice centered at the middle of the screen.
+-(PieSliceView *) createNewSlice {
+    PieSliceView *slice = [[PieSliceView alloc] initWithFrame:[self getCenteredRect:200]]; //this defines the size of the slice
+    
+    slice.color = [sliceColors objectAtIndex:0];
+    [sliceColors removeObjectAtIndex:0];
+    
+    [self.view addSubview:slice];
+    
+    return slice;
+}
+
+//return a rect that is perfectly centered on the screen
+-(CGRect) getCenteredRect:(float)size {
+    float halfWidth = self.view.frame.size.width  / 2;
+    float xOrigin = halfWidth - size / 2;
+    
+    float halfHeight = self.view.frame.size.height  / 2;
+    float yOrigin = halfHeight - size / 2;
+    
+    return CGRectMake(xOrigin, yOrigin, size, size);
+}
+
+#pragma mark Slice Delegate
+//This method checks incoming touches against the boundraries of present slices. Consider disabling when animations are running. 
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event  {
+    UITouch *touch = [touches anyObject];
+    int numSlicesThatRecievedTouch = 0; //use this to decide which slice was touched (since underlying slices also recieve touches)
+    
+    for(PieSliceView *slice in slices) {
+        if([slice.path containsPoint:[touch locationInView:slice]]) {
+            CGPoint point = [touch locationInView:slice];
+            NSLog(@"X: %.0f Y: %.0f color: %@", point.x, point.y, slice.color);
+            
+            numSlicesThatRecievedTouch++;
+        }
+    }
+    
+    //the index of the slice that recieved the touch is length - numSlices. NOTE: slices is in reverse order
+    int index = slices.count + numSlicesThatRecievedTouch - slices.count - 1; //this is index of slice. Its hack code, but it works
+    NSLog(@"touch on slice index: %i", index);
+
+    NSString *account = [[slices objectAtIndex:index] accountName];
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
+    AccountViewController *detail = [mainStoryboard instantiateViewControllerWithIdentifier: @"accountGraphic"];
+    
+    [detail setGrantObject:grant withAccount:account];
+    [self.navigationController pushViewController:detail animated:YES];
+}
+
+#pragma mark IBOutlet
 - (IBAction)goToAccountPage:(id)sender {
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
     AccountViewController *accountGraph = [mainStoryboard instantiateViewControllerWithIdentifier: @"AccountGraphic"];
@@ -73,168 +172,7 @@
 }
 
 
-#pragma mark NEW CODE
-#pragma mark - Rotation
--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft);
+- (IBAction)buttonBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
-
-
-#pragma mark - Chart behavior
--(void)initPlot {
-    [self configureHost];
-    [self configureGraph];
-    [self configureChart];
-    [self configureLegend];
-}
-
--(void)configureHost {
-	// 1 - Set up view frame
-	CGRect parentRect = self.view.bounds;
-	parentRect = CGRectMake(parentRect.origin.x,
-							parentRect.origin.y,
-							parentRect.size.width,
-							parentRect.size.height);
-	// 2 - Create host view
-	self.hostView = [(CPTGraphHostingView *) [CPTGraphHostingView alloc] initWithFrame:parentRect];
-	self.hostView.allowPinchScaling = NO;
-	[self.view addSubview:self.hostView];
-}
-
--(void)configureGraph {
-	// 1 - Create and initialise graph
-	CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.hostView.bounds];
-	self.hostView.hostedGraph = graph;
-	graph.paddingLeft = 0.0f;
-	graph.paddingTop = 0.0f;
-	graph.paddingRight = 0.0f;
-	graph.paddingBottom = 0.0f;
-	graph.axisSet = nil;
-    
-	// 2 - Set up text style
-	CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
-	textStyle.color = [CPTColor grayColor];
-	textStyle.fontName = @"Helvetica-Bold";
-	textStyle.fontSize = 16.0f;
-    
-	// 3 - Configure title
-	NSString *title = @"Portfolio Prices: May 1, 2012";
-	graph.title = title;
-	graph.titleTextStyle = textStyle;
-	graph.titlePlotAreaFrameAnchor = CPTRectAnchorTop;
-	graph.titleDisplacement = CGPointMake(0.0f, -12.0f);
-    
-	// 4 - Set theme
-	self.selectedTheme = [CPTTheme themeNamed:kCPTPlainBlackTheme];
-	[graph applyTheme:self.selectedTheme];
-}
-
--(void)configureChart {
-	// 1 - Get reference to graph
-	CPTGraph *graph = self.hostView.hostedGraph;
-    
-	// 2 - Create chart
-	CPTPieChart *pieChart = [[CPTPieChart alloc] init];
-	pieChart.dataSource = self;
-	pieChart.delegate = self;
-	pieChart.pieRadius = (self.hostView.bounds.size.width * 0.7) / 3;
-	pieChart.identifier = graph.title;
-	pieChart.startAngle = M_PI_4;
-	pieChart.sliceDirection = CPTPieDirectionClockwise;
-    
-	// 3 - Create gradient
-	CPTGradient *overlayGradient = [[CPTGradient alloc] init];
-	overlayGradient.gradientType = CPTGradientTypeRadial;
-	overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.0] atPosition:0.9];
-	overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.4] atPosition:1.0];
-	pieChart.overlayFill = [CPTFill fillWithGradient:overlayGradient];
-    
-	// 4 - Add chart to graph
-	[graph addPlot:pieChart];
-}
-
--(void)configureLegend {
-	// 1 - Get graph instance
-	CPTGraph *graph = self.hostView.hostedGraph;
-	// 2 - Create legend
-	CPTLegend *theLegend = [CPTLegend legendWithGraph:graph];
-	// 3 - Configure legen
-	theLegend.numberOfColumns = 1;
-	theLegend.fill = [CPTFill fillWithColor:[CPTColor whiteColor]];
-	theLegend.borderLineStyle = [CPTLineStyle lineStyle];
-	theLegend.cornerRadius = 5.0;
-	// 4 - Add legend to graph
-	graph.legend = theLegend;
-	graph.legendAnchor = CPTRectAnchorRight;
-	CGFloat legendPadding = -(self.view.bounds.size.width / 8);
-	graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
-}
-
-#pragma mark - CPTPlotDataSource methods
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
-	return 2; //FOR TESTING PURPOSES
-}
-
--(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index {
-	if (CPTPieChartFieldSliceWidth == fieldEnum) {
-		return [tempValues objectAtIndex:index];
-	}
-	return [NSDecimalNumber zero];
-}
-
--(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index {
-	// 1 - Define label text style
-	static CPTMutableTextStyle *labelText = nil;
-	if (!labelText) {
-		labelText= [[CPTMutableTextStyle alloc] init];
-		labelText.color = [CPTColor grayColor];
-	}
-	// 2 - Calculate portfolio total value
-	NSDecimalNumber *portfolioSum = [NSDecimalNumber zero];
-	for (NSDecimalNumber *price in tempValues) {
-		portfolioSum = [portfolioSum decimalNumberByAdding:price];
-	}
-    
-	// 3 - Calculate percentage value
-	NSDecimalNumber *price = [tempValues objectAtIndex:index];
-	NSDecimalNumber *percent = [price decimalNumberByDividingBy:portfolioSum];
-	// 4 - Set up display label
-	NSString *labelValue = [NSString stringWithFormat:@"$%0.2f USD (%0.1f %%)", [price floatValue], ([percent floatValue] * 100.0f)];
-	// 5 - Create and return layer with label text
-	return [[CPTTextLayer alloc] initWithText:labelValue style:labelText]; //not this
-}
-
--(NSString *)legendTitleForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)index {
-	if (index < [tempValues count]) {
-		if(index == 1)
-            return @"Budget"; //HACKED FIX HERE
-        if(index == 0)
-            return @"Remaining"; //HACKED FIX HERE
-	}
-	return @"N/A";
-}
-
-/*
-#pragma mark - UIActionSheetDelegate methods
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	// 1 - Get title of tapped button
-	NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
-	// 2 - Get theme identifier based on user tap
-	NSString *themeName = kCPTPlainWhiteTheme;
-	if ([title isEqualToString:CPDThemeNameDarkGradient] == YES) {
-		themeName = kCPTDarkGradientTheme;
-	} else if ([title isEqualToString:CPDThemeNamePlainBlack] == YES) {
-		themeName = kCPTPlainBlackTheme;
-	} else if ([title isEqualToString:CPDThemeNamePlainWhite] == YES) {
-		themeName = kCPTPlainWhiteTheme;
-	} else if ([title isEqualToString:CPDThemeNameSlate] == YES) {
-		themeName = kCPTSlateTheme;
-	} else if ([title isEqualToString:CPDThemeNameStocks] == YES) {
-		themeName = kCPTStocksTheme;
-	}
-	// 3 - Apply new theme
-	[self.hostView.hostedGraph applyTheme:[CPTTheme themeNamed:themeName]];
-}*/
-
-
 @end

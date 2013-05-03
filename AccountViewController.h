@@ -13,5 +13,6 @@
     __weak IBOutlet UILabel *labelAccountName;
 }
 
+- (IBAction)buttonBack:(id)sender;
 -(void)setGrantObject:(GrantObject *)grant withAccount:(NSString *)account;
 @end

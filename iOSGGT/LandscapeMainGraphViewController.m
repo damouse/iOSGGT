@@ -35,8 +35,6 @@
     NSArray *grantObjects; //saved just to retain metadata
     NSDate *refDate;
     NSTimeInterval oneDay;
-    
-    
 }
 
 @end
@@ -56,6 +54,7 @@
 {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES];
+    
     refDate = [NSDate dateWithTimeIntervalSinceReferenceDate:157680000]; //reference date is 2006
     plots = [NSMutableArray array];
     
@@ -69,8 +68,6 @@
     
     majorIntervalLengthForX = oneDay * 30 * 6; //half a month. Consider a year?
     majorIntervalLengthForY = 100000;
-    
-    self.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
 }
 
 - (void)didReceiveMemoryWarning
@@ -129,17 +126,19 @@
     [self configureGraph];
     [self configureXYChart];
     [self configureLegend];
+    
+    //add ghost label (testing)
+    UILabel *testLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 100, 20)];
+    testLabel.text = @"Grant Name";
+    [self.view addSubview:testLabel];
 }
 
 -(void)configureHost {
-	// 1 - Set up view frame
+	// set up view frame
 	CGRect parentRect = self.view.bounds;
-	parentRect = CGRectMake(parentRect.origin.x,
-							parentRect.origin.y,
-							parentRect.size.width,
-							parentRect.size.height);
+	parentRect = CGRectMake(parentRect.origin.x, parentRect.origin.y, parentRect.size.width, parentRect.size.height);
     
-	// 2 - Create host view
+	// create host view
 	self.hostView = [(CPTGraphHostingView *) [CPTGraphHostingView alloc] initWithFrame:parentRect];
 	self.hostView.allowPinchScaling = YES;
 	[self.view addSubview:self.hostView];
@@ -174,7 +173,7 @@
     graph.paddingRight  = 0.0;
     graph.paddingBottom = 0.0;
     
-    graph.plotAreaFrame.paddingLeft   = 70.0;
+    graph.plotAreaFrame.paddingLeft   = 20.0;
     graph.plotAreaFrame.paddingTop    = 20.0;
     graph.plotAreaFrame.paddingRight  = 20.0;
     graph.plotAreaFrame.paddingBottom = 35.0;
@@ -186,6 +185,8 @@
 	// 4 - Set theme
 	self.selectedTheme = [CPTTheme themeNamed:kCPTDarkGradientTheme];
 	[graph applyTheme:self.selectedTheme];
+    
+
 }
 
 -(void) configureXYChart {
@@ -199,88 +200,97 @@
     
     test = plotSpace.yRange;
     
-    // this allows the plot to respond to mouse events
-    [plotSpace setDelegate:self]; //set delegate form other file
+    // this allows the plot to respond to touch events
+    [plotSpace setDelegate:self]; //set delegate fromm other file  ABE: what does this mean?
     [plotSpace setAllowsUserInteraction:YES];
     
-    /*//set up x axis
+    //set up x axis
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
-    
+
     CPTXYAxis *x = axisSet.xAxis;
-    x.minorTicksPerInterval = 1;
-    x.majorIntervalLength   = CPTDecimalFromDouble(majorIntervalLengthForX);
-    x.labelOffset           = 5.0;
-    x.axisConstraints       = [CPTConstraints constraintWithLowerOffset:0.0];
-    x.orthogonalCoordinateDecimal = [[NSNumber numberWithInt:20] decimalValue];
-    x.labelOffset = 10.0f;
-    x.labelingPolicy = CPTAxisLabelingPolicyAutomatic;*/
     
-    //TEST CODE
+    //x.labelOffset           = 5.0; //conflict
+    //x.axisConstraints       = [CPTConstraints constraintWithLowerOffset:0.0]; //what is this?
+    //x.orthogonalCoordinateDecimal = [[NSNumber numberWithInt:20] decimalValue]; //conflict and i dont know what this is
+    //x.labelOffset = 10.0f;
+    //x.labelingPolicy = CPTAxisLabelingPolicyAutomatic; //no conflict, please test this
     
     // plotting style is set to line plots
-    CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
+    /*CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle]; //this block changes and sets the color of the axis
     lineStyle.lineColor = [CPTColor blackColor];
     lineStyle.lineWidth = 2.0f;
+    x.majorTickLineStyle = lineStyle;
+    x.minorTickLineStyle = lineStyle;
+    x.axisLineStyle = lineStyle; */
     
-    // X-axis parameters setting
-    CPTXYAxisSet *axisSet = (id)graph.axisSet;
-    axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX * 2);
-    axisSet.xAxis.minorTicksPerInterval = 0;
-    axisSet.xAxis.orthogonalCoordinateDecimal = CPTDecimalFromString(@"1"); //added for date, adjust x line
-    /*axisSet.xAxis.majorTickLineStyle = lineStyle;
-    axisSet.xAxis.minorTickLineStyle = lineStyle;
-    axisSet.xAxis.axisLineStyle = lineStyle;*/
-    axisSet.xAxis.minorTickLength = 5.0f;
-    axisSet.xAxis.majorTickLength = 7.0f;
-    axisSet.xAxis.labelOffset = 3.0f;
+    x.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX * 2);
+    x.minorTicksPerInterval = 0;
+    x.orthogonalCoordinateDecimal = CPTDecimalFromString(@"1"); //added for date, adjust x line
+    x.minorTickLength = 5.0f;
+    x.majorTickLength = 7.0f;
+    x.labelOffset = 3.0f;
 
-    // Date Formatting!
+    // Date Formatting
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM/YY"];
     CPTTimeFormatter *timeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter];
     timeFormatter.referenceDate = refDate;
-    axisSet.xAxis.labelFormatter = timeFormatter;
+    x.labelFormatter = timeFormatter;
     
-    //number formatter for y
+    //number formatter for y, makes it into thousands. Still need to add a $ sign
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [numberFormatter setMaximumFractionDigits:0];
-    [numberFormatter setMultiplier:[NSNumber numberWithDouble:.001]];
+    //[numberFormatter setMultiplier:[NSNumber numberWithDouble:.001]]; //removed the 1/1000 conversion
     
     //set up y axis
     CPTXYAxis *y = axisSet.yAxis;
     y.minorTicksPerInterval = 1;
     y.majorIntervalLength   = CPTDecimalFromDouble(majorIntervalLengthForY);
-    y.labelOffset           = 5.0;
-    y.axisConstraints       = [CPTConstraints constraintWithLowerOffset:0.0];
+    y.labelOffset           = 1.0;
+    y.axisConstraints       = [CPTConstraints constraintWithLowerOffset:-10.0]; //where is the y axis?
     y.labelFormatter = numberFormatter;
+    y.tickDirection = CPTSignPositive; //moves the labels to the inside of the graph instead of the to the left of the y axis
+    
+    //y axis grid lines
+    CPTMutableLineStyle *yGridLines = [CPTMutableLineStyle lineStyle];
+    yGridLines.lineColor = [CPTColor darkGrayColor];
+    y.majorGridLineStyle = yGridLines;
+    
+    //TEST
+
+    
+    //y axis label
     //y.title = @"(thousands)";
     //y.titleLocation =
     //y.titleRotation = 0.0; //this moves it to the top of the axis
     //y.titleLocation = plotSpace.yRange.maxLimit
     
-    //graph line style NOTE: this must be dynamic for multiple graphs
+
+    
+        // Create plots for every grant
+    //graph line style 
     CPTMutableLineStyle *dataLineStyle = [CPTMutableLineStyle lineStyle];
     dataLineStyle.lineWidth = 1.0f;
-    dataLineStyle.lineColor = [CPTColor redColor];
     
-    // Create plots for every grant
+    //create array of avaliable colors for coloring plots
+    NSMutableArray *colors = [NSMutableArray arrayWithObjects:[CPTColor redColor], [CPTColor greenColor], [CPTColor blueColor], [CPTColor cyanColor], [CPTColor yellowColor],[CPTColor magentaColor],[CPTColor orangeColor],[CPTColor purpleColor], nil];
+    
     for(GrantObject *grant in grantObjects) {
         CPTScatterPlot *dataSourceLinePlot = [[CPTScatterPlot alloc] initWithFrame:graph.bounds];
         dataSourceLinePlot.identifier = [[grant getMetadata] objectForKey:@"title"];
         dataSourceLinePlot.dataSource = self;
         dataSourceLinePlot.delegate = self;
-        dataSourceLinePlot.dataLineStyle = dataLineStyle;
         dataSourceLinePlot.plotSymbolMarginForHitDetection = 10;
+        
+        //assign this plot the color, then remove it. Multiple runs of this loop should retain color pairing
+        dataLineStyle.lineColor = [colors objectAtIndex:0];
+        [colors removeObjectAtIndex:0];
+        dataSourceLinePlot.dataLineStyle = dataLineStyle;
         
         [graph addPlot:dataSourceLinePlot];
         [plots addObject:dataSourceLinePlot]; //the index at which this was added corresponds to the index of this grant in "grants" array
     }
-    
-    /*CPTMutableLineStyle *lineStyle = [dataSourceLinePlot.dataLineStyle mutableCopy];
-    lineStyle.lineWidth              = 1.0;
-    lineStyle.lineColor              = [CPTColor whiteColor];
-    dataSourceLinePlot.dataLineStyle = lineStyle;*/
 }
 
 -(void)configureLegend {

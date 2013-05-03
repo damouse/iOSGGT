@@ -39,7 +39,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-//method recieves a grant object and the name of the account to be displayed
+
+
 -(void)setGrantObject:(GrantObject *)grant withAccount:(NSString *)account
 {
     self.navigationItem.title = [[grant getMetadata] objectForKey:@"title"]; //or should this be the account name?
@@ -48,4 +49,9 @@
     //do all the drawing and data representation needed to display the data correctly here
 }
 
+#pragma mark IBOutlets
+//method recieves a grant object and the name of the account to be displayed
+- (IBAction)buttonBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 @end

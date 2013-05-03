@@ -30,6 +30,7 @@
 		D7806FA2170A390300D5598A /* RootTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806FA1170A390300D5598A /* RootTableViewController.m */; };
 		D7A917B3170A4F1700B005E5 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B2170A4F1700B005E5 /* AccountViewController.m */; };
 		D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B5170A587500B005E5 /* MenuViewController.m */; };
+		D7D680441732FD46008C4B7C /* PieSliceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7D680431732FD46008C4B7C /* PieSliceView.m */; };
 		D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */; };
 		D7E0F14D170E63A200386698 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E0F14C170E63A200386698 /* libCorePlot-CocoaTouch.a */; };
 		D7E0F14F170E63C400386698 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E0F14E170E63C400386698 /* QuartzCore.framework */; };
@@ -84,6 +85,8 @@
 		D7A917B2170A4F1700B005E5 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountViewController.m; path = ../AccountViewController.m; sourceTree = "<group>"; };
 		D7A917B4170A587500B005E5 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		D7A917B5170A587500B005E5 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		D7D680421732FD45008C4B7C /* PieSliceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSliceView.h; sourceTree = "<group>"; };
+		D7D680431732FD46008C4B7C /* PieSliceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceView.m; sourceTree = "<group>"; };
 		D7DCBE39170E2F35009F40F2 /* CHCSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHCSVParser.h; sourceTree = "<group>"; };
 		D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHCSVParser.m; sourceTree = "<group>"; };
 		D7E0F102170E63A200386698 /* CorePlot-CocoaTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CorePlot-CocoaTouch.h"; sourceTree = "<group>"; };
@@ -287,12 +290,12 @@
 		D7806F8E170A309300D5598A /* Pushed View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D7A917B1170A4F1700B005E5 /* AccountViewController.h */,
-				D7A917B2170A4F1700B005E5 /* AccountViewController.m */,
 				D7806F97170A34A900D5598A /* MainGraphViewController.h */,
 				D7806F98170A34A900D5598A /* MainGraphViewController.m */,
 				D7002B4D1721FC5A00F6E6EA /* LandscapeMainGraphViewController.h */,
 				D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */,
+				D7A917B1170A4F1700B005E5 /* AccountViewController.h */,
+				D7A917B2170A4F1700B005E5 /* AccountViewController.m */,
 			);
 			name = "Pushed View Controllers";
 			sourceTree = "<group>";
@@ -308,6 +311,8 @@
 				D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */,
 				D77078B51729C5D2001501AF /* GrantTableCell.h */,
 				D77078B61729C5D2001501AF /* GrantTableCell.m */,
+				D7D680421732FD45008C4B7C /* PieSliceView.h */,
+				D7D680431732FD46008C4B7C /* PieSliceView.m */,
 			);
 			name = "Auxilliary Classes";
 			sourceTree = "<group>";
@@ -550,6 +555,7 @@
 				D7329A381729AA4700D64341 /* GrantObject.m in Sources */,
 				D7329A3C1729B0A600D64341 /* AccountEntryObject.m in Sources */,
 				D77078B71729C5D2001501AF /* GrantTableCell.m in Sources */,
+				D7D680441732FD46008C4B7C /* PieSliceView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
