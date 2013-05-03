@@ -90,6 +90,7 @@
 
     NSArray *line = [csvFile objectAtIndex:i];
     NSString *cell = [line objectAtIndex:1];
+    NSString *temp;
 
     //parse the allocations
     while(![cell isEqualToString:@"Current Budget:"]) {
@@ -114,9 +115,11 @@
                 
                     if(![cell isEqualToString:@"0.00"]){ //if entry is nonzero
                     
+                        //some string parsing to get the numbers to convert well; cents are omitted
                         entry = [entry copy]; //just copy the entry, since only two values change
                         [entry setAccountName:header];
-                        cell = [cell stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                        cell = [[cell stringByReplacingOccurrencesOfString:@"\"" withString:@""] stringByReplacingOccurrencesOfString:@"," withString:@""];
+                        cell = [[cell componentsSeparatedByString:@"."] objectAtIndex:0];
                         [entry setAmount:[cell intValue]];
                     
                         [accountEntriesWithAccount addObject:entry]; //to retrieve entries for a specific account, search for accountName
@@ -148,25 +151,26 @@
 
     while(emptyCells < 3) {
         //NSLog(@"Spinning 3: %i", i);
+        
         if(![cell isEqualToString:@""]) {
             //get the date, amount, and label of the entry
             AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0]];
             [entry setLabel:cell];
             [entry setAmount:-[[line objectAtIndex:6] intValue]];
+            [entry setDescription:[line objectAtIndex:4]];
             
             [accountEntries addObject:entry];
             
             //Part 2: search for the entry under a specific account, set that header as the accountName, add the entry to accountEntriesWithAccount
-            [entry setDescription:[line objectAtIndex:4]];
             
             int j = 7;
             cell = [line objectAtIndex:j]; //first column of account entries
-            while(![cell isEqualToString:@""]){
+            while([cell isEqualToString:@""]){
                 j++;
                 cell = [line objectAtIndex:j];
             } //j holds index (offset) to the correct header
             
-            [entry setAccountName:[columnHeaders objectAtIndex:(j - 7)]];
+            [entry setAccountName:[columnHeaders objectAtIndex:(j - 6)]];
             [accountEntriesWithAccount addObject:entry];
             //end part 2
             
@@ -196,14 +200,15 @@
     return self;
 }
 
+#pragma mark Parsing
 
-#pragma mark accessor methods
+
+#pragma mark Accessor
 - (NSDictionary *) getMetadata
 {
     return metadata;
 }
 
-#pragma mark retrieval funtions
 -(NSArray *)getAccounts
 {
     return columnHeaders;
