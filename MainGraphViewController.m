@@ -18,7 +18,7 @@
 #import <Foundation/Foundation.h>
 #import "MainGraphViewController.h"
 #import "GrantObject.h"
-#import "AccountViewController.h"
+#import "AccountTableViewController.h"
 #import "PieSliceView.h"
 
 @interface MainGraphViewController () {
@@ -59,6 +59,7 @@
     sliceColors = [NSMutableArray arrayWithObjects:[UIColor redColor], [UIColor brownColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor],[UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], [UIColor grayColor], [UIColor brownColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor],[UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], nil];
     
     [self populatePieChart];
+    labelTitle.text = [[grant getMetadata] objectForKey:@"title"];
 }
 
 #pragma mark Data
@@ -152,26 +153,13 @@
 
     NSString *account = [[slices objectAtIndex:index] accountName];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
-    AccountViewController *detail = [mainStoryboard instantiateViewControllerWithIdentifier: @"accountGraphic"];
+    AccountTableViewController *detail = [mainStoryboard instantiateViewControllerWithIdentifier: @"accountGraphic"];
     
     [detail setGrantObject:grant withAccount:account];
     [self.navigationController pushViewController:detail animated:YES];
 }
 
 #pragma mark IBOutlet
-- (IBAction)goToAccountPage:(id)sender {
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
-    AccountViewController *accountGraph = [mainStoryboard instantiateViewControllerWithIdentifier: @"AccountGraphic"];
-    
-    [accountGraph setGrantObject:grant withAccount:@"Service Account"];
-    
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton; //need this, else name too long for nav bar
-    
-    [self.navigationController pushViewController:accountGraph animated:YES];
-}
-
-
 - (IBAction)buttonBack:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -16,7 +16,8 @@
 -(id)initWithCSVArray:(NSArray *)csvFile;
 
 //return column headers, row 6 of the spreadsheet starting with "Amount"
--(NSArray *)getAccounts;
+-(NSArray *) getAccounts;
+-(NSArray *) getEntriesWithAccountNames;
 
 //retrieve the dictionaries that represent the totals rows in the table. Dictionaries are keyed by column headers
 -(NSDictionary *)getBalanceRow;

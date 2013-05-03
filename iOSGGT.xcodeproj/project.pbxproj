@@ -10,6 +10,9 @@
 		D7002B4F1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */; };
 		D7329A381729AA4700D64341 /* GrantObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D7329A371729AA4700D64341 /* GrantObject.m */; };
 		D7329A3C1729B0A600D64341 /* AccountEntryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D7329A3B1729B0A600D64341 /* AccountEntryObject.m */; };
+		D758E5E01733415200F93FAC /* gradient_background.png in Resources */ = {isa = PBXBuildFile; fileRef = D758E5DF1733415200F93FAC /* gradient_background.png */; };
+		D758E5E71733422A00F93FAC /* AccountTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D758E5E61733422A00F93FAC /* AccountTableViewController.m */; };
+		D758E5EB17334EA400F93FAC /* AccountEntryTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D758E5EA17334EA400F93FAC /* AccountEntryTableCell.m */; };
 		D77078B71729C5D2001501AF /* GrantTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D77078B61729C5D2001501AF /* GrantTableCell.m */; };
 		D7806F54170A306900D5598A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7806F53170A306900D5598A /* UIKit.framework */; };
 		D7806F56170A306900D5598A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7806F55170A306900D5598A /* Foundation.framework */; };
@@ -28,7 +31,6 @@
 		D7806F85170A306A00D5598A /* iOSGGTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806F84170A306A00D5598A /* iOSGGTTests.m */; };
 		D7806F99170A34A900D5598A /* MainGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806F98170A34A900D5598A /* MainGraphViewController.m */; };
 		D7806FA2170A390300D5598A /* RootTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806FA1170A390300D5598A /* RootTableViewController.m */; };
-		D7A917B3170A4F1700B005E5 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B2170A4F1700B005E5 /* AccountViewController.m */; };
 		D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B5170A587500B005E5 /* MenuViewController.m */; };
 		D7D680441732FD46008C4B7C /* PieSliceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7D680431732FD46008C4B7C /* PieSliceView.m */; };
 		D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */; };
@@ -55,6 +57,11 @@
 		D7329A371729AA4700D64341 /* GrantObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrantObject.m; sourceTree = "<group>"; };
 		D7329A3A1729B0A600D64341 /* AccountEntryObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountEntryObject.h; sourceTree = "<group>"; };
 		D7329A3B1729B0A600D64341 /* AccountEntryObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountEntryObject.m; sourceTree = "<group>"; };
+		D758E5DF1733415200F93FAC /* gradient_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient_background.png; sourceTree = "<group>"; };
+		D758E5E51733422A00F93FAC /* AccountTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountTableViewController.h; path = ../AccountTableViewController.h; sourceTree = "<group>"; };
+		D758E5E61733422A00F93FAC /* AccountTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountTableViewController.m; path = ../AccountTableViewController.m; sourceTree = "<group>"; };
+		D758E5E917334EA400F93FAC /* AccountEntryTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountEntryTableCell.h; sourceTree = "<group>"; };
+		D758E5EA17334EA400F93FAC /* AccountEntryTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountEntryTableCell.m; sourceTree = "<group>"; };
 		D77078B51729C5D2001501AF /* GrantTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GrantTableCell.h; path = ../GrantTableCell.h; sourceTree = "<group>"; };
 		D77078B61729C5D2001501AF /* GrantTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GrantTableCell.m; path = ../GrantTableCell.m; sourceTree = "<group>"; };
 		D7806F4F170A306900D5598A /* iOSGGT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSGGT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,8 +88,6 @@
 		D7806F98170A34A900D5598A /* MainGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainGraphViewController.m; path = ../MainGraphViewController.m; sourceTree = "<group>"; };
 		D7806FA0170A390200D5598A /* RootTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootTableViewController.h; sourceTree = "<group>"; };
 		D7806FA1170A390300D5598A /* RootTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootTableViewController.m; sourceTree = "<group>"; };
-		D7A917B1170A4F1700B005E5 /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountViewController.h; path = ../AccountViewController.h; sourceTree = "<group>"; };
-		D7A917B2170A4F1700B005E5 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountViewController.m; path = ../AccountViewController.m; sourceTree = "<group>"; };
 		D7A917B4170A587500B005E5 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		D7A917B5170A587500B005E5 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		D7D680421732FD45008C4B7C /* PieSliceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSliceView.h; sourceTree = "<group>"; };
@@ -202,6 +207,17 @@
 			name = "Testing Space";
 			sourceTree = "<group>";
 		};
+		D758E5E8173342AB00F93FAC /* Custom Table Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D77078B51729C5D2001501AF /* GrantTableCell.h */,
+				D77078B61729C5D2001501AF /* GrantTableCell.m */,
+				D758E5E917334EA400F93FAC /* AccountEntryTableCell.h */,
+				D758E5EA17334EA400F93FAC /* AccountEntryTableCell.m */,
+			);
+			name = "Custom Table Cells";
+			sourceTree = "<group>";
+		};
 		D7806F44170A306900D5598A = {
 			isa = PBXGroup;
 			children = (
@@ -294,8 +310,8 @@
 				D7806F98170A34A900D5598A /* MainGraphViewController.m */,
 				D7002B4D1721FC5A00F6E6EA /* LandscapeMainGraphViewController.h */,
 				D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */,
-				D7A917B1170A4F1700B005E5 /* AccountViewController.h */,
-				D7A917B2170A4F1700B005E5 /* AccountViewController.m */,
+				D758E5E51733422A00F93FAC /* AccountTableViewController.h */,
+				D758E5E61733422A00F93FAC /* AccountTableViewController.m */,
 			);
 			name = "Pushed View Controllers";
 			sourceTree = "<group>";
@@ -309,10 +325,9 @@
 				D7329A371729AA4700D64341 /* GrantObject.m */,
 				D7DCBE39170E2F35009F40F2 /* CHCSVParser.h */,
 				D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */,
-				D77078B51729C5D2001501AF /* GrantTableCell.h */,
-				D77078B61729C5D2001501AF /* GrantTableCell.m */,
 				D7D680421732FD45008C4B7C /* PieSliceView.h */,
 				D7D680431732FD46008C4B7C /* PieSliceView.m */,
+				D758E5E8173342AB00F93FAC /* Custom Table Cells */,
 			);
 			name = "Auxilliary Classes";
 			sourceTree = "<group>";
@@ -426,6 +441,7 @@
 		D7FD6D54172B792700A63DD1 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				D758E5DF1733415200F93FAC /* gradient_background.png */,
 				D7FD6D55172B793800A63DD1 /* event_cell.png */,
 			);
 			name = Assets;
@@ -510,6 +526,7 @@
 				D7806F6D170A306900D5598A /* MainStoryboard.storyboard in Resources */,
 				D7F2E0BD170E20B200130C2E /* sample.csv in Resources */,
 				D7FD6D56172B793800A63DD1 /* event_cell.png in Resources */,
+				D758E5E01733415200F93FAC /* gradient_background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,7 +565,6 @@
 				D7806F64170A306900D5598A /* AppDelegate.m in Sources */,
 				D7806F99170A34A900D5598A /* MainGraphViewController.m in Sources */,
 				D7806FA2170A390300D5598A /* RootTableViewController.m in Sources */,
-				D7A917B3170A4F1700B005E5 /* AccountViewController.m in Sources */,
 				D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */,
 				D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */,
 				D7002B4F1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m in Sources */,
@@ -556,6 +572,8 @@
 				D7329A3C1729B0A600D64341 /* AccountEntryObject.m in Sources */,
 				D77078B71729C5D2001501AF /* GrantTableCell.m in Sources */,
 				D7D680441732FD46008C4B7C /* PieSliceView.m in Sources */,
+				D758E5E71733422A00F93FAC /* AccountTableViewController.m in Sources */,
+				D758E5EB17334EA400F93FAC /* AccountEntryTableCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

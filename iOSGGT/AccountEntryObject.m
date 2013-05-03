@@ -11,18 +11,15 @@
 #import "AccountEntryObject.h"
 
 @implementation AccountEntryObject
-@synthesize date, label, amount, runningTotalToDate;
+@synthesize date, label, amount, runningTotalToDate, accountName, description;
 
--(id) initWithDate:(NSString *)dateString name:(NSString *)name andAmount:(NSInteger)value
+-(id) initWithDate:(NSString *)dateString
 {
     self = [super init];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MM/dd/YY"];
     date = [formatter dateFromString:dateString];
-    
-    label = name;
-    amount = value;
     
     return self;
 }
@@ -38,6 +35,7 @@
     [new setLabel:self.label];
     [new setAmount:self.amount];
     [new setRunningTotalToDate:self.runningTotalToDate];
+    
     
     return new;
 }

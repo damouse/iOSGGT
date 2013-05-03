@@ -21,6 +21,11 @@
     
     //row 6 of the spreadsheets: holds the name of all the columns for reference
     NSMutableArray *columnHeaders;
+    
+    //entries paired with their account names. The difference between this and accountEntries is that entries tracks overall changes in
+    //total balance, only contains an entry for each change. This dictionary will contain multiple entries for each single allocation, each paired
+    //with the respective account.
+    NSMutableArray *accountEntriesWithAccount;
 }
 
 @synthesize accountEntries;
@@ -36,6 +41,7 @@
     balance = [NSMutableDictionary dictionary];
     paid = [NSMutableDictionary dictionary];
     accountEntries = [NSMutableArray array];
+    accountEntriesWithAccount = [NSMutableArray array];
     
     //metadata
     [metadata setObject:[[csvFile objectAtIndex:0] objectAtIndex:0] forKey:@"dateLastAccessed"];
@@ -46,6 +52,11 @@
     [metadata setObject:[[csvFile objectAtIndex:2] objectAtIndex:4] forKey:@"title"];
     [metadata setObject:[[csvFile objectAtIndex:3] objectAtIndex:4] forKey:@"overhead"];
     [metadata setObject:[[csvFile objectAtIndex:4] objectAtIndex:1] forKey:@"awardNumber"];
+    
+    //small fix, remove title from the title object
+    NSString *tmp = [metadata objectForKey:@"title"];
+    tmp = [[tmp componentsSeparatedByString:@"Title: "] objectAtIndex:1];
+    [metadata setObject:tmp forKey:@"title"];
     
     //column headers, main three
     columnHeaders = [csvFile objectAtIndex:5];
@@ -79,7 +90,8 @@
 
     NSArray *line = [csvFile objectAtIndex:i];
     NSString *cell = [line objectAtIndex:1];
-    
+
+    //parse the allocations
     while(![cell isEqualToString:@"Current Budget:"]) {
         //NSLog(@"Spinning 1: %i", i);
         if([[line objectAtIndex:1] isEqualToString:@"Budget Allocation"]) {
@@ -87,8 +99,32 @@
             cell = [line objectAtIndex:1];
         
             //get the date, amount, and label of the entry. 
-            AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0] name:cell andAmount:[[line objectAtIndex:6] intValue]];
+            AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0]];
+            [entry setLabel:cell];
+            [entry setAmount:[[line objectAtIndex:6] intValue]];
+            
             [accountEntries addObject:entry];
+            
+            int j  = 7; //individual account entries start on column 7
+            
+            //Second part of the parse: make an entry object for each non-zero account, add it accountEntriesWithAccount for detail controller
+            for(NSString *header in columnHeaders) {
+                if(![header isEqualToString:@"Amount"]) {
+                    cell = [line objectAtIndex:j];
+                
+                    if(![cell isEqualToString:@"0.00"]){ //if entry is nonzero
+                    
+                        entry = [entry copy]; //just copy the entry, since only two values change
+                        [entry setAccountName:header];
+                        cell = [cell stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                        [entry setAmount:[cell intValue]];
+                    
+                        [accountEntriesWithAccount addObject:entry]; //to retrieve entries for a specific account, search for accountName
+                    }
+                
+                    j++; //j tracks the index under column headers
+                }
+            }
         }
         
         //get the next line
@@ -114,9 +150,26 @@
         //NSLog(@"Spinning 3: %i", i);
         if(![cell isEqualToString:@""]) {
             //get the date, amount, and label of the entry
-            AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0] name:cell andAmount:-[[line objectAtIndex:6] intValue]];
+            AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0]];
+            [entry setLabel:cell];
+            [entry setAmount:-[[line objectAtIndex:6] intValue]];
+            
             [accountEntries addObject:entry];
-        
+            
+            //Part 2: search for the entry under a specific account, set that header as the accountName, add the entry to accountEntriesWithAccount
+            [entry setDescription:[line objectAtIndex:4]];
+            
+            int j = 7;
+            cell = [line objectAtIndex:j]; //first column of account entries
+            while(![cell isEqualToString:@""]){
+                j++;
+                cell = [line objectAtIndex:j];
+            } //j holds index (offset) to the correct header
+            
+            [entry setAccountName:[columnHeaders objectAtIndex:(j - 7)]];
+            [accountEntriesWithAccount addObject:entry];
+            //end part 2
+            
             emptyCells = 0; //reset empty cell count
         }
         else {
@@ -166,6 +219,9 @@
     return balance;
 }
 
+-(NSArray *) getEntriesWithAccountNames {
+    return accountEntriesWithAccount;
+}
 
 
 @end
