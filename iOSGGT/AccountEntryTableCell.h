@@ -12,5 +12,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelName;
 @property (weak, nonatomic) IBOutlet UILabel *labelAmount;
 @property (weak, nonatomic) IBOutlet UILabel *labelAccountName;
+@property (weak, nonatomic) IBOutlet UILabel *labelDetail;
+@property (weak, nonatomic) IBOutlet UILabel *labelDate;
 
 @end

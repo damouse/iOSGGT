@@ -30,7 +30,17 @@
 		D7806F82170A306A00D5598A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7806F80170A306A00D5598A /* InfoPlist.strings */; };
 		D7806F85170A306A00D5598A /* iOSGGTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806F84170A306A00D5598A /* iOSGGTTests.m */; };
 		D7806F99170A34A900D5598A /* MainGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806F98170A34A900D5598A /* MainGraphViewController.m */; };
-		D7806FA2170A390300D5598A /* RootTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7806FA1170A390300D5598A /* RootTableViewController.m */; };
+		D781AA99173455040008F1E6 /* icon_72.png in Resources */ = {isa = PBXBuildFile; fileRef = D781AA98173455040008F1E6 /* icon_72.png */; };
+		D781AA9B173455090008F1E6 /* icon_114.png in Resources */ = {isa = PBXBuildFile; fileRef = D781AA9A173455090008F1E6 /* icon_114.png */; };
+		D781AA9D173458B00008F1E6 /* listCell.png in Resources */ = {isa = PBXBuildFile; fileRef = D781AA9C173458B00008F1E6 /* listCell.png */; };
+		D781AAAB173466E00008F1E6 /* header_gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = D781AAAA173466E00008F1E6 /* header_gradient.png */; };
+		D781AAAE173467B30008F1E6 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D781AAAD173467B30008F1E6 /* RootViewController.m */; };
+		D781AAB41734723E0008F1E6 /* green_button.png in Resources */ = {isa = PBXBuildFile; fileRef = D781AAB31734723E0008F1E6 /* green_button.png */; };
+		D781AAB6173474470008F1E6 /* ggt_textlogo_final.png in Resources */ = {isa = PBXBuildFile; fileRef = D781AAB5173474470008F1E6 /* ggt_textlogo_final.png */; };
+		D781AAC5173480730008F1E6 /* KOAProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D781AAC2173480730008F1E6 /* KOAProgressBar.m */; };
+		D781AAC6173480730008F1E6 /* KOAProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D781AAC2173480730008F1E6 /* KOAProgressBar.m */; };
+		D781AAC7173480730008F1E6 /* koaGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = D781AAC4173480730008F1E6 /* koaGradient.m */; };
+		D781AAC8173480730008F1E6 /* koaGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = D781AAC4173480730008F1E6 /* koaGradient.m */; };
 		D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B5170A587500B005E5 /* MenuViewController.m */; };
 		D7D680441732FD46008C4B7C /* PieSliceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7D680431732FD46008C4B7C /* PieSliceView.m */; };
 		D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */; };
@@ -64,7 +74,7 @@
 		D758E5EA17334EA400F93FAC /* AccountEntryTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountEntryTableCell.m; sourceTree = "<group>"; };
 		D77078B51729C5D2001501AF /* GrantTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GrantTableCell.h; path = ../GrantTableCell.h; sourceTree = "<group>"; };
 		D77078B61729C5D2001501AF /* GrantTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GrantTableCell.m; path = ../GrantTableCell.m; sourceTree = "<group>"; };
-		D7806F4F170A306900D5598A /* iOSGGT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSGGT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7806F4F170A306900D5598A /* Graphic Grant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Graphic Grant.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7806F53170A306900D5598A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D7806F55170A306900D5598A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D7806F57170A306900D5598A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -86,8 +96,18 @@
 		D7806F84170A306A00D5598A /* iOSGGTTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOSGGTTests.m; sourceTree = "<group>"; };
 		D7806F97170A34A900D5598A /* MainGraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainGraphViewController.h; path = ../MainGraphViewController.h; sourceTree = "<group>"; };
 		D7806F98170A34A900D5598A /* MainGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainGraphViewController.m; path = ../MainGraphViewController.m; sourceTree = "<group>"; };
-		D7806FA0170A390200D5598A /* RootTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootTableViewController.h; sourceTree = "<group>"; };
-		D7806FA1170A390300D5598A /* RootTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootTableViewController.m; sourceTree = "<group>"; };
+		D781AA98173455040008F1E6 /* icon_72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_72.png; path = ../icon_72.png; sourceTree = "<group>"; };
+		D781AA9A173455090008F1E6 /* icon_114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_114.png; path = ../icon_114.png; sourceTree = "<group>"; };
+		D781AA9C173458B00008F1E6 /* listCell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = listCell.png; sourceTree = "<group>"; };
+		D781AAAA173466E00008F1E6 /* header_gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = header_gradient.png; sourceTree = "<group>"; };
+		D781AAAC173467B30008F1E6 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		D781AAAD173467B30008F1E6 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		D781AAB31734723E0008F1E6 /* green_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_button.png; sourceTree = "<group>"; };
+		D781AAB5173474470008F1E6 /* ggt_textlogo_final.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ggt_textlogo_final.png; sourceTree = "<group>"; };
+		D781AAC1173480730008F1E6 /* KOAProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KOAProgressBar.h; sourceTree = "<group>"; };
+		D781AAC2173480730008F1E6 /* KOAProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KOAProgressBar.m; sourceTree = "<group>"; };
+		D781AAC3173480730008F1E6 /* koaGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = koaGradient.h; sourceTree = "<group>"; };
+		D781AAC4173480730008F1E6 /* koaGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = koaGradient.m; sourceTree = "<group>"; };
 		D7A917B4170A587500B005E5 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		D7A917B5170A587500B005E5 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		D7D680421732FD45008C4B7C /* PieSliceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSliceView.h; sourceTree = "<group>"; };
@@ -235,7 +255,7 @@
 		D7806F50170A306900D5598A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D7806F4F170A306900D5598A /* iOSGGT.app */,
+				D7806F4F170A306900D5598A /* Graphic Grant.app */,
 				D7806F76170A306A00D5598A /* iOSGGTTests.octest */,
 			);
 			name = Products;
@@ -259,8 +279,8 @@
 				D7002B511721FD2D00F6E6EA /* Testing Space */,
 				D7806F62170A306900D5598A /* AppDelegate.h */,
 				D7806F63170A306900D5598A /* AppDelegate.m */,
-				D7806FA0170A390200D5598A /* RootTableViewController.h */,
-				D7806FA1170A390300D5598A /* RootTableViewController.m */,
+				D781AAAC173467B30008F1E6 /* RootViewController.h */,
+				D781AAAD173467B30008F1E6 /* RootViewController.m */,
 				D7806F8E170A309300D5598A /* Pushed View Controllers */,
 				D7A917B7170A589000B005E5 /* Modal View Controllers */,
 				D7806F93170A310C00D5598A /* Auxilliary Classes */,
@@ -272,6 +292,10 @@
 		D7806F5A170A306900D5598A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D781AAC1173480730008F1E6 /* KOAProgressBar.h */,
+				D781AAC2173480730008F1E6 /* KOAProgressBar.m */,
+				D781AAC3173480730008F1E6 /* koaGradient.h */,
+				D781AAC4173480730008F1E6 /* koaGradient.m */,
 				D7806F5B170A306900D5598A /* iOSGGT-Info.plist */,
 				D7806F5C170A306900D5598A /* InfoPlist.strings */,
 				D7806F5F170A306900D5598A /* main.m */,
@@ -441,6 +465,12 @@
 		D7FD6D54172B792700A63DD1 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				D781AAB5173474470008F1E6 /* ggt_textlogo_final.png */,
+				D781AAB31734723E0008F1E6 /* green_button.png */,
+				D781AAAA173466E00008F1E6 /* header_gradient.png */,
+				D781AA9C173458B00008F1E6 /* listCell.png */,
+				D781AA9A173455090008F1E6 /* icon_114.png */,
+				D781AA98173455040008F1E6 /* icon_72.png */,
 				D758E5DF1733415200F93FAC /* gradient_background.png */,
 				D7FD6D55172B793800A63DD1 /* event_cell.png */,
 			);
@@ -465,7 +495,7 @@
 			);
 			name = iOSGGT;
 			productName = iOSGGT;
-			productReference = D7806F4F170A306900D5598A /* iOSGGT.app */;
+			productReference = D7806F4F170A306900D5598A /* Graphic Grant.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D7806F75170A306A00D5598A /* iOSGGTTests */ = {
@@ -527,6 +557,12 @@
 				D7F2E0BD170E20B200130C2E /* sample.csv in Resources */,
 				D7FD6D56172B793800A63DD1 /* event_cell.png in Resources */,
 				D758E5E01733415200F93FAC /* gradient_background.png in Resources */,
+				D781AA99173455040008F1E6 /* icon_72.png in Resources */,
+				D781AA9B173455090008F1E6 /* icon_114.png in Resources */,
+				D781AA9D173458B00008F1E6 /* listCell.png in Resources */,
+				D781AAAB173466E00008F1E6 /* header_gradient.png in Resources */,
+				D781AAB41734723E0008F1E6 /* green_button.png in Resources */,
+				D781AAB6173474470008F1E6 /* ggt_textlogo_final.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,7 +600,6 @@
 				D7806F60170A306900D5598A /* main.m in Sources */,
 				D7806F64170A306900D5598A /* AppDelegate.m in Sources */,
 				D7806F99170A34A900D5598A /* MainGraphViewController.m in Sources */,
-				D7806FA2170A390300D5598A /* RootTableViewController.m in Sources */,
 				D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */,
 				D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */,
 				D7002B4F1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m in Sources */,
@@ -574,6 +609,9 @@
 				D7D680441732FD46008C4B7C /* PieSliceView.m in Sources */,
 				D758E5E71733422A00F93FAC /* AccountTableViewController.m in Sources */,
 				D758E5EB17334EA400F93FAC /* AccountEntryTableCell.m in Sources */,
+				D781AAAE173467B30008F1E6 /* RootViewController.m in Sources */,
+				D781AAC5173480730008F1E6 /* KOAProgressBar.m in Sources */,
+				D781AAC7173480730008F1E6 /* koaGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,6 +620,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7806F85170A306A00D5598A /* iOSGGTTests.m in Sources */,
+				D781AAC6173480730008F1E6 /* KOAProgressBar.m in Sources */,
+				D781AAC8173480730008F1E6 /* koaGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -695,7 +735,7 @@
 					"-all_load",
 					"-Objc",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Graphic Grant";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -720,7 +760,7 @@
 					"-all_load",
 					"-Objc",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Graphic Grant";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

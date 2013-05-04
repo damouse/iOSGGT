@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MenuViewController : UIViewController
+@interface MenuViewController : UIViewController {
+    //references to buttons so they can be propery redrawn
+    IBOutletCollection(UIButton) NSArray *buttons;
+
+}
 - (IBAction)buttonBack:(id)sender;
 
 @end

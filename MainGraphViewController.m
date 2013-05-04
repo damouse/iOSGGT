@@ -156,6 +156,7 @@
     AccountTableViewController *detail = [mainStoryboard instantiateViewControllerWithIdentifier: @"accountGraphic"];
     
     [detail setGrantObject:grant withAccount:account];
+    detail.labelGrantName.text = [[grant getMetadata] objectForKey:@"title"];
     [self.navigationController pushViewController:detail animated:YES];
 }
 

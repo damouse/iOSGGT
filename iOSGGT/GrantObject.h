@@ -23,6 +23,6 @@
 -(NSDictionary *)getBalanceRow;
 -(NSDictionary *)getBudgetRow;
 
-//Keys: {dateLastAccessed, datesOfGrant, name, accountNumber, grantor, title, overhead, awardNumber}
+//Keys: {dateLastAccessed, startDate, endDate, name, accountNumber, grantor, title, overhead, awardNumber}
 - (NSDictionary *) getMetadata;
 @end

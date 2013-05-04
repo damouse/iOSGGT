@@ -10,10 +10,14 @@
 //  -app tutorial
 //  -set up menu
 //  -art assets
+//      -two table cells
+//      -backgrounds
+//      -splash screen
+//      -logo
 //  -main graph
 //      -make animations smoother
 //      -make labels
-//  -account details
+//  -account details popo up modally from node clicks in the landscape
 //
 
 #import "AppDelegate.h"

@@ -7,13 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KOAProgressBar.h"
 
 @interface GrantTableCell : UITableViewCell {
     
+
+    IBOutlet KOAProgressBar *progressBar;
 }
+@property (weak, nonatomic) IBOutlet UILabel *labelRemaining;
+
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UILabel *date;
-@property (weak, nonatomic) IBOutlet UILabel *remaining;
-@property (weak, nonatomic) IBOutlet UILabel *total;
 
+- (void) setCompletion:(float)percent;
 @end

@@ -26,7 +26,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	
+    
+    for(UIButton *button in buttons) {
+        [button setBackgroundImage:[[UIImage imageNamed:@"green_button"] resizableImageWithCapInsets:UIEdgeInsetsMake(30, 30, 30, 30)] forState:UIControlStateNormal];
+    }
 }
 
 - (void)didReceiveMemoryWarning

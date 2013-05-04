@@ -1,12 +1,12 @@
 //
-//  RootTableViewController.m
+//  RootViewController.m
 //  iOSGGT
 //
-//  Created by Mihnea Barboi on 4/1/13.
+//  Created by Mihnea Barboi on 5/3/13.
 //  Copyright (c) 2013 Mihnea Barboi. All rights reserved.
 //
 
-#import "RootTableViewController.h"
+#import "RootViewController.h"
 #import "MainGraphViewController.h"
 #import "CHCSVParser.h"
 #import "GrantObject.h"
@@ -14,8 +14,11 @@
 #import "LandscapeMainGraphViewController.h"
 #import "AccountEntryObject.h"
 #import "GrantTableCell.h"
+@interface RootViewController ()
 
-@interface RootTableViewController () {
+@end
+
+@implementation RootViewController {
     NSMutableArray *grants; //holds all grants
     NSArray *parsed;
     
@@ -28,14 +31,9 @@
     NSMutableArray *newData;
 }
 
-@end
-
-@implementation RootTableViewController
-
-#pragma mark Standard Methods
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithStyle:style];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
     }
@@ -76,13 +74,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
     landscape = [mainStoryboard instantiateViewControllerWithIdentifier: @"rootLandscape"];
     
     NSBundle *mainBundle = [NSBundle mainBundle];
     NSString *myFile = [mainBundle pathForResource: @"sample" ofType: @"csv"];
+    
+    //ui customization
     [self.navigationController setNavigationBarHidden:YES];
+    tableMain.backgroundColor = [UIColor clearColor];
+    
+    
     //make API calls here
     
     
@@ -102,14 +105,49 @@
 #pragma mark Parsing Methods
 //Given an array of the csv files from the API call, create grant objects for them and return the array of objects
 - (NSMutableArray *) parseCSVFiles:(NSMutableArray *)documents {
- 
+    
 }
 
+#pragma mark Helper
+//given a grant, return the end date properly formatted
+- (NSString *) formatEndDate:(GrantObject *)grant {
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"mm/dd/YYYY"];
+    NSDate *endDate = [formatter dateFromString:[[grant getMetadata] objectForKey:@"endDate"]];
+    [formatter setDateFormat:@"MMMM dd, yyyy"];
+    
+    return [formatter stringFromDate:endDate];
+}
+
+//given a string of currency, format it correctly and return it as an int
+- (NSDecimalNumber *) formatCurrency:(NSString *)amount {
+    NSString *ret = [[amount stringByReplacingOccurrencesOfString:@"\"" withString:@""] stringByReplacingOccurrencesOfString:@"," withString:@""];
+    ret = [[ret componentsSeparatedByString:@"."] objectAtIndex:0];
+    
+    return [NSDecimalNumber decimalNumberWithString:ret];
+}
+
+//given a grant, format balance and budget so it reads: "balance$ out of budget$ remaining"
+- (NSString *) formatBalance:(GrantObject *)grant {
+    NSDecimalNumber *budget = [self formatCurrency:[[grant getBudgetRow] objectForKey:@"Amount"]];
+    NSDecimalNumber *balance = [self formatCurrency:[[grant getBalanceRow] objectForKey:@"Amount"]];
+    
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
+    NSString *balanceString = [numberFormatter stringFromNumber:balance];
+    NSString *budgetString = [numberFormatter stringFromNumber:budget];
+    
+    balanceString = [balanceString stringByReplacingOccurrencesOfString:@".00" withString:@""];
+    budgetString = [budgetString stringByReplacingOccurrencesOfString:@".00" withString:@""];
+    
+    return [NSString stringWithFormat:@"%@ of %@ remainng", balanceString, budgetString];
+}
 
 #pragma mark Table Style
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1; 
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -120,16 +158,24 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     GrantTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell" forIndexPath:indexPath];
-
+    
     if (cell == nil) {
         cell = [[GrantTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AccountCell"];
     }
-
     
-    cell.name.text = [NSString stringWithFormat:@"Grant #%i", indexPath.row];
-    cell.date.text = @"2/16/24";
-    cell.remaining.text = @"23,000";
-    cell.total.text = @"234,134";
+    GrantObject *grant = [grants objectAtIndex:indexPath.row];
+    
+    cell.name.text = [[grant getMetadata] objectForKey:@"title"];
+    cell.date.text = [self formatEndDate:grant];
+
+    //set up and run the progress bar
+    NSDecimalNumber *budget = [self formatCurrency:[[grant getBudgetRow] objectForKey:@"Amount"]];
+    NSDecimalNumber *balance = [self formatCurrency:[[grant getBalanceRow] objectForKey:@"Amount"]];
+    NSDecimalNumber *percent = [balance decimalNumberByDividingBy:budget];
+    [cell setCompletion:[percent floatValue]];
+    
+    //set up the progress bar note
+    cell.labelRemaining.text = [self formatBalance:grant];
     
     return cell;
 }
@@ -139,7 +185,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];    
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
     MainGraphViewController *mainGraph = [mainStoryboard instantiateViewControllerWithIdentifier: @"MainGraphic"];
     GrantObject *grant = [grants objectAtIndex:indexPath.row];
     

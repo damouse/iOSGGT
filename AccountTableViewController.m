@@ -13,6 +13,7 @@
 
 @interface AccountTableViewController () {
     NSMutableArray *accountEntries;
+    NSIndexPath *selectedRowIndex; //this remembers the cell that was touched to dynamically expand tapped cells
 }
 
 @end
@@ -33,11 +34,10 @@
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"gradient_background"]];
+    [self.navigationController setNavigationBarHidden:YES];
+    
+    labelAccountName.text = [[accountEntries objectAtIndex:0] accountName];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,8 +60,25 @@
     [self.tableView reloadData];
 }
 
-- (IBAction)buttonBack:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+#pragma mark Helper Methods
+//given a string of currency, format it correctly and return it as an int
+- (NSString *) formatCurrency:(int)amount {    
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
+    
+    NSNumber *temp = [NSDecimalNumber numberWithInt:amount];
+    NSString *ret = [numberFormatter stringFromNumber:temp];
+    
+    ret = [ret stringByReplacingOccurrencesOfString:@".00" withString:@""];
+    
+    return ret;
+}
+
+- (NSString *) formatDate:(AccountEntryObject *)entry {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MMMM dd, yyyy"];
+    
+    return [formatter stringFromDate:[entry date]];
 }
 
 #pragma mark - Table view data source
@@ -86,62 +103,45 @@
     AccountEntryObject *entry = [accountEntries objectAtIndex:indexPath.row];
     
     cell.labelAccountName.text = [entry accountName];
-    cell.labelAmount.text = [NSString stringWithFormat:@"%i", [entry amount]];
+    cell.labelAmount.text = [self formatCurrency:[entry amount]]; //sloppy, please fix
     cell.labelName.text = [entry label];
+    
+    NSString *description = [entry description];
+     
+    if(description == nil)
+        description = [NSString stringWithFormat:@"Details not entered"];
+    else
+        description = [NSString stringWithFormat:@"Details: %@", description];
+    
+    cell.labelDetail.text = description;
+    cell.labelDate.text = [self formatDate:entry];
     
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(selectedRowIndex && indexPath.row == selectedRowIndex.row) {
+        return 109;
+    }
+    return 54;
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    if([selectedRowIndex isEqual:indexPath])
+        selectedRowIndex = nil;
+    else 
+        selectedRowIndex = indexPath;
+    
+    [tableView beginUpdates];
+    [tableView endUpdates];
+}
+
+#pragma mark IBOutlet
+- (IBAction)buttonBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

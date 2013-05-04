@@ -9,7 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "GrantObject.h"
 
-@interface AccountTableViewController : UITableViewController
+@interface AccountTableViewController : UITableViewController {
+    
+    IBOutlet UILabel *labelAccountName;
+
+}
+@property (weak, nonatomic) IBOutlet UILabel *labelGrantName;
 
 - (void) setGrantObject:(GrantObject *)grant withAccount:(NSString *)account;
 - (IBAction)buttonBack:(id)sender;

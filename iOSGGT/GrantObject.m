@@ -11,7 +11,7 @@
 
 @implementation GrantObject {
     //NOTE: keys WILL NEED TO BE CHANGED. Dynamically add them from the column headers for different spreadsheets
-    //contains info from top 5 lines. Keys: {dateLastAccessed, datesOfGrant, name, accountNumber, grantor, title, overhead, awardNumber}
+    //contains info from top 5 lines. Keys: {dateLastAccessed, startDate, endDate, name, accountNumber, grantor, title, overhead, awardNumber}
     NSMutableDictionary *metadata;
     
     //contains budget amounts. Keys: {totalBudget, staff, otherPersonnel, fringeBenefits, tuitionRemission, supplies, travel}
@@ -43,15 +43,18 @@
     accountEntries = [NSMutableArray array];
     accountEntriesWithAccount = [NSMutableArray array];
     
+    NSArray *dateSplit = [[[csvFile objectAtIndex:1] objectAtIndex:1] componentsSeparatedByString:@" - "];
+    
     //metadata
     [metadata setObject:[[csvFile objectAtIndex:0] objectAtIndex:0] forKey:@"dateLastAccessed"];
-    [metadata setObject:[[csvFile objectAtIndex:1] objectAtIndex:1] forKey:@"datesOfGrant"];
     [metadata setObject:[[csvFile objectAtIndex:2] objectAtIndex:1] forKey:@"name"];
     [metadata setObject:[[csvFile objectAtIndex:3] objectAtIndex:1] forKey:@"accountNumber"];
     [metadata setObject:[[csvFile objectAtIndex:1] objectAtIndex:4] forKey:@"grantor"];
     [metadata setObject:[[csvFile objectAtIndex:2] objectAtIndex:4] forKey:@"title"];
     [metadata setObject:[[csvFile objectAtIndex:3] objectAtIndex:4] forKey:@"overhead"];
     [metadata setObject:[[csvFile objectAtIndex:4] objectAtIndex:1] forKey:@"awardNumber"];
+    [metadata setObject:[dateSplit objectAtIndex:0] forKey:@"startDate"];
+    [metadata setObject:[dateSplit objectAtIndex:1] forKey:@"endDate"];
     
     //small fix, remove title from the title object
     NSString *tmp = [metadata objectForKey:@"title"];
@@ -103,6 +106,7 @@
             AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0]];
             [entry setLabel:cell];
             [entry setAmount:[[line objectAtIndex:6] intValue]];
+            [entry setDescription:[NSString stringWithFormat:@" %@",[line objectAtIndex:4]]]; //keep a space in here, else the string is null
             
             [accountEntries addObject:entry];
             
@@ -118,9 +122,7 @@
                         //some string parsing to get the numbers to convert well; cents are omitted
                         entry = [entry copy]; //just copy the entry, since only two values change
                         [entry setAccountName:header];
-                        cell = [[cell stringByReplacingOccurrencesOfString:@"\"" withString:@""] stringByReplacingOccurrencesOfString:@"," withString:@""];
-                        cell = [[cell componentsSeparatedByString:@"."] objectAtIndex:0];
-                        [entry setAmount:[cell intValue]];
+                        [entry setAmount:[self formatCurrency:cell]];
                     
                         [accountEntriesWithAccount addObject:entry]; //to retrieve entries for a specific account, search for accountName
                     }
@@ -188,6 +190,7 @@
     
     //sort the entries by date
     [accountEntries sortUsingSelector:@selector(compare:)];
+    [accountEntriesWithAccount sortUsingSelector:@selector(compare:)];
     
     //the account entries have all been added and sorted in order of date. This sets up the "running total" of the grant
     int currentTotal = 0;
@@ -201,7 +204,13 @@
 }
 
 #pragma mark Parsing
-
+//given a string of currency, format it correctly and return it as an int
+- (int) formatCurrency:(NSString *)amount {
+    NSString *ret = [[amount stringByReplacingOccurrencesOfString:@"\"" withString:@""] stringByReplacingOccurrencesOfString:@"," withString:@""];
+    ret = [[ret componentsSeparatedByString:@"."] objectAtIndex:0];
+    
+    return [ret intValue];
+}
 
 #pragma mark Accessor
 - (NSDictionary *) getMetadata
