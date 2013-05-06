@@ -121,12 +121,12 @@
     return slice;
 }
 
-//return a rect that is perfectly centered on the screen
+//return a rect that is centered at the hardcoded coordinates
 -(CGRect) getCenteredRect:(float)size {
-    float halfWidth = self.view.frame.size.width  / 2;
+    float halfWidth = self.view.frame.size.width  / 3;
     float xOrigin = halfWidth - size / 2;
     
-    float halfHeight = self.view.frame.size.height  / 2;
+    float halfHeight = self.view.frame.size.height  / 3;
     float yOrigin = halfHeight - size / 2;
     
     return CGRectMake(xOrigin, yOrigin, size, size);
@@ -148,16 +148,18 @@
     }
     
     //the index of the slice that recieved the touch is length - numSlices. NOTE: slices is in reverse order
-    int index = slices.count + numSlicesThatRecievedTouch - slices.count - 1; //this is index of slice. Its hack code, but it works
+    int index = numSlicesThatRecievedTouch - 1;
     NSLog(@"touch on slice index: %i", index);
 
-    NSString *account = [[slices objectAtIndex:index] accountName];
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
-    AccountTableViewController *detail = [mainStoryboard instantiateViewControllerWithIdentifier: @"accountGraphic"];
+    if(index >= 0 && index < slices.count) {
+        NSString *account = [[slices objectAtIndex:index] accountName];
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
+        AccountTableViewController *detail = [mainStoryboard instantiateViewControllerWithIdentifier: @"accountGraphic"];
     
-    [detail setGrantObject:grant withAccount:account];
-    detail.labelGrantName.text = [[grant getMetadata] objectForKey:@"title"];
-    [self.navigationController pushViewController:detail animated:YES];
+        [detail setGrantObject:grant withAccount:account];
+        detail.labelGrantName.text = [[grant getMetadata] objectForKey:@"title"];
+        [self.navigationController pushViewController:detail animated:YES];
+    }
 }
 
 #pragma mark IBOutlet
