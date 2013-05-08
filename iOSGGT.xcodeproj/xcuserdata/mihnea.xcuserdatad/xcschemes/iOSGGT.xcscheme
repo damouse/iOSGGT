@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D7806F4E170A306900D5598A"
-               BuildableName = "iOSGGT.app"
+               BuildableName = "Graphic Grant.app"
                BlueprintName = "iOSGGT"
                ReferencedContainer = "container:iOSGGT.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D7806F4E170A306900D5598A"
-            BuildableName = "iOSGGT.app"
+            BuildableName = "Graphic Grant.app"
             BlueprintName = "iOSGGT"
             ReferencedContainer = "container:iOSGGT.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D7806F4E170A306900D5598A"
-            BuildableName = "iOSGGT.app"
+            BuildableName = "Graphic Grant.app"
             BlueprintName = "iOSGGT"
             ReferencedContainer = "container:iOSGGT.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D7806F4E170A306900D5598A"
-            BuildableName = "iOSGGT.app"
+            BuildableName = "Graphic Grant.app"
             BlueprintName = "iOSGGT"
             ReferencedContainer = "container:iOSGGT.xcodeproj">
          </BuildableReference>

@@ -18,7 +18,8 @@
 //      -make animations smoother
 //      -make labels
 //  -account details popo up modally from node clicks in the landscape
-//
+//http://stackoverflow.com/questions/9460695/uibezierpath-shadow-effect-ios/9460793#9460793 for shadow on pie chart
+//http://stackoverflow.com/questions/8303155/adding-splashscreen-to-iphone-app-in-appdelegate for splash screen
 
 #import "AppDelegate.h"
 

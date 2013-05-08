@@ -20,11 +20,15 @@
 #import "GrantObject.h"
 #import "AccountTableViewController.h"
 #import "PieSliceView.h"
+#import "AccountLabelTableViewCell.h"
 
 @interface MainGraphViewController () {
     GrantObject *grant;
     NSMutableArray *slices;
     NSMutableArray *sliceColors;
+    
+    NSMutableArray *labelsAndColors; // slice labels paired with their respective colors
+    int currentColor;
 }
 
 @end
@@ -76,6 +80,8 @@
     NSDictionary *budget = [grant getBudgetRow]; //used to figure out percentFills
     NSDictionary *balance = [grant getBalanceRow]; //consider making an inside slice that expands outward based on remaining balance
     NSArray *accounts = [grant getAccounts];
+    labelsAndColors = [NSMutableArray array];
+    currentColor = 0; //this index tracks the used colors so they can be used again in the labels later
     
     float totalBudget = [[budget objectForKey:@"Amount"] floatValue]; //should this be dynamic on "amount?"
     float runningTotal = 0; //this is how far into the total budget the accounts have taken us. Should add up to total budget.
@@ -88,8 +94,7 @@
     for(NSString *account in accounts) { //TODO: put checks for negative numbers
         if(![account isEqualToString:@""] && ![account isEqualToString:@"Amount"]) {
             NSLog(@"creating slice for %@", account);
-            slice = [self createNewSlice];
-            [slice setAccountName:account];
+            slice = [self createNewSlice: account];
             
             currentBudget = [[budget objectForKey:account] floatValue]; //fetch value
             percentFill = (currentBudget + runningTotal) / totalBudget; //divide it by total (with current total)
@@ -109,12 +114,15 @@
     }
 }
 
-//create a new pieslice centered at the middle of the screen.
--(PieSliceView *) createNewSlice {
+//create a new pieslice centered at the middle of the screen. Add the label to 
+-(PieSliceView *) createNewSlice:(NSString *)accountName {
     PieSliceView *slice = [[PieSliceView alloc] initWithFrame:[self getCenteredRect:200]]; //this defines the size of the slice
     
-    slice.color = [sliceColors objectAtIndex:0];
-    [sliceColors removeObjectAtIndex:0];
+    [slice setAccountName:accountName];
+    slice.color = [sliceColors objectAtIndex:currentColor];
+    [labelsAndColors insertObject:accountName atIndex:0];
+    
+    currentColor++; //go to next color
     
     [self.view addSubview:slice];
     
@@ -160,6 +168,45 @@
         detail.labelGrantName.text = [[grant getMetadata] objectForKey:@"title"];
         [self.navigationController pushViewController:detail animated:YES];
     }
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return labelsAndColors.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AccountLabelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"accountLabel" forIndexPath:indexPath];
+    
+    if (cell == nil) {
+        cell = [[AccountLabelTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"accountLabel"];
+    }
+    
+    int index = slices.count - indexPath.row - 1; //colors array is in increasing order (in terms of relative index), slices and names are NOT
+    cell.viewColor.backgroundColor = [sliceColors objectAtIndex:indexPath.row];
+    cell.labelName.text = [labelsAndColors objectAtIndex:index]; //matching is correct, just need to switch the order
+    //cell.labelName.text =
+    
+    return cell;
+}
+
+/*- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 20;
+}*/
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
 }
 
 #pragma mark IBOutlet

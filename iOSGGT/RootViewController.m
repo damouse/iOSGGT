@@ -54,7 +54,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
-
 - (void)orientationChanged:(NSNotification *)notification
 {
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
@@ -78,9 +77,6 @@
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
     landscape = [mainStoryboard instantiateViewControllerWithIdentifier: @"rootLandscape"];
     
-    NSBundle *mainBundle = [NSBundle mainBundle];
-    NSString *myFile = [mainBundle pathForResource: @"sample" ofType: @"csv"];
-    
     //ui customization
     [self.navigationController setNavigationBarHidden:YES];
     tableMain.backgroundColor = [UIColor clearColor];
@@ -88,24 +84,48 @@
     
     //make API calls here
     
-    
-    //init array of grants
-    grants = [NSMutableArray array];
-    
-    //parse documents
-    parsed = [NSArray arrayWithContentsOfCSVFile:myFile];
-    GrantObject *tempGrant = [[GrantObject alloc] initWithCSVArray:parsed];
-    numberOfGrants = 1;
-    
-    [grants addObject:tempGrant];
+    grants = [self parseCSVFiles:nil];
+
     [landscape initWithGrantArray:grants];
     [tableMain reloadData];
 }
 
 #pragma mark Parsing Methods
 //Given an array of the csv files from the API call, create grant objects for them and return the array of objects
+//when each grant is made, cache it in NSUserDefaults
+//NOTE: This code is just a jumble of stuff, it should not all be in this method. Its here just so i have somewhere to write it down for now
 - (NSMutableArray *) parseCSVFiles:(NSMutableArray *)documents {
+    NSMutableArray *temp = [NSMutableArray array];
     
+    //parse documents  THIS IS HERE FOR DEBUGGING PURPOSES ONLY
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    NSString *myFile = [mainBundle pathForResource: @"sample" ofType: @"csv"];
+    
+    parsed = [NSArray arrayWithContentsOfCSVFile:myFile];
+    GrantObject *tempGrant = [[GrantObject alloc] initWithCSVArray:parsed];
+    
+
+    //this is real code
+    [temp addObject:tempGrant];
+    numberOfGrants = temp.count;
+    
+    //cache the grants
+    NSArray *savedGrants;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *save = [[NSUserDefaults standardUserDefaults] objectForKey:@"cache"];
+    
+    if(save == nil) { //nothing was saved, no cache
+        
+    }
+    else { //if there was a cache, unindex the save and check the dates. The save is a dictionary of update dates keyed by their grants
+        [NSMutableDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithData:save]];
+        
+        //make the updateCheck API call, compare the recieved dates with the cached dates. Update grants as necesary if a spreadsheet was changed since last launch
+        
+    }
+    
+    
+    return temp;
 }
 
 #pragma mark Helper

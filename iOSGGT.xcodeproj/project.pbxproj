@@ -46,6 +46,7 @@
 		D7DCBE3B170E2F35009F40F2 /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DCBE3A170E2F35009F40F2 /* CHCSVParser.m */; };
 		D7E0F14D170E63A200386698 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E0F14C170E63A200386698 /* libCorePlot-CocoaTouch.a */; };
 		D7E0F14F170E63C400386698 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E0F14E170E63C400386698 /* QuartzCore.framework */; };
+		D7EF9BCE173AFDD200722D17 /* AccountLabelTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D7EF9BCD173AFDD200722D17 /* AccountLabelTableViewCell.m */; };
 		D7F2E0BD170E20B200130C2E /* sample.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7F2E0BC170E20B200130C2E /* sample.csv */; };
 		D7FD6D56172B793800A63DD1 /* event_cell.png in Resources */ = {isa = PBXBuildFile; fileRef = D7FD6D55172B793800A63DD1 /* event_cell.png */; };
 /* End PBXBuildFile section */
@@ -190,6 +191,8 @@
 		D7E0F14B170E63A200386698 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		D7E0F14C170E63A200386698 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		D7E0F14E170E63C400386698 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D7EF9BCC173AFDD200722D17 /* AccountLabelTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountLabelTableViewCell.h; sourceTree = "<group>"; };
+		D7EF9BCD173AFDD200722D17 /* AccountLabelTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountLabelTableViewCell.m; sourceTree = "<group>"; };
 		D7F2E0BC170E20B200130C2E /* sample.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample.csv; sourceTree = "<group>"; };
 		D7FD6D55172B793800A63DD1 /* event_cell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = event_cell.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -234,6 +237,8 @@
 				D77078B61729C5D2001501AF /* GrantTableCell.m */,
 				D758E5E917334EA400F93FAC /* AccountEntryTableCell.h */,
 				D758E5EA17334EA400F93FAC /* AccountEntryTableCell.m */,
+				D7EF9BCC173AFDD200722D17 /* AccountLabelTableViewCell.h */,
+				D7EF9BCD173AFDD200722D17 /* AccountLabelTableViewCell.m */,
 			);
 			name = "Custom Table Cells";
 			sourceTree = "<group>";
@@ -612,6 +617,7 @@
 				D781AAAE173467B30008F1E6 /* RootViewController.m in Sources */,
 				D781AAC5173480730008F1E6 /* KOAProgressBar.m in Sources */,
 				D781AAC7173480730008F1E6 /* koaGradient.m in Sources */,
+				D7EF9BCE173AFDD200722D17 /* AccountLabelTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

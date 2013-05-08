@@ -13,6 +13,7 @@
 @interface MainGraphViewController : UIViewController {
 
     __weak IBOutlet UILabel *labelTitle;
+    __weak IBOutlet UITableView *tableSliceLabels;
 }
 
 -(void)setGrantObject:(GrantObject *)grantObject;
