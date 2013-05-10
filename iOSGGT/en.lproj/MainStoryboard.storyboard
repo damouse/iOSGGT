@@ -163,7 +163,7 @@ EE5hbWUgb2YgR3JhbnQ
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zck-q4-UlM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="204" y="86"/>
+            <point key="canvasLocation" x="145" y="86"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="waq-T6-C51">
@@ -176,6 +176,7 @@ EE5hbWUgb2YgR3JhbnQ
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="gradient_background.png" id="rRQ-yd-XCN">
                                 <rect key="frame" x="0.0" y="44" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.99997437000274658" blue="0.99999129772186279" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
                             <navigationBar contentMode="scaleToFill" barStyle="blackOpaque" id="1gs-WH-mD6">
                                 <rect key="frame" x="0.0" y="6" width="321" height="44"/>
@@ -972,80 +973,6 @@ EE5hbWUgb2YgR3JhbnQ
         <image name="header_gradient.png" width="1050" height="153"/>
         <image name="listCell.png" width="604" height="122"/>
     </resources>
-    <classes>
-        <class className="AccountEntryTableCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AccountEntryTableCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="labelAccountName" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelAmount" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelDate" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelDetail" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelName" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="AccountLabelTableViewCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AccountLabelTableViewCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="labelName" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="viewColor" candidateClass="UIView"/>
-            </relationships>
-        </class>
-        <class className="AccountTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AccountTableViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="buttonBack:"/>
-                <relationship kind="outlet" name="labelAccountName" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelGrantName" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="GrantTableCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GrantTableCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="date" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelRemaining" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="name" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="progressBar" candidateClass="KOAProgressBar"/>
-            </relationships>
-        </class>
-        <class className="KOAProgressBar" superclassName="UIProgressView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/KOAProgressBar.h"/>
-        </class>
-        <class className="LandscapeMainGraphViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LandscapeMainGraphViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="buttonPress:"/>
-            </relationships>
-        </class>
-        <class className="MainGraphViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainGraphViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="buttonBack:"/>
-                <relationship kind="outlet" name="labelAccountNumber" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelAgencyNumber" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelEndDate" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelGrantor" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelLastUpdated" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelName" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelOverhead" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelStartDate" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelTitle" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tableSliceLabels" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="MenuViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MenuViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="buttonBack:"/>
-                <relationship kind="outletCollection" name="buttons" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="RootViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RootViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="tableMain" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
