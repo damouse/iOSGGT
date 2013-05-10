@@ -9,11 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
 
-@interface LandscapeMainGraphViewController : UIViewController <CPTPlotDataSource, CPTPlotSpaceDelegate>
+@interface LandscapeMainGraphViewController : UIViewController <CPTPlotDataSource, CPTPlotSpaceDelegate> {
+    
+}
+//@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttonsLegend;
 
 
 @property (nonatomic, strong) CPTGraphHostingView *hostView;
 @property (nonatomic, strong) CPTTheme *selectedTheme;
+- (IBAction)buttonPress:(id)sender;
 
 -(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate;
 - (void) initWithGrantArray:(NSMutableArray *)grantArray; //method takes in the array of grant objects, then performs some magic

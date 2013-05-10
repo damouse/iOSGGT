@@ -28,18 +28,26 @@
     double majorIntervalLengthForY;
     
     CPTPlotRange *test;
+    CPTPlotRange *lastRange;
     
     NSMutableArray *plots; //array of the plots created, just get the index of each to fetch grants
+    NSMutableArray *plotsOfEndDates;
     NSMutableArray *grants; //array of arrays of dictionarys. Grants[ Accounts {entries}]
+    NSMutableArray *endDateValues; //same as above
     
     NSArray *grantObjects; //saved just to retain metadata
     NSDate *refDate;
     NSTimeInterval oneDay;
+    
+    NSMutableArray *buttonReferences;
+    NSMutableArray *colors; //all avaliable colors for coloring plots
+    
 }
 
 @end
 
 @implementation LandscapeMainGraphViewController
+//@synthesize buttonsLegend;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,29 +63,22 @@
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES];
     
-    refDate = [NSDate dateWithTimeIntervalSinceReferenceDate:157680000]; //reference date is 2006
+ //reference date is 2006
     plots = [NSMutableArray array];
-    
-    //set up time stuff    
-    NSTimeInterval difference = [[NSDate date] timeIntervalSinceDate:refDate]; //difference between today and 2006
+    plotsOfEndDates = [NSMutableArray array];
+    endDateValues = [NSMutableArray array];
+    lastRange = nil;
 
-    minimumValueForXAxis = 0;
-    maximumValueForXAxis = difference;
-    minimumValueForYAxis = 0;
-    maximumValueForYAxis = 500000; //do this dynamically. Find the max of all grants
-    
     majorIntervalLengthForX = oneDay * 30 * 6; //half a month. Consider a year?
     majorIntervalLengthForY = 100000;
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
--(void) viewWillAppear:(BOOL)animated
-{
+-(void) viewWillAppear:(BOOL)animated {
     if(graph == nil)
         [self initPlot];
 }
@@ -91,6 +92,16 @@
     grants = [NSMutableArray array];
     grantObjects = grantArray;
     oneDay = 24 * 60 * 60;
+    refDate = [NSDate dateWithTimeIntervalSinceReferenceDate:157680000]; //2006 is the reference date
+    
+    //variables to set the bounds of the window
+    NSInteger largestValue = 0; //the largest value seen over all entries
+    NSInteger smallestValue = 0;
+    NSDate *earliestDate = [NSDate date]; //will break if all grants are listed in the future... unlikely
+    NSDate *latestDate = [NSDate dateWithTimeIntervalSince1970:0];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM/dd/YY"];
     
     //iterate over every grant. NOTE: the accounting entries have already been sorted
     //each element of the overarching array is an array representing a grant. Each element of this array is a dictionary
@@ -111,26 +122,60 @@
             //add this entry
             [accountEntries addObject:entry];
             lastEntry = [entry copy];
+            
+            //check to see if this entry breaks the bounds of the graph
+            if([earliestDate compare:[entry date]] == NSOrderedDescending) //earliestDate is later than entry date
+                earliestDate = [entry date];
+            if([latestDate compare:[entry date]] == NSOrderedAscending) //latestDate is earlier than entry date
+                latestDate = [entry date];
+            if(largestValue < [entry runningTotalToDate])
+                largestValue = [entry runningTotalToDate];
+            if(smallestValue > [entry runningTotalToDate])
+                smallestValue = [entry runningTotalToDate];
+            
         }   //END ENTRY LOOP
         
         [lastEntry setDate:[[lastEntry date] dateByAddingTimeInterval:1]]; //add this just so the end of the graph is level
         [accountEntries addObject:lastEntry];
         
+        //check if end date is later than anything else
+        
+        NSDate *endDate = [formatter dateFromString:[[grant getMetadata] objectForKey:@"endDate"]];
+        if([latestDate compare:endDate] == NSOrderedAscending) //latestDate is earlier than endDate
+            latestDate = endDate;
+        
         [grants addObject:accountEntries];
     } //END GRANTS LOOP
+    
+    //reset the bounds of the graph
+    NSTimeInterval earliest = [earliestDate timeIntervalSinceDate:refDate];
+    NSTimeInterval latest = [latestDate timeIntervalSinceDate:refDate];
+
+    minimumValueForXAxis = earliest - oneDay * 380; //the earliest date, plus a cushion of about a year
+    maximumValueForXAxis = latest + oneDay * 60; //the latest date, plus a cushion of two months
+    minimumValueForYAxis = smallestValue;
+    maximumValueForYAxis = largestValue; 
 }
 
 #pragma mark - Chart behavior
 -(void)initPlot {
+    //create array of avaliable colors for coloring plots
+    colors = [NSMutableArray arrayWithObjects:[CPTColor redColor], [CPTColor greenColor], [CPTColor blueColor], [CPTColor cyanColor], [CPTColor yellowColor],[CPTColor magentaColor],[CPTColor orangeColor],[CPTColor purpleColor], [CPTColor whiteColor], nil];
+    
     [self configureHost];
     [self configureGraph];
     [self configureXYChart];
     [self configureLegend];
     
-    //add ghost label (testing)
-    UILabel *testLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 100, 20)];
-    testLabel.text = @"Grant Name";
-    [self.view addSubview:testLabel];
+    //add ghost button
+    
+    //consider doing this programatically EDIT: programatically might not work for screen sizes, keep it like this for now
+    /*for(UIButton *button in buttonsLegend) {
+        [self.view bringSubviewToFront:button];
+        button.alpha = 0.5f;
+        
+    }*/
+    
 }
 
 -(void)configureHost {
@@ -199,6 +244,7 @@
                                                     length:CPTDecimalFromDouble(ceil( (maximumValueForYAxis - minimumValueForYAxis) / majorIntervalLengthForY ) * majorIntervalLengthForY)];
     
     test = plotSpace.yRange;
+    lastRange = plotSpace.xRange;
     
     // this allows the plot to respond to touch events
     [plotSpace setDelegate:self]; //set delegate fromm other file  ABE: what does this mean?
@@ -268,15 +314,19 @@
     
 
     
-        // Create plots for every grant
+    // Create plots for every grant
     //graph line style 
     CPTMutableLineStyle *dataLineStyle = [CPTMutableLineStyle lineStyle];
+    CPTMutableLineStyle *endLineStyle = [CPTMutableLineStyle lineStyle];
     dataLineStyle.lineWidth = 1.0f;
+    endLineStyle.lineWidth = 1.0f;
+    endLineStyle.dashPattern = [NSArray arrayWithObjects:[NSDecimalNumber numberWithInt:1],[NSDecimalNumber numberWithInt:3], nil];
     
-    //create array of avaliable colors for coloring plots
-    NSMutableArray *colors = [NSMutableArray arrayWithObjects:[CPTColor redColor], [CPTColor greenColor], [CPTColor blueColor], [CPTColor cyanColor], [CPTColor yellowColor],[CPTColor magentaColor],[CPTColor orangeColor],[CPTColor purpleColor], nil];
+    int indexColor = 0;
     
     for(GrantObject *grant in grantObjects) {
+        
+        //part 1: plot the grant
         CPTScatterPlot *dataSourceLinePlot = [[CPTScatterPlot alloc] initWithFrame:graph.bounds];
         dataSourceLinePlot.identifier = [[grant getMetadata] objectForKey:@"title"];
         dataSourceLinePlot.dataSource = self;
@@ -284,43 +334,102 @@
         dataSourceLinePlot.plotSymbolMarginForHitDetection = 10;
         
         //assign this plot the color, then remove it. Multiple runs of this loop should retain color pairing
-        dataLineStyle.lineColor = [colors objectAtIndex:0];
-        [colors removeObjectAtIndex:0];
+        dataLineStyle.lineColor = [colors objectAtIndex:indexColor];
         dataSourceLinePlot.dataLineStyle = dataLineStyle;
         
         [graph addPlot:dataSourceLinePlot];
         [plots addObject:dataSourceLinePlot]; //the index at which this was added corresponds to the index of this grant in "grants" array
+        
+        //part 2: plot the end date of the grant as a vertical, dotted line with the same color
+        //NSNumber *endDate = [self dateAsTimeIntervalFromString:[[grant getMetadata] objectForKey:@"endDate" ]];
+        NSMutableArray *verticalEntries = [NSMutableArray array];
+        
+        //add the first data point, way down
+        CPTScatterPlot *endLinePlot = [[CPTScatterPlot alloc] initWithFrame:graph.bounds];
+        endLineStyle.lineColor = [colors objectAtIndex:indexColor];
+        endLinePlot.identifier = @"endLine";
+        endLinePlot.dataSource = self;
+        endLinePlot.delegate = self;
+        endLinePlot.dataLineStyle = endLineStyle;
+        
+        AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[[grant getMetadata] objectForKey:@"endDate"]];
+        [entry setRunningTotalToDate:-1000000];
+        [verticalEntries addObject:entry];
+        
+        entry = [entry copy];
+        [entry setDate:[[entry date] dateByAddingTimeInterval:1]];
+        [entry setRunningTotalToDate:100000000];
+        [verticalEntries addObject:entry];
+        
+        [endDateValues addObject:verticalEntries];
+        [plotsOfEndDates addObject:endLinePlot];
+        [graph addPlot:endLinePlot];
+        
+        //end part 2
+        indexColor++; //get the next color in the array
     }
 }
 
+//this used to be the coreplot legend method, but its customized to run off buttons linked from IB
+//spin through all grants, make the IB buttons visible, set the color correctly
 -(void)configureLegend {
-	// 2 - Create legend
-	CPTLegend *theLegend = [CPTLegend legendWithGraph:graph];
+    //buttons are tagged from 100 to 119, in order from top to bottom, right to left. Maximum supported grants:20. All start hidden.
+    //consider putting them in a table to remove the upper limit
+    buttonReferences = [NSMutableArray array];
+    int buttonTagIndex = 100;
+    int colorIndex = 0;
     
-	// 3 - Configure legen
-	theLegend.numberOfColumns = 1;
-	theLegend.fill = [CPTFill fillWithColor:[CPTColor whiteColor]];
-	theLegend.borderLineStyle = [CPTLineStyle lineStyle];
-	theLegend.cornerRadius = 5.0;
+    NSArray *plotColors = [NSArray arrayWithObjects:[UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor],[UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], [UIColor grayColor], [UIColor whiteColor], nil];
     
-	// 4 - Add legend to graph
-	graph.legend = theLegend;
-	graph.legendAnchor = CPTRectAnchorRight;
-	//CGFloat legendPadding = -(self.view.bounds.size.width / 10);
-	//graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
+    for(GrantObject *grant in grantObjects) {
+        UIButton *button = (UIButton *)[self.view viewWithTag:buttonTagIndex];
+        [button setTitle:[[grant getMetadata] objectForKey:@"title"] forState:UIControlStateNormal];
+        
+        UIColor *temp = [plotColors objectAtIndex:colorIndex];
+        
+        const CGFloat* components = CGColorGetComponents(temp.CGColor);
+        
+        button.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:.4];
+        [[button layer] setCornerRadius:8.0f];
+        [[button layer] setMasksToBounds:YES];
+        [[button layer] setBorderWidth:1.0f];
+        //[[button layer] setOpacity:0.5];
+        
+        buttonTagIndex++;
+        colorIndex++;
+        
+        [button setHidden:NO];
+        [self.view bringSubviewToFront:button];
+        [buttonReferences addObject:button];
+    }
 }
 
 #pragma mark - CPTPlotDataSource methods
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
-    NSArray *grant = [grants objectAtIndex:0];
+    int i = [plots indexOfObject:plot];
     
+    if(i == NSNotFound) {
+        return 2;
+    }
+    
+    NSArray *grant = [grants objectAtIndex:i];
     return  grant.count;
 }
 
 //fetches the index of the appropriate plot, uses that index to retrieve the array of acocunting entries from the grant indexed. 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index {
+    NSArray *grant;
+
     int i = [plots indexOfObject:plot];
-    NSArray *grant = [grants objectAtIndex:i];
+    
+    if(i == NSNotFound) {
+        int i = [plotsOfEndDates indexOfObject:plot];
+        grant = [endDateValues objectAtIndex:i];
+    }
+    else {
+        grant = [grants objectAtIndex:i];
+    }
+    
     AccountEntryObject *entry = [grant objectAtIndex:index];
     
     if(fieldEnum == CPTScatterPlotFieldY) {
@@ -334,66 +443,67 @@
 }
 
 //allows the user to click on individual plot points. Consider a popup, or a transistion to another VC
--(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:    (NSUInteger)index
-{
+-(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex: (NSUInteger)index {
     NSLog(@"plotSymbolWasSelectedAtRecordIndex %d", index);
 }
 
 #pragma mark Plot Customization Methods
--(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate {
-    //CPTPlotRange *new = [CPTPlotRange plotRangeWithLocation:[[[NSDecimalNumber alloc] initWithInt:10] decimalValue] length:[[[NSDecimalNumber alloc] initWithInt:1] decimalValue]];
+//when a button is pressed, toggle opacity of button and visibility of plot
+- (IBAction)buttonPress:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    int index = [buttonReferences indexOfObject:button];
+    CPTScatterPlot *plot = [plots objectAtIndex:index];
+    CPTScatterPlot *end = [plotsOfEndDates objectAtIndex:index];
     
+    if(button.alpha == 1) {
+        button.alpha = .2;
+        plot.hidden = YES;
+        end.hidden = YES;
+    }
+    else {
+        button.alpha = 1;
+        plot.hidden = NO;
+        end.hidden = NO;
+    }
+}
+
+-(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate {    
     if(coordinate == 0) {//if x coordinate, allow modification
+        //NSLog(@"%@", newRange);
         
-        //if the length passes a certain amount, resize the interval ticks to keep them readable
         CPTXYAxisSet *axisSet = (id)graph.axisSet;
         
+        //set the maximum zoom
+        if(newRange.lengthDouble <= 15000000)
+            return lastRange;
+        
+        
+        //constrict the horizontal scrolling to the maximum values + 1yr
+        /*if(newRange.locationDouble < minimumValueForXAxis) { //this is stuttery, values that are only a little smaller will work, big swipes make it ehh
+            //NSLog(@")
+            return lastRange;
+        }*/
+        
+        
+        //if the length passes a certain amount, resize the interval ticks to keep them readable
         if(newRange.lengthDouble > 140000000)
-            axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX*2);
+            axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX * 2);
+        else if(newRange.lengthDouble < 35000000)
+            axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX / 4);
         else if(newRange.lengthDouble < 70000000)
-            axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX/2);
+            axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX / 2);
         else
             axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX);
         
+        //remember the last range in case we want to freeze
+        lastRange = newRange;
         return newRange;
     }
     else //dont let the y axis zoom or scroll
         return test;
 }
 
-/*-(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index {
-	// 1 - Define label text style
-	static CPTMutableTextStyle *labelText = nil;
-	if (!labelText) {
-		labelText= [[CPTMutableTextStyle alloc] init];
-		labelText.color = [CPTColor grayColor];
-	}
-	// 2 - Calculate portfolio total value
-	NSDecimalNumber *portfolioSum = [NSDecimalNumber zero];
-	for (NSDecimalNumber *price in dataPoints) {
-		portfolioSum = [portfolioSum decimalNumberByAdding:price];
-	}
-    
-	// 3 - Calculate percentage value
-	NSDecimalNumber *price = [dataPoints objectAtIndex:index];
-	NSDecimalNumber *percent = [price decimalNumberByDividingBy:portfolioSum];
-    
-	// 4 - Set up display label
-	NSString *labelValue = [NSString stringWithFormat:@"$%0.2f USD (%0.1f %%)", [price floatValue], ([percent floatValue] * 100.0f)];
-    
-	// 5 - Create and return layer with label text
-	return [[CPTTextLayer alloc] initWithText:labelValue style:labelText]; //not this
-}*/
 
-/*-(NSString *)legendTitleForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)index {
-	if (index < [dataPoints count]) {
-		if(index == 1)
-            return @"Budget"; //HACKED FIX HERE
-        if(index == 0)
-            return @"Remaining"; //HACKED FIX HERE
-	}
-	return @"N/A";
-}*/
 
 ///////////////////////////////////// CODE from the other project, kepy around for referance on how to change
 
@@ -463,34 +573,6 @@
     return YES;
 }
 
-
-#pragma mark -
-#pragma mark Plot Space Delegate Methods
-
-/*-(BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDraggedEvent:(id)event atPoint:(CGPoint)interactionPoint
-{
-    if ( zoomAnnotation ) {
-        CPTPlotArea *plotArea = graph.plotAreaFrame.plotArea;
-        CGRect plotBounds     = plotArea.bounds;
-        
-        // convert the dragStart and dragEnd values to plot coordinates
-        CGPoint dragStartInPlotArea = [graph convertPoint:dragStart toLayer:plotArea];
-        CGPoint dragEndInPlotArea   = [graph convertPoint:interactionPoint toLayer:plotArea];
-        
-        // create the dragrect from dragStart to the current location
-        CGFloat endX      = MAX( MIN( dragEndInPlotArea.x, CGRectGetMaxX(plotBounds) ), CGRectGetMinX(plotBounds) );
-        CGFloat endY      = MAX( MIN( dragEndInPlotArea.y, CGRectGetMaxY(plotBounds) ), CGRectGetMinY(plotBounds) );
-        CGRect borderRect = CGRectMake( dragStartInPlotArea.x, dragStartInPlotArea.y,
-                                       (endX - dragStartInPlotArea.x),
-                                       (endY - dragStartInPlotArea.y) );
-        
-        zoomAnnotation.contentAnchorPoint = CGPointMake(dragEndInPlotArea.x >= dragStartInPlotArea.x ? 0.0 : 1.0,
-                                                        dragEndInPlotArea.y >= dragStartInPlotArea.y ? 0.0 : 1.0);
-        zoomAnnotation.contentLayer.frame = borderRect;
-    }
-    
-    return NO;
-}*/
-
+#pragma mark Auxilliary
 
 @end

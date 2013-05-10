@@ -21,6 +21,7 @@
 #import "AccountTableViewController.h"
 #import "PieSliceView.h"
 #import "AccountLabelTableViewCell.h"
+#import "QuartzCore/QuartzCore.h"
 
 @interface MainGraphViewController () {
     GrantObject *grant;
@@ -29,6 +30,10 @@
     
     NSMutableArray *labelsAndColors; // slice labels paired with their respective colors
     int currentColor;
+    
+    PieSliceView *currentlyAnimatingSlice;
+    int currentlyAnimatingSliceIndex;
+
 }
 
 @end
@@ -64,6 +69,8 @@
     
     [self populatePieChart];
     labelTitle.text = [[grant getMetadata] objectForKey:@"title"];
+    
+    labelStartDate.text = @"";
 }
 
 #pragma mark Data
@@ -86,32 +93,31 @@
     float totalBudget = [[budget objectForKey:@"Amount"] floatValue]; //should this be dynamic on "amount?"
     float runningTotal = 0; //this is how far into the total budget the accounts have taken us. Should add up to total budget.
     float currentBudget;
-    float percentFill;
+    float percentFillEnd;
+    float percentFillStart;
     
     PieSliceView *slice;
     slices = [NSMutableArray array];
     
     for(NSString *account in accounts) { //TODO: put checks for negative numbers
         if(![account isEqualToString:@""] && ![account isEqualToString:@"Amount"]) {
-            NSLog(@"creating slice for %@", account);
+
             slice = [self createNewSlice: account];
             
             currentBudget = [[budget objectForKey:account] floatValue]; //fetch value
-            percentFill = (currentBudget + runningTotal) / totalBudget; //divide it by total (with current total)
+            percentFillEnd = (currentBudget + runningTotal) / totalBudget; //divide it by total (with current total)
+            percentFillStart = runningTotal / totalBudget;
             runningTotal += currentBudget; //increment total
             
-            [slice setPercentFill:percentFill];
-            [slices insertObject:slice atIndex:0];
+            [slice setAngleEnd:percentFillEnd];
+            [slice setAngleStart:percentFillStart];
+            [slice setProgress:percentFillStart];
+            
+            [slices addObject:slice];
         }
     }
-    
-    //[slices sortedArrayUsingSelector:@selector(compare:)];
-    
-    for(PieSliceView *slice in slices) {
-        NSLog(@"Slice Percent %f", [slice percentFill]);
-        [self.view bringSubviewToFront:slice]; //im not sure why this wasn't working... this should not have to be here. 
-        [slice animateSlice];
-    }
+
+    [self animateSlice]; //now animates all slices
 }
 
 //create a new pieslice centered at the middle of the screen. Add the label to 
@@ -122,7 +128,14 @@
     slice.color = [sliceColors objectAtIndex:currentColor];
     [labelsAndColors insertObject:accountName atIndex:0];
     
+    NSLog(@"creating slice for %@ color index %i color %@", accountName, currentColor, [sliceColors objectAtIndex:currentColor]);
+    
     currentColor++; //go to next color
+    
+    /*CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetStrokeColorWithColor(context, [[UIColor whiteColor] CGColor]);
+    CGContextSetShadowWithColor(context, CGSizeMake(0, 5), 5.0, [[UIColor blackColor]CGColor]);
+    CGContextDrawPath(context, kCGPathFill);*/
     
     [self.view addSubview:slice];
     
@@ -132,10 +145,10 @@
 //return a rect that is centered at the hardcoded coordinates
 -(CGRect) getCenteredRect:(float)size {
     float halfWidth = self.view.frame.size.width  / 3;
-    float xOrigin = halfWidth - size / 2;
+    float xOrigin = halfWidth - size / 2 - 2;
     
     float halfHeight = self.view.frame.size.height  / 3;
-    float yOrigin = halfHeight - size / 2;
+    float yOrigin = halfHeight - size / 2 + 8;
     
     return CGRectMake(xOrigin, yOrigin, size, size);
 }
@@ -170,6 +183,35 @@
     }
 }
 
+
+//Recursive call to animate the slice open. TODO: make a logarithmic timer so the animation is smoother.
+- (void) animateSlice {    
+    //intialize with the first slice
+    if(currentlyAnimatingSlice == nil){
+        currentlyAnimatingSliceIndex = 0;
+        currentlyAnimatingSlice = [slices objectAtIndex:0];
+    }
+    
+    if([currentlyAnimatingSlice progress] < [currentlyAnimatingSlice angleEnd]) { //continue animating this slice if its not yet finished
+        currentlyAnimatingSlice.progress += .01;
+        [currentlyAnimatingSlice setNeedsDisplay];
+        [NSTimer scheduledTimerWithTimeInterval:0.005 target:self selector:@selector(animateSlice) userInfo:nil repeats:NO];
+    }
+    else { //if this slice has reached its goal, move to the next and continue the calls       
+        
+        currentlyAnimatingSliceIndex++;
+        if(currentlyAnimatingSliceIndex < slices.count){
+            currentlyAnimatingSlice = [slices objectAtIndex:currentlyAnimatingSliceIndex];
+            
+            [self animateSlice];
+        }
+        else { //if were here, then all slices have been animated. Explode them all out
+            for(PieSliceView *slice in slices)
+                [slice animateSlice];
+        }
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -182,25 +224,35 @@
     return labelsAndColors.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     AccountLabelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"accountLabel" forIndexPath:indexPath];
     
     if (cell == nil) {
         cell = [[AccountLabelTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"accountLabel"];
     }
+
+    UIColor *temp = [sliceColors objectAtIndex:indexPath.row];
+    const CGFloat* components = CGColorGetComponents(temp.CGColor);
+    
+    if(![temp isEqual:[UIColor grayColor]]) //changing the opacity of gray turns it green for some reason. 
+        temp = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:.6];
+    
+    cell.labelName.backgroundColor = temp;
+    
+    [[cell.labelName layer] setCornerRadius:8.0f];
+    [[cell.labelName layer] setMasksToBounds:YES];
+    //[[cell.labelName layer] setBorderWidth:1.0f];
     
     int index = slices.count - indexPath.row - 1; //colors array is in increasing order (in terms of relative index), slices and names are NOT
     cell.viewColor.backgroundColor = [sliceColors objectAtIndex:indexPath.row];
-    cell.labelName.text = [labelsAndColors objectAtIndex:index]; //matching is correct, just need to switch the order
-    //cell.labelName.text =
+
+    cell.labelName.text = [NSString stringWithFormat:@" %@",[labelsAndColors objectAtIndex:index]]; //matching is correct, just need to switch the order
+    
+    
+    NSLog(@"cell index %d name%@ color %@", indexPath.row, cell.labelName.text, [sliceColors objectAtIndex:indexPath.row]);
     
     return cell;
 }
-
-/*- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 20;
-}*/
 
 #pragma mark - Table view delegate
 

@@ -20,10 +20,14 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation PieSliceView {
-    float progress;
+    float explodeProgress;
+    float explodeX; //use sin to get proper mutation
+    float explodeY; //use cos
+    float explodeAngleX;
+    float explodeAngleY;
 }
 
-@synthesize path;
+@synthesize path, angleEnd, angleStart, progress;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -31,17 +35,10 @@
     if (self) {
         self.backgroundColor = [UIColor clearColor]; //consider creating a frame here?
     }
-    
+    explodeProgress = 0;
+    explodeX = 0;
+    explodeY = 0;
     return self;
-}
-
-- (void)setPercentFill:(CGFloat)percentFill {
-    NSLog(@"percentFill: %f", percentFill);
-    progress = 0;
-    
-    if (percentFill != _percentFill) {
-        _percentFill = percentFill;
-    }
 }
 
 //this should EITHER be changed to draw for given radians OR we have to detect what overlaying hubs are active
@@ -49,39 +46,65 @@
     if ([self color] == nil)
         [self setColor:[UIColor whiteColor]];
     
-    CGPoint center = CGPointMake(rect.size.width/2, rect.size.height/2);
-    CGFloat radius = MIN(rect.size.width, rect.size.height)/2;
+    if(progress != angleStart) {
+        //only animate explode stuff if explodeProgress != 0
+        if(explodeProgress != 0) {
+            explodeX = explodeProgress * explodeAngleX;
+            explodeY = explodeProgress * explodeAngleY;
+        }
+        
+        CGPoint center = CGPointMake(rect.size.width/2 + explodeX, rect.size.height/2 + explodeY);
+        CGFloat radius = MIN(rect.size.width, rect.size.height)/2 - 10; //pull this back 15 so it doesnt draw outside of its frame
 
-    path = [UIBezierPath bezierPath];
+        //NSLog(@"x %.0f y %.0f ", center.x, center.y);
+        
+        path = [UIBezierPath bezierPath];
     
-    // Move to centre and draw an arc.
-    [path moveToPoint:center];
-    [path addArcWithCenter:center radius:radius startAngle:0 - M_PI_2 // zero degrees is east, not north, so subtract pi/2
+        // Move to centre and draw an arc.
+        [path moveToPoint:center];
+        [path addArcWithCenter:center radius:radius startAngle:2 * M_PI * angleStart - M_PI_2 // zero degrees is east, not north, so subtract pi/2
                   endAngle:2 * M_PI * progress - M_PI_2 // ditto
                  clockwise:YES];
-    [path closePath];
+        [path closePath];
     
-    path.usesEvenOddFillRule = YES;
+        path.usesEvenOddFillRule = YES;
     
-    [[self color] setFill];
-    [path fill];
+        [[self color] setFill];
+        [path fill];
+        
+        [self.layer setShadowOpacity:0.8];
+        [self.layer setShadowRadius:3.0f];
+    }
+    
+    
 }
 
-//Recursive call to animate the slice open. TODO: make a logarithmic timer so the animation is smoother. 
+//animate the slice outwards a bit
 - (void) animateSlice {
-    if(progress < _percentFill) {
-        progress += .005;
+    //intialize with the first slice
+    
+    //if this is the first time this method is being called, then calculate the correct angle to explode through
+    if(explodeProgress == 0) {
+        explodeAngleX = sin(((angleStart + angleEnd) / 2) * 2 * M_PI); //this is the direction of the explosion
+        explodeAngleY = -cos(((angleStart + angleEnd) / 2) * 2 * M_PI);
+        
+        NSLog(@"slice %@ angle %.3f x %.3f y%.3f", [self accountName], ((angleStart + angleEnd) / 2), explodeAngleX, explodeAngleY);
+    }
+    //NSLog(@"pi %f cos(pi) %f sin(pi) %f", M_PI, cos(M_PI), sin(M_PI));
+    
+    if(explodeProgress < 5) { //continue animating this slice if its not yet finished
+        explodeProgress += 1;
         [self setNeedsDisplay];
-        [NSTimer scheduledTimerWithTimeInterval:0.005 target:self selector:@selector(animateSlice) userInfo:nil repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(animateSlice) userInfo:nil repeats:NO];
     }
 }
 
 #pragma mark Class specific
 //custom compare method so array can be sorted. The larger object goes first.
 - (NSComparisonResult)compare:(PieSliceView *)other {
-    if(_percentFill > [other percentFill])
+    if(angleEnd > [other angleEnd])
         return NSOrderedAscending;
-    if(_percentFill < [other percentFill])
+    if(angleEnd < [other angleEnd])
         return NSOrderedDescending;
     return NSOrderedSame;
 }
@@ -96,7 +119,7 @@
 
 - (NSString *)accessibilityValue {
     // Report percentFill as a percentage, same as UISlider, UIpercentFillView
-    return [NSString stringWithFormat:@"%d%%", (int)round([self percentFill] * 100.0)];
+    return [NSString stringWithFormat:@"%d%%", (int)round([self angleEnd] * 100.0)];
 }
 
 - (UIAccessibilityTraits)accessibilityTraits {

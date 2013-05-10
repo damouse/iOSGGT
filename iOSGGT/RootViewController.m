@@ -14,7 +14,11 @@
 #import "LandscapeMainGraphViewController.h"
 #import "AccountEntryObject.h"
 #import "GrantTableCell.h"
-@interface RootViewController ()
+
+
+@interface RootViewController () {
+    NSMutableData *jsonResponse;
+}
 
 @end
 
@@ -80,9 +84,15 @@
     //ui customization
     [self.navigationController setNavigationBarHidden:YES];
     tableMain.backgroundColor = [UIColor clearColor];
-    
-    
+
     //make API calls here
+    /*jsonResponse = [NSMutableData data];
+    
+    NSURL *url = [NSURL URLWithString:@"http://pages.cs.wisc.edu/~mihnea/login.php?user=mickey&pass=mickeypass"];
+    NSURLRequest *req = [NSURLRequest requestWithURL:url];
+    NSURLConnection *connection = [NSURLConnection connectionWithRequest:req delegate:self];
+    
+    [connection start];*/
     
     grants = [self parseCSVFiles:nil];
 
@@ -215,6 +225,97 @@
     self.navigationItem.backBarButtonItem = backButton; //need this, else name too long for nav bar
     
     [self.navigationController pushViewController:mainGraph animated:YES];
+}
+
+
+#pragma mark NSURLConnection Methods
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    [jsonResponse setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    [jsonResponse appendData:data];;
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSString *responseString = [[NSString alloc] initWithData:jsonResponse encoding:NSUTF8StringEncoding];
+    NSLog(@"Response: %@",responseString);
+    
+    NSData *jsonData = [responseString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	NSError *error = nil;
+    
+    //NSDictionary *parsedData = [[CJSONDeserializer deserializer] deserialize:jsonData error:&error];
+    
+    if (error != nil)
+    {
+        NSLog(@"CJSONDeserializer Error: %@", [error description]);
+        
+        NSString *jsonDataString = [[NSString alloc] initWithData:jsonData encoding:NSUTF32BigEndianStringEncoding];
+        
+        NSString *fullError = [NSString stringWithFormat:@"%@",jsonDataString];
+        
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Error" message: fullError delegate:self
+                              cancelButtonTitle:@"OK" otherButtonTitles:nil]; //@"Connection error! Are you connected to the internet?"
+        [alert show];
+    }
+    /*else if([parsedData objectForKey:@"status"] && [[parsedData objectForKey:@"status"] isEqualToString:@"success"] && [[parsedData objectForKey:@"data"] objectForKey:@"token"]){
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:YES forKey:@"loggedIn"];
+        [defaults setObject:[[parsedData objectForKey:@"data"] objectForKey:@"token"] forKey:@"token"];
+        [defaults setObject:[[parsedData objectForKey:@"data"] objectForKey:@"email"] forKey:@"email"];
+        [defaults setObject:[[parsedData objectForKey:@"data"] objectForKey:@"city" ] forKey:@"city" ];
+        [defaults setObject:[[parsedData objectForKey:@"data"] objectForKey:@"state"] forKey:@"state"];
+        [defaults synchronize];
+        
+        NSLog(@"Token: %@", [[parsedData objectForKey:@"data"] objectForKey:@"token"]);
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else if([parsedData objectForKey:@"status"] && [[parsedData objectForKey:@"status"] isEqualToString:@"fail"] && [parsedData objectForKey:@"message"]){
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Error" message: [parsedData objectForKey:@"message"] delegate:self
+                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Error" message:@"Log in failed." delegate:self
+                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    */
+    [connection cancel];
+    //connectionInProgress = NO;
+    //[activityIndicator stopAnimating];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSLog(@"Error During Connection: %@", [error description]);
+    
+    NSString *responseString = [[NSString alloc] initWithData:jsonResponse encoding:NSUTF8StringEncoding];
+    //   NSLog(@"Response: %@",responseString);
+    
+    NSData *jsonData = [responseString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+    
+    NSString *jsonDataString = [[NSString alloc] initWithData:jsonData encoding:NSUTF32BigEndianStringEncoding];
+    
+    NSString *fullError = [NSString stringWithFormat:@"%@\n\n%@", [error description], jsonDataString];
+    
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Error" message: fullError delegate:self
+                          cancelButtonTitle:@"OK" otherButtonTitles:nil]; //@"Connection error! Are you connected to the internet?"
+    [alert show];
+    
+    [connection cancel];
+    //connectionInProgress = NO;
+    //[activityIndicator stopAnimating];
 }
 
 @end
