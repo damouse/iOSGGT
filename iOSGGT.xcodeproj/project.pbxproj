@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D7002B4F1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */; };
+		D703EEC117404A4E00B21D31 /* DirectoryEditorTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D703EEC017404A4E00B21D31 /* DirectoryEditorTableViewController.m */; };
+		D703EEC517404BD600B21D31 /* DirectoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D703EEC417404BD600B21D31 /* DirectoryTableViewCell.m */; };
 		D7329A381729AA4700D64341 /* GrantObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D7329A371729AA4700D64341 /* GrantObject.m */; };
 		D7329A3C1729B0A600D64341 /* AccountEntryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D7329A3B1729B0A600D64341 /* AccountEntryObject.m */; };
 		D758E5E01733415200F93FAC /* gradient_background.png in Resources */ = {isa = PBXBuildFile; fileRef = D758E5DF1733415200F93FAC /* gradient_background.png */; };
@@ -64,6 +66,10 @@
 /* Begin PBXFileReference section */
 		D7002B4D1721FC5A00F6E6EA /* LandscapeMainGraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeMainGraphViewController.h; sourceTree = "<group>"; };
 		D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeMainGraphViewController.m; sourceTree = "<group>"; };
+		D703EEBF17404A4E00B21D31 /* DirectoryEditorTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryEditorTableViewController.h; sourceTree = "<group>"; };
+		D703EEC017404A4E00B21D31 /* DirectoryEditorTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryEditorTableViewController.m; sourceTree = "<group>"; };
+		D703EEC317404BD600B21D31 /* DirectoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryTableViewCell.h; sourceTree = "<group>"; };
+		D703EEC417404BD600B21D31 /* DirectoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryTableViewCell.m; sourceTree = "<group>"; };
 		D7329A361729AA4700D64341 /* GrantObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrantObject.h; sourceTree = "<group>"; };
 		D7329A371729AA4700D64341 /* GrantObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrantObject.m; sourceTree = "<group>"; };
 		D7329A3A1729B0A600D64341 /* AccountEntryObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountEntryObject.h; sourceTree = "<group>"; };
@@ -233,6 +239,8 @@
 		D758E5E8173342AB00F93FAC /* Custom Table Cells */ = {
 			isa = PBXGroup;
 			children = (
+				D703EEC317404BD600B21D31 /* DirectoryTableViewCell.h */,
+				D703EEC417404BD600B21D31 /* DirectoryTableViewCell.m */,
 				D77078B51729C5D2001501AF /* GrantTableCell.h */,
 				D77078B61729C5D2001501AF /* GrantTableCell.m */,
 				D758E5E917334EA400F93FAC /* AccountEntryTableCell.h */,
@@ -364,6 +372,8 @@
 		D7A917B7170A589000B005E5 /* Modal View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D703EEBF17404A4E00B21D31 /* DirectoryEditorTableViewController.h */,
+				D703EEC017404A4E00B21D31 /* DirectoryEditorTableViewController.m */,
 				D7A917B4170A587500B005E5 /* MenuViewController.h */,
 				D7A917B5170A587500B005E5 /* MenuViewController.m */,
 			);
@@ -618,6 +628,8 @@
 				D781AAC5173480730008F1E6 /* KOAProgressBar.m in Sources */,
 				D781AAC7173480730008F1E6 /* koaGradient.m in Sources */,
 				D7EF9BCE173AFDD200722D17 /* AccountLabelTableViewCell.m in Sources */,
+				D703EEC117404A4E00B21D31 /* DirectoryEditorTableViewController.m in Sources */,
+				D703EEC517404BD600B21D31 /* DirectoryTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
