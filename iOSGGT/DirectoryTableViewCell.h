@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DirectoryTableViewCell : UITableViewCell
+@interface DirectoryTableViewCell : UITableViewCell 
 
+@property (weak, nonatomic) IBOutlet UITextField *textfieldNickname;
+@property (weak, nonatomic) IBOutlet UILabel *labelDate;
+@property (weak, nonatomic) IBOutlet UITextView *textviewURL;
+@property (weak, nonatomic) IBOutlet UITextView *textfieldGrants;
 @end

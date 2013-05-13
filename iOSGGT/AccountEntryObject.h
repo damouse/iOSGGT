@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AccountEntryObject : NSObject
+@interface AccountEntryObject : NSObject <NSCoding>
 
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) NSString *label; //the name of the entry, "budget allocation" or a name usually

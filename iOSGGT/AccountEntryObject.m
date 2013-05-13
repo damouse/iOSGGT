@@ -50,4 +50,30 @@
     return [NSNumber numberWithDouble:difference];
 }
 
+#pragma mark Coder/Archiver
+-(void)encodeWithCoder:(NSCoder *)encoder
+{    
+    [encoder encodeObject:date forKey:@"1"];
+    [encoder encodeObject:label forKey:@"2"];
+    [encoder encodeObject:accountName forKey:@"3"];
+    [encoder encodeObject:[NSNumber numberWithInt:amount] forKey:@"4"];
+    [encoder encodeObject:[NSNumber numberWithInt:runningTotalToDate] forKey:@"5"];
+    [encoder encodeObject:description forKey:@"6"];
+    
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    self = [super init];
+    
+    self.date = [decoder decodeObjectForKey:@"1"];
+    self.label = [decoder decodeObjectForKey:@"2"];
+    self.accountName = [decoder decodeObjectForKey:@"3"];
+    self.amount = [[decoder decodeObjectForKey:@"4"] intValue];
+    self.runningTotalToDate = [[decoder decodeObjectForKey:@"5"] intValue];
+    self.description = [decoder decodeObjectForKey:@"6"];
+    
+    
+    return self;
+}
 @end

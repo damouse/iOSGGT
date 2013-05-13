@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GrantObject : NSObject
+@interface GrantObject : NSObject <NSCoding>
 
 //All changes in the value of the account. Array holds accountentryobjects
 @property (strong, nonatomic) NSMutableArray *accountEntries;
+@property (strong, nonatomic) NSString *timeLastAccessed;
+@property (strong, nonatomic) NSString *fileName;
 
 -(id)initWithCSVArray:(NSArray *)csvFile;
 
@@ -25,4 +27,5 @@
 
 //Keys: {dateLastAccessed, startDate, endDate, name, accountNumber, grantor, title, overhead, awardNumber}
 - (NSDictionary *) getMetadata;
+
 @end

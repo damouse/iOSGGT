@@ -35,6 +35,8 @@
 //It is currently hardcoded just to test.
 -(id)initWithCSVArray:(NSArray *)csvFile
 {
+    NSLog(@"Grant Parse starting...");
+    
     self = [super init];
     metadata = [NSMutableDictionary dictionary];
     budget = [NSMutableDictionary dictionary];
@@ -62,7 +64,7 @@
     [metadata setObject:tmp forKey:@"title"];
     
     //column headers, main three
-    columnHeaders = [csvFile objectAtIndex:5];
+    columnHeaders = [NSMutableArray arrayWithArray:[csvFile objectAtIndex:5]];
     NSArray *budgetLine = [csvFile objectAtIndex:12]; //these are here so they can be replaced if we need to find them dynamically
     NSArray *balanceLine = [csvFile objectAtIndex:13];
     NSArray *paidLine = [csvFile objectAtIndex:15];
@@ -115,19 +117,23 @@
             //Second part of the parse: make an entry object for each non-zero account, add it accountEntriesWithAccount for detail controller
             for(NSString *header in columnHeaders) {
                 if(![header isEqualToString:@"Amount"]) {
-                    cell = [line objectAtIndex:j];
-                
-                    if(![cell isEqualToString:@"0.00"]){ //if entry is nonzero
                     
-                        //some string parsing to get the numbers to convert well; cents are omitted
-                        entry = [entry copy]; //just copy the entry, since only two values change
-                        [entry setAccountName:header];
-                        [entry setAmount:[self formatCurrency:cell]];
+                    if(j < [line count]) {
+                        cell = [line objectAtIndex:j];
                     
-                        [accountEntriesWithAccount addObject:entry]; //to retrieve entries for a specific account, search for accountName
+                        if(![cell isEqualToString:@"0.00"]){ //if entry is nonzero
+                        
+                            //some string parsing to get the numbers to convert well; cents are omitted
+                            entry = [entry copy]; //just copy the entry, since only two values change
+                            [entry setAccountName:header];
+                            [entry setAmount:[self formatCurrency:cell]];
+                        
+                            [accountEntriesWithAccount addObject:entry]; //to retrieve entries for a specific account, search for accountName
+                        }
+                    
+                        j++; //j tracks the index under column headers
+                        
                     }
-                
-                    j++; //j tracks the index under column headers
                 }
             }
         }
@@ -200,6 +206,8 @@
         [entry setRunningTotalToDate:currentTotal];
     }
     
+    NSLog(@"Grant Parse finished");
+    
     return self;
 }
 
@@ -237,5 +245,36 @@
     return accountEntriesWithAccount;
 }
 
+#pragma mark Coder/Archiver
+-(void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:accountEntries forKey:@"1"];
+    [encoder encodeObject:_timeLastAccessed forKey:@"2"];
+    [encoder encodeObject:_fileName forKey:@"3"];
+    [encoder encodeObject:metadata forKey:@"4"];
+    [encoder encodeObject:budget forKey:@"5"];
+    [encoder encodeObject:balance forKey:@"6"];
+    [encoder encodeObject:paid forKey:@"7"];
+    [encoder encodeObject:columnHeaders forKey:@"8"];
+    [encoder encodeObject:accountEntriesWithAccount forKey:@"9"];
+    
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    self = [super init];
+    
+    self.accountEntries =[decoder decodeObjectForKey:@"1"];
+    _timeLastAccessed =[decoder decodeObjectForKey:@"2"];
+    _fileName =[decoder decodeObjectForKey:@"3"];
+    self->metadata =[decoder decodeObjectForKey:@"4"];
+    self->budget =[decoder decodeObjectForKey:@"5"];
+    self->balance =[decoder decodeObjectForKey:@"6"];
+    self->paid =[decoder decodeObjectForKey:@"7"];
+    self->columnHeaders =[decoder decodeObjectForKey:@"8"];
+    self->accountEntriesWithAccount =[decoder decodeObjectForKey:@"9"];
+    
+    return self;
+}
 
 @end
