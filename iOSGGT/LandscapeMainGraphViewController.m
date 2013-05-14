@@ -112,6 +112,7 @@
         AccountEntryObject *lastEntry;
         //for each entry, create the horizontal entry and add it to the new array
         for(AccountEntryObject *entry in [grant accountEntries]) {
+            //NSLog(@"entry amount: %i", [entry amount]);
             
             //re-add the last entry with the date changed. Copy first.
             if(lastEntry != nil) {
@@ -146,6 +147,7 @@
         
         [grants addObject:accountEntries];
     } //END GRANTS LOOP
+    
     
     //reset the bounds of the graph
     NSTimeInterval earliest = [earliestDate timeIntervalSinceDate:refDate];

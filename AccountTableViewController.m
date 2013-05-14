@@ -46,6 +46,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return NO;
+}
+
 #pragma mark Data 
 //init the account table, reload table
 - (void) setGrantObject:(GrantObject *)grant withAccount:(NSString *)account {

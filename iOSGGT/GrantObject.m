@@ -35,7 +35,7 @@
 //It is currently hardcoded just to test.
 -(id)initWithCSVArray:(NSArray *)csvFile
 {
-    NSLog(@"Grant Parse starting...");
+    NSLog(@"Grant Parse starting...");    
     
     self = [super init];
     metadata = [NSMutableDictionary dictionary];
@@ -85,17 +85,11 @@
         i++;
     }
     
-    
     //Build an array of account entries
     i = 6; //budget allocations start on row 7 of the spreadsheet
-    
-    //NSString *name;
-    //NSString *date;
-    //CGFloat amount;
 
     NSArray *line = [csvFile objectAtIndex:i];
     NSString *cell = [line objectAtIndex:1];
-    NSString *temp;
 
     //parse the allocations
     while(![cell isEqualToString:@"Current Budget:"]) {
@@ -108,6 +102,7 @@
             AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0]];
             [entry setLabel:cell];
             [entry setAmount:[[line objectAtIndex:6] intValue]];
+            
             [entry setDescription:[NSString stringWithFormat:@" %@",[line objectAtIndex:4]]]; //keep a space in here, else the string is null
             
             [accountEntries addObject:entry];

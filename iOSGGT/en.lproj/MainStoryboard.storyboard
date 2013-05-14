@@ -4,11 +4,12 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Nonrotating Navigation Controller-->
         <scene sceneID="eTi-95-ITg">
             <objects>
-                <navigationController definesPresentationContext="YES" id="vDl-4e-9jF" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="vDl-4e-9jF" customClass="UINonrotatingNavigationController" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackOpaque" prompted="NO"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackOpaque" id="Yys-dv-lOB">
                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -156,6 +157,7 @@ EE5hbWUgb2YgR3JhbnQ
                     </view>
                     <navigationItem key="navigationItem" id="W4v-Ix-ATU"/>
                     <nil key="simulatedTopBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="tableMain" destination="iVX-I5-Ltb" id="iCp-PI-KDm"/>
@@ -244,7 +246,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="buttonBack:" destination="V3M-QY-xNf" eventType="touchUpInside" id="wvR-J3-n1r"/>
+                                    <action selector="buttonBack:" destination="NAW-Zl-Brr" eventType="touchUpInside" id="bVj-mO-pxR"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Menu" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0nI-tx-75x">
@@ -256,6 +258,7 @@ EE5hbWUgb2YgR3JhbnQ
                             </label>
                         </subviews>
                     </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outletCollection property="buttons" destination="Xpq-Xq-AfZ" id="fvK-4e-GEj"/>
                         <outletCollection property="buttons" destination="67n-t3-fg4" id="Vbf-55-BWB"/>
@@ -301,7 +304,7 @@ EE5hbWUgb2YgR3JhbnQ
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="buttonBack:" destination="V3M-QY-xNf" eventType="touchUpInside" id="1Pz-Hm-szg"/>
+                                        <action selector="buttonBack:" destination="wfb-w4-L0r" eventType="touchUpInside" id="OIb-eq-9PX"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="RG4-jL-36t">
@@ -315,7 +318,7 @@ EE5hbWUgb2YgR3JhbnQ
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="buttonBack:" destination="V3M-QY-xNf" eventType="touchUpInside" id="4LU-Ky-Uff"/>
+                                        <action selector="buttonInfo:" destination="wfb-w4-L0r" eventType="touchUpInside" id="yNZ-xi-bLf"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3O7-fJ-h27">
@@ -329,7 +332,7 @@ EE5hbWUgb2YgR3JhbnQ
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="buttonBack:" destination="V3M-QY-xNf" eventType="touchUpInside" id="v6y-M2-WeN"/>
+                                        <action selector="buttonAddDirectory:" destination="wfb-w4-L0r" eventType="touchUpInside" id="LAT-7p-qds"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -350,10 +353,13 @@ EE5hbWUgb2YgR3JhbnQ
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="4rq-6j-y0c">
                                             <rect key="frame" x="20" y="70" width="280" height="47"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="wfb-w4-L0r" id="xlc-lQ-QpW"/>
+                                            </connections>
                                         </textView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fEW-ET-4cj">
                                             <rect key="frame" x="155" y="41" width="113" height="21"/>
@@ -367,6 +373,9 @@ EE5hbWUgb2YgR3JhbnQ
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="wfb-w4-L0r" id="HKL-R1-y4a"/>
+                                            </connections>
                                         </textField>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Date Added:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7Tw-PE-3pg">
                                             <rect key="frame" x="52" y="41" width="95" height="21"/>
@@ -375,7 +384,7 @@ EE5hbWUgb2YgR3JhbnQ
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="emU-JJ-s1c">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" id="emU-JJ-s1c">
                                             <rect key="frame" x="20" y="132" width="280" height="76"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -399,11 +408,7 @@ EE5hbWUgb2YgR3JhbnQ
                             <outlet property="delegate" destination="wfb-w4-L0r" id="t7e-Go-U2P"/>
                         </connections>
                     </tableView>
-                    <connections>
-                        <outlet property="butotnBack" destination="4rL-cF-Ot2" id="hMC-hh-YQV"/>
-                        <outlet property="buttonAddDir" destination="3O7-fJ-h27" id="gIZ-Fw-NcF"/>
-                        <outlet property="buttonInfo" destination="RG4-jL-36t" id="Srf-b5-dpU"/>
-                    </connections>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5g2-ml-aZx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -443,7 +448,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="buttonBack:" destination="V3M-QY-xNf" eventType="touchUpInside" id="EgM-41-Mar"/>
+                                    <action selector="buttonBack:" destination="V3M-QY-xNf" eventType="touchUpInside" id="yo8-hd-YPY"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aYr-hG-38H">
@@ -773,6 +778,7 @@ EE5hbWUgb2YgR3JhbnQ
                             <outlet property="delegate" destination="mlm-SM-9Om" id="Tmt-NK-GGb"/>
                         </connections>
                     </tableView>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="labelAccountName" destination="ZBg-fZ-3Nd" id="ZsG-bq-0KL"/>
                         <outlet property="labelGrantName" destination="j13-wD-7tV" id="tvS-dj-Z3T"/>
@@ -1149,6 +1155,100 @@ EE5hbWUgb2YgR3JhbnQ
         <image name="header_gradient.png" width="1050" height="153"/>
         <image name="listCell.png" width="604" height="122"/>
     </resources>
+    <classes>
+        <class className="AccountEntryTableCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AccountEntryTableCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="labelAccountName" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelAmount" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelDate" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelDetail" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelName" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="AccountLabelTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AccountLabelTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="labelName" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="viewColor" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="AccountTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AccountTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonBack:"/>
+                <relationship kind="outlet" name="labelAccountName" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelGrantName" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="DirectoryEditorTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DirectoryEditorTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonAddDirectory:"/>
+                <relationship kind="action" name="buttonBack:"/>
+                <relationship kind="action" name="buttonInfo:"/>
+            </relationships>
+        </class>
+        <class className="DirectoryTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DirectoryTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="labelDate" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="textfieldGrants" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="textfieldNickname" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="textviewURL" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="GrantTableCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GrantTableCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="date" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelRemaining" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="name" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="progressBar" candidateClass="KOAProgressBar"/>
+            </relationships>
+        </class>
+        <class className="KOAProgressBar" superclassName="UIProgressView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/KOAProgressBar.h"/>
+        </class>
+        <class className="LandscapeMainGraphViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LandscapeMainGraphViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonPress:"/>
+            </relationships>
+        </class>
+        <class className="MainGraphViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainGraphViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonBack:"/>
+                <relationship kind="outlet" name="labelAccountNumber" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelAgencyNumber" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelEndDate" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelGrantor" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelLastUpdated" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelName" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelOverhead" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelStartDate" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelTitle" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="tableSliceLabels" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="MenuViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MenuViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonBack:"/>
+                <relationship kind="outletCollection" name="buttons" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="RootViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RootViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="tableMain" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="UINonrotatingNavigationController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UINonrotatingNavigationController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

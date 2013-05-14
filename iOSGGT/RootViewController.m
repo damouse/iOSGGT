@@ -8,12 +8,12 @@
 
 #import "RootViewController.h"
 #import "MainGraphViewController.h"
-#import "CHCSVParser.h"
 #import "GrantObject.h"
 
 #import "LandscapeMainGraphViewController.h"
 #import "AccountEntryObject.h"
 #import "GrantTableCell.h"
+#import "MBProgressHUD.h"
 
 
 @interface RootViewController () {
@@ -34,6 +34,9 @@
     NSString *currentlyActiveURL; //the URL currently being API called.
     NSMutableArray *grantsThatNeedRefreshing;
     NSMutableArray *directoriesThatNeedRefreshing;
+    
+    MBProgressHUD *hud;
+    BOOL needsRefresh;
 }
 
 @end
@@ -66,15 +69,16 @@
 - (void)orientationChanged:(NSNotification *)notification
 {
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-    
-    if (UIDeviceOrientationIsLandscape(deviceOrientation) && !isShowingLandscapeView) {
-        [self presentViewController:landscape animated:NO completion:nil];
-        isShowingLandscapeView = YES;
-    }
-    
-    else if (UIDeviceOrientationIsPortrait(deviceOrientation) && isShowingLandscapeView) {
-        [self dismissViewControllerAnimated:NO completion:nil];
-        isShowingLandscapeView = NO;
+    if(self.navigationController.topViewController == self) {
+        if (UIDeviceOrientationIsLandscape(deviceOrientation) && !isShowingLandscapeView) {
+            [self presentViewController:landscape animated:NO completion:nil];
+            isShowingLandscapeView = YES;
+        }
+        
+        else if (UIDeviceOrientationIsPortrait(deviceOrientation) && isShowingLandscapeView) {
+            [self dismissViewControllerAnimated:NO completion:nil];
+            isShowingLandscapeView = NO;
+        }
     }
 }
 
@@ -89,13 +93,41 @@
     //ui customization
     [self.navigationController setNavigationBarHidden:YES];
     tableMain.backgroundColor = [UIColor clearColor];
-
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+	[self.view addSubview:hud];
+	hud.dimBackground = YES;
+    hud.labelText = @"Loading";
+	hud.detailsLabelText = @"Querying API...";
+	hud.square = YES;
+    
+    [hud show:YES];
+    
     [self loadCachedGrants];
+}
+
+//check to make sure no new directories were added since last time we were here
+-(void)viewWillAppear:(BOOL)animated {
+    NSData *save = [[NSUserDefaults standardUserDefaults] objectForKey:@"directories"]; //note: init this in rootviewcontroller
+    
+    if(save != nil) {
+        directories = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:save]];
+        
+        for(int i = 0; i < [directories count]; i++) {
+            NSArray *grantArray = [[directories objectAtIndex:i] objectForKey:@"grants"];
+            if([grantArray count] == 0) {
+                [self loadCachedGrants];
+                break;
+            }
+        }
+    }        
 }
 
 #pragma mark Saved Directory
 //load and unarchive the cached grants. If this is the first time the app launched, include a temporary directory
 -(void) loadCachedGrants {
+    //remember to remove grants that are no longer present!
+    
     NSData *save = [[NSUserDefaults standardUserDefaults] objectForKey:@"directories"]; //note: init this in rootviewcontroller
     
     //if nothing exists, then this is the first time this has launched; add in my url for testing
@@ -105,11 +137,6 @@
         
         directory = [self createNewTutorialDirectory];
         [directories addObject:directory];
-        
-        //save the archive. Careful, have to create coders for grants and account entry objects, save elsewhere!
-        save = [NSKeyedArchiver archivedDataWithRootObject:[NSArray arrayWithArray:directories]];
-        [[NSUserDefaults standardUserDefaults] setObject:save forKey:@"directories"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else
         directories = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:save]];
@@ -122,7 +149,7 @@
 //this is the stateless, hub method for all the action that happens upon refresh or download. This method is called at the end of every
 //download call, mod call, and login; it establishes what happens next.
 -(void)grantRefreshHub {
-    //If the directoriesthatneedrefreshing and grantsthatneedrefreshing ar empty, we are done
+    //If the directoriesthatneedrefreshing and grantsthatneedrefreshing are empty, we are done
     NSLog(@"Hub: grantsRereshing: %i directoriesRefreshing: %i", [grantsThatNeedRefreshing count], [directoriesThatNeedRefreshing count]);
     
     if([grantsThatNeedRefreshing count] == 0){
@@ -138,6 +165,11 @@
                 }
             }
             
+            NSData* save = [NSKeyedArchiver archivedDataWithRootObject:[NSArray arrayWithArray:directories]];
+            [[NSUserDefaults standardUserDefaults] setObject:save forKey:@"directories"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [hud hide:YES];
             NSLog(@"Hub Finished. Grants: %i", [grants count]);
             [landscape initWithGrantArray:grants];
             [tableMain reloadData];
@@ -280,7 +312,7 @@
         
         //check to make sure we have the correct dir being refreshed
         if([[directory objectForKey:@"url"] isEqualToString:currentlyActiveURL]) {
-            NSArray *grantArray = [directory objectForKey:@"grants"];
+            NSMutableArray *grantArray = [directory objectForKey:@"grants"];
         
             //if this is the first time this directory is being loaded, must create array of grants
             if(grantArray == nil ) {
@@ -364,7 +396,8 @@
             if(makeNewGrant) {
                 //pass the json into the parse method with this grant as part of this directory
                 GrantObject *tempGrant = [[GrantObject alloc] initWithCSVArray:[data objectForKey:@"data"]];
-                [tempGrant setTimeLastAccessed:[data objectForKey:@"modTime"]];
+                [tempGrant setTimeLastAccessed:[NSString stringWithFormat:@"%@", [data objectForKey:@"modTime"]]];
+                [tempGrant setFileName:[data objectForKey:@"fileName"]];
                 
                 [grantArray addObject:tempGrant];
             }
@@ -382,11 +415,14 @@
     NSURL *url = nil;
     
     if([callType isEqualToString:@"download"]) {
+        hud.detailsLabelText = [NSString stringWithFormat:@"Downloading %@", file];
         NSString *tmp = [NSString stringWithFormat:@"%@?type=%@&fname=%@", path, callType, file];
         url = [NSURL URLWithString:[tmp stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
-    else
+    else {
+        hud.detailsLabelText = @"Checking Files in Directory...";
         url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?type=%@", path, callType]];
+    }
     
     NSLog(@"QueryAPI url: %@ ", url);
      NSURLRequest *req = [NSURLRequest requestWithURL:url];

@@ -80,6 +80,14 @@
     [self populatePieChart];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (interfaceOrientation == UIInterfaceOrientationPortrait) {    // Or whatever orientation it will be presented in.
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark Data
 -(void)setGrantObject:(GrantObject *)grantObject
 {
