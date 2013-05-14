@@ -43,6 +43,12 @@
     NSData *save = [[NSUserDefaults standardUserDefaults] objectForKey:@"directories"]; //note: init this in rootviewcontroller
     directories = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:save]];
     
+    
+    UIImageView *tempImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gradient_background"]];
+    [tempImageView setFrame:self.tableView.frame];
+    
+    self.tableView.backgroundView = tempImageView;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -118,6 +124,10 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [directories removeObjectAtIndex:indexPath.row];
         [self.tableView reloadData];
+        
+        NSData* save = [NSKeyedArchiver archivedDataWithRootObject:[NSArray arrayWithArray:directories]];
+        [[NSUserDefaults standardUserDefaults] setObject:save forKey:@"directories"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 

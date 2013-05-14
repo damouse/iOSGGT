@@ -111,14 +111,27 @@
     NSData *save = [[NSUserDefaults standardUserDefaults] objectForKey:@"directories"]; //note: init this in rootviewcontroller
     
     if(save != nil) {
-        directories = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:save]];
+        NSMutableArray *newDirectories = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:save]];
         
+        //this adds new grants from newly-added directories
         for(int i = 0; i < [directories count]; i++) {
             NSArray *grantArray = [[directories objectAtIndex:i] objectForKey:@"grants"];
             if([grantArray count] == 0) {
+                hud.detailsLabelText = @"Querying API...";
+                [hud show:YES];
+                
                 [self loadCachedGrants];
                 break;
             }
+        }
+        
+        //remove grants from directories that have been removed
+        if([newDirectories count] != [directories count]) {
+            hud.detailsLabelText = @"Querying API...";
+            [hud show:YES];
+            
+            directories = newDirectories;
+            [self loadCachedGrants];
         }
     }        
 }
