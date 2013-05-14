@@ -14,7 +14,7 @@
 #import "AccountEntryObject.h"
 #import "GrantTableCell.h"
 #import "MBProgressHUD.h"
-
+#import "TutorialViewController.h"
 
 @interface RootViewController () {
     NSMutableArray *grants; //holds all grants
@@ -86,9 +86,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
     landscape = [mainStoryboard instantiateViewControllerWithIdentifier: @"rootLandscape"];
+    
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"firstlogin"] isEqualToString:@"true"]){
+        TutorialViewController *vc = [mainStoryboard instantiateViewControllerWithIdentifier: @"tutorial"];
+        
+        [self presentViewController:vc animated:YES completion:nil];
+        [[NSUserDefaults standardUserDefaults] setObject:@"true" forKey:@"firstlogin"];
+    }
     
     //ui customization
     [self.navigationController setNavigationBarHidden:YES];

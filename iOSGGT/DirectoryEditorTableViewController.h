@@ -10,9 +10,9 @@
 
 @interface DirectoryEditorTableViewController : UITableViewController <UITextViewDelegate> {
 
+    IBOutletCollection(UIButton) NSArray *buttons;
 }
 - (IBAction)buttonBack:(id)sender;
 - (IBAction)buttonAddDirectory:(id)sender;
-- (IBAction)buttonInfo:(id)sender;
 
 @end

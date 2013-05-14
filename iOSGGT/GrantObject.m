@@ -58,10 +58,27 @@
     [metadata setObject:[dateSplit objectAtIndex:0] forKey:@"startDate"];
     [metadata setObject:[dateSplit objectAtIndex:1] forKey:@"endDate"];
     
-    //small fix, remove title from the title object
+    //STRING FORMATTING FICXES
     NSString *tmp = [metadata objectForKey:@"title"];
     tmp = [[tmp componentsSeparatedByString:@"Title: "] objectAtIndex:1];
     [metadata setObject:tmp forKey:@"title"];
+    
+    tmp = [metadata objectForKey:@"grantor"];
+    tmp = [[tmp componentsSeparatedByString:@"Grantor: "] objectAtIndex:1];
+    [metadata setObject:tmp forKey:@"grantor"];
+    
+    tmp = [metadata objectForKey:@"awardNumber"];
+    tmp = [[tmp componentsSeparatedByString:@"Agency Award Number: "] objectAtIndex:1];
+    [metadata setObject:tmp forKey:@"awardNumber"];
+    
+    tmp = [metadata objectForKey:@"overhead"];
+    tmp = [[tmp componentsSeparatedByString:@"Overhead @ "] objectAtIndex:1];
+    [metadata setObject:tmp forKey:@"overhead"];
+    
+    tmp = [metadata objectForKey:@"accountNumber"];
+    tmp = [[tmp componentsSeparatedByString:@"Account #: "] objectAtIndex:1];
+    [metadata setObject:tmp forKey:@"accountNumber"];
+    
     
     //column headers, main three
     columnHeaders = [NSMutableArray arrayWithArray:[csvFile objectAtIndex:5]];

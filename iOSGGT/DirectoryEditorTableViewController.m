@@ -96,7 +96,7 @@
     //loop through grants, get names
     NSString *grants = @"Grants: ";
     for(GrantObject *grant in [directory objectForKey:@"grants"]) {
-        grants = [NSString stringWithFormat:@"%@, %@", grants, [[grant getMetadata] objectForKey:@"title"]];
+        grants = [NSString stringWithFormat:@"%@ \"%@\"", grants, [[grant getMetadata] objectForKey:@"title"]];
     }
     
     cell.textfieldGrants.text = grants;

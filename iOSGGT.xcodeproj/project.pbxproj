@@ -53,6 +53,12 @@
 		D7D680441732FD46008C4B7C /* PieSliceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7D680431732FD46008C4B7C /* PieSliceView.m */; };
 		D7DFD07A1741ED4C0073BC53 /* GrantEditorTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DFD0791741ED4C0073BC53 /* GrantEditorTableViewController.m */; };
 		D7DFD07D1741EE6C0073BC53 /* VisibleGrantsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DFD07C1741EE6C0073BC53 /* VisibleGrantsCell.m */; };
+		D7DFD0801741F03F0073BC53 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DFD07F1741F03F0073BC53 /* TutorialViewController.m */; };
+		D7DFD0861741FA400073BC53 /* tut_account.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DFD0811741FA400073BC53 /* tut_account.png */; };
+		D7DFD0871741FA400073BC53 /* tut_directory.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DFD0821741FA400073BC53 /* tut_directory.png */; };
+		D7DFD0881741FA400073BC53 /* tut_landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DFD0831741FA400073BC53 /* tut_landscape.png */; };
+		D7DFD0891741FA400073BC53 /* tut_main.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DFD0841741FA400073BC53 /* tut_main.png */; };
+		D7DFD08A1741FA400073BC53 /* tut_root.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DFD0851741FA400073BC53 /* tut_root.png */; };
 		D7E0F14D170E63A200386698 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E0F14C170E63A200386698 /* libCorePlot-CocoaTouch.a */; };
 		D7E0F14F170E63C400386698 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E0F14E170E63C400386698 /* QuartzCore.framework */; };
 		D7EF9BCE173AFDD200722D17 /* AccountLabelTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D7EF9BCD173AFDD200722D17 /* AccountLabelTableViewCell.m */; };
@@ -138,6 +144,13 @@
 		D7DFD0791741ED4C0073BC53 /* GrantEditorTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GrantEditorTableViewController.m; path = ../GrantEditorTableViewController.m; sourceTree = "<group>"; };
 		D7DFD07B1741EE6C0073BC53 /* VisibleGrantsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisibleGrantsCell.h; sourceTree = "<group>"; };
 		D7DFD07C1741EE6C0073BC53 /* VisibleGrantsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisibleGrantsCell.m; sourceTree = "<group>"; };
+		D7DFD07E1741F03F0073BC53 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
+		D7DFD07F1741F03F0073BC53 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
+		D7DFD0811741FA400073BC53 /* tut_account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tut_account.png; sourceTree = "<group>"; };
+		D7DFD0821741FA400073BC53 /* tut_directory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tut_directory.png; sourceTree = "<group>"; };
+		D7DFD0831741FA400073BC53 /* tut_landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tut_landscape.png; sourceTree = "<group>"; };
+		D7DFD0841741FA400073BC53 /* tut_main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tut_main.png; sourceTree = "<group>"; };
+		D7DFD0851741FA400073BC53 /* tut_root.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tut_root.png; sourceTree = "<group>"; };
 		D7E0F102170E63A200386698 /* CorePlot-CocoaTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CorePlot-CocoaTouch.h"; sourceTree = "<group>"; };
 		D7E0F103170E63A200386698 /* CPTAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAnnotation.h; sourceTree = "<group>"; };
 		D7E0F104170E63A200386698 /* CPTAnnotationHostLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAnnotationHostLayer.h; sourceTree = "<group>"; };
@@ -401,6 +414,8 @@
 				D7A917B5170A587500B005E5 /* MenuViewController.m */,
 				D75172591741E8E90025455A /* InfoViewController.h */,
 				D751725A1741E8E90025455A /* InfoViewController.m */,
+				D7DFD07E1741F03F0073BC53 /* TutorialViewController.h */,
+				D7DFD07F1741F03F0073BC53 /* TutorialViewController.m */,
 			);
 			name = "Modal View Controllers";
 			sourceTree = "<group>";
@@ -505,6 +520,11 @@
 		D7FD6D54172B792700A63DD1 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				D7DFD0811741FA400073BC53 /* tut_account.png */,
+				D7DFD0821741FA400073BC53 /* tut_directory.png */,
+				D7DFD0831741FA400073BC53 /* tut_landscape.png */,
+				D7DFD0841741FA400073BC53 /* tut_main.png */,
+				D7DFD0851741FA400073BC53 /* tut_root.png */,
 				D751724D1741E5550025455A /* banner.png */,
 				D751724E1741E5550025455A /* double_divider.png */,
 				D75172571741E61D0025455A /* icon_72.png */,
@@ -607,6 +627,11 @@
 				D75172551741E5550025455A /* icon_114.png in Resources */,
 				D75172561741E5550025455A /* single_divider.png in Resources */,
 				D75172581741E61D0025455A /* icon_72.png in Resources */,
+				D7DFD0861741FA400073BC53 /* tut_account.png in Resources */,
+				D7DFD0871741FA400073BC53 /* tut_directory.png in Resources */,
+				D7DFD0881741FA400073BC53 /* tut_landscape.png in Resources */,
+				D7DFD0891741FA400073BC53 /* tut_main.png in Resources */,
+				D7DFD08A1741FA400073BC53 /* tut_root.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -663,6 +688,7 @@
 				D751725B1741E8E90025455A /* InfoViewController.m in Sources */,
 				D7DFD07A1741ED4C0073BC53 /* GrantEditorTableViewController.m in Sources */,
 				D7DFD07D1741EE6C0073BC53 /* VisibleGrantsCell.m in Sources */,
+				D7DFD0801741F03F0073BC53 /* TutorialViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
