@@ -18,7 +18,7 @@
     self = [super init];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM/dd/YY"];
+    [formatter setDateFormat:@"MM/dd/yy"];
     date = [formatter dateFromString:dateString];
     
     return self;
@@ -27,6 +27,12 @@
 - (NSComparisonResult) compare:(AccountEntryObject *)other
 {
     return [date compare: [other date]];
+}
+
+-(void)setDate:(NSDate *)dateN
+{
+    NSLog(@"%@", dateN);
+    date = dateN;
 }
 
 - (AccountEntryObject *) copy {

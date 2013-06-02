@@ -134,9 +134,6 @@
                     
                     if(j < [line count]) {
                         cell = [line objectAtIndex:j];
-                    
-                        NSLog(@"Header: %@ Cell: %@ j: %i", header, cell, j);
-
                         
                         if(![cell isEqualToString:@"0.00"] && ![cell isEqualToString:@""]){ //if entry is nonzero
                         
@@ -210,9 +207,6 @@
         line = [csvFile objectAtIndex:i];
         cell = [line objectAtIndex:1];
     }
-    
-    for(AccountEntryObject *entry in accountEntriesWithAccount) 
-        NSLog(@"%i %@", [entry amount], [entry accountName]);
     
     //sort the entries by date
     [accountEntries sortUsingSelector:@selector(compare:)];

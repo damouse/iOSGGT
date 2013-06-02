@@ -55,12 +55,9 @@
 //init the account table, reload table
 - (void) setGrantObject:(GrantObject *)grant withAccount:(NSString *)account {
     accountEntries = [NSMutableArray array];
-
-    NSLog(@"Inside Detail");
     
     // spin through every entry in this column, build an array of the cells
     for(AccountEntryObject *entry in [grant getEntriesWithAccountNames]) {
-        NSLog(@"%i %@", [entry amount], [entry accountName]);
 
         if([[entry accountName] isEqualToString:account]) {
            [accountEntries addObject:entry];
