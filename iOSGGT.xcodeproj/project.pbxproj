@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D8FB3F7175BBF8A00E06A82 /* ChangeLog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3D8FB3F6175BBF8A00E06A82 /* ChangeLog.txt */; };
 		D7002B4F1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */; };
 		D703EEC117404A4E00B21D31 /* DirectoryEditorTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D703EEC017404A4E00B21D31 /* DirectoryEditorTableViewController.m */; };
 		D703EEC517404BD600B21D31 /* DirectoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D703EEC417404BD600B21D31 /* DirectoryTableViewCell.m */; };
@@ -77,6 +78,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D8FB3F6175BBF8A00E06A82 /* ChangeLog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ChangeLog.txt; sourceTree = "<group>"; };
 		D7002B4D1721FC5A00F6E6EA /* LandscapeMainGraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeMainGraphViewController.h; sourceTree = "<group>"; };
 		D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeMainGraphViewController.m; sourceTree = "<group>"; };
 		D703EEBF17404A4E00B21D31 /* DirectoryEditorTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryEditorTableViewController.h; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 		D7806F59170A306900D5598A /* iOSGGT */ = {
 			isa = PBXGroup;
 			children = (
+				3D8FB3F6175BBF8A00E06A82 /* ChangeLog.txt */,
 				D7806F6B170A306900D5598A /* MainStoryboard.storyboard */,
 				D7002B511721FD2D00F6E6EA /* Testing Space */,
 				D7806F62170A306900D5598A /* AppDelegate.h */,
@@ -632,6 +635,7 @@
 				D7DFD0881741FA400073BC53 /* tut_landscape.png in Resources */,
 				D7DFD0891741FA400073BC53 /* tut_main.png in Resources */,
 				D7DFD08A1741FA400073BC53 /* tut_root.png in Resources */,
+				3D8FB3F7175BBF8A00E06A82 /* ChangeLog.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

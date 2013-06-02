@@ -70,7 +70,7 @@
     labelTitle.text = [[grant getMetadata] objectForKey:@"title"];
     labelStartDate.text = [[grant getMetadata] objectForKey:@"startDate"];
     labelEndDate.text = [[grant getMetadata] objectForKey:@"endDate"];
-    labelLastUpdated.text = [[grant getMetadata] objectForKey:@"dateLastAccessed"];
+    labelLastUpdated.text = @"5/15/13";
     labelAccountNumber.text = [[grant getMetadata] objectForKey:@"accountNumber"];
     labelAgencyNumber.text = [[grant getMetadata] objectForKey:@"awardNumber"];
     labelGrantor.text = [[grant getMetadata] objectForKey:@"grantor"];
@@ -172,23 +172,23 @@
 //This method checks incoming touches against the boundraries of present slices. Consider disabling when animations are running. 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event  {
     UITouch *touch = [touches anyObject];
-    int numSlicesThatRecievedTouch = 0; //use this to decide which slice was touched (since underlying slices also recieve touches)
+    int i = 0;
+    int indexOfTouchedSlice = -1; //use this to decide which slice was touched (since underlying slices also recieve touches)
     
     for(PieSliceView *slice in slices) {
         if([slice.path containsPoint:[touch locationInView:slice]]) {
             CGPoint point = [touch locationInView:slice];
             NSLog(@"X: %.0f Y: %.0f color: %@", point.x, point.y, slice.color);
             
-            numSlicesThatRecievedTouch++;
+            indexOfTouchedSlice = i;
         }
+        i++;
     }
-    
-    //the index of the slice that recieved the touch is length - numSlices. NOTE: slices is in reverse order
-    int index = numSlicesThatRecievedTouch - 1;
-    NSLog(@"touch on slice index: %i", index);
 
-    if(index >= 0 && index < slices.count) {
-        NSString *account = [[slices objectAtIndex:index] accountName];
+    NSLog(@"touch on slice index: %i", indexOfTouchedSlice);
+
+    if(indexOfTouchedSlice >= 0 && indexOfTouchedSlice < slices.count) {
+        NSString *account = [[slices objectAtIndex:indexOfTouchedSlice] accountName];
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
         AccountTableViewController *detail = [mainStoryboard instantiateViewControllerWithIdentifier: @"accountGraphic"];
     

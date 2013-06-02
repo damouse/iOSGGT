@@ -70,7 +70,7 @@
 {
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
     if(self.navigationController.topViewController == self) {
-        if (UIDeviceOrientationIsLandscape(deviceOrientation) && !isShowingLandscapeView) {
+        if (UIDeviceOrientationIsLandscape(deviceOrientation) && !isShowingLandscapeView && self.navigationController.visibleViewController == self) {
             [self presentViewController:landscape animated:NO completion:nil];
             isShowingLandscapeView = YES;
         }
@@ -355,13 +355,14 @@
                 }
                 
                 //if this grant has never been loaded, must refresh it now
-                if(grantExists == NO) 
+                #pragma mark DEBUG LINE HERE forces download of every grant
+                //if(grantExists == NO)
                     [grantsThatNeedRefreshing addObject:filename];
             }
         }
     }
     
-    NSLog(@"API_mod finished");
+    NSLog(@" finished");
     [self grantRefreshHub];
 }
 

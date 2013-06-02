@@ -69,6 +69,8 @@
     
     tmp = [metadata objectForKey:@"awardNumber"];
     tmp = [[tmp componentsSeparatedByString:@"Agency Award Number: "] objectAtIndex:1];
+    if([tmp isEqualToString:@""])
+        tmp = @"[not entered]";
     [metadata setObject:tmp forKey:@"awardNumber"];
     
     tmp = [metadata objectForKey:@"overhead"];
@@ -133,7 +135,10 @@
                     if(j < [line count]) {
                         cell = [line objectAtIndex:j];
                     
-                        if(![cell isEqualToString:@"0.00"]){ //if entry is nonzero
+                        NSLog(@"Header: %@ Cell: %@ j: %i", header, cell, j);
+
+                        
+                        if(![cell isEqualToString:@"0.00"] && ![cell isEqualToString:@""]){ //if entry is nonzero
                         
                             //some string parsing to get the numbers to convert well; cents are omitted
                             entry = [entry copy]; //just copy the entry, since only two values change
@@ -205,6 +210,9 @@
         line = [csvFile objectAtIndex:i];
         cell = [line objectAtIndex:1];
     }
+    
+    for(AccountEntryObject *entry in accountEntriesWithAccount) 
+        NSLog(@"%i %@", [entry amount], [entry accountName]);
     
     //sort the entries by date
     [accountEntries sortUsingSelector:@selector(compare:)];
