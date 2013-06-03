@@ -207,10 +207,16 @@
         line = [csvFile objectAtIndex:i];
         cell = [line objectAtIndex:1];
     }
+
     
     //sort the entries by date
     [accountEntries sortUsingSelector:@selector(compare:)];
     [accountEntriesWithAccount sortUsingSelector:@selector(compare:)];
+    
+    NSLog(@"INSIDE GRANT PARSE");
+    for(int i = 0; i < 8; i++) {
+        NSLog(@"%@ %@", [[accountEntriesWithAccount objectAtIndex:i] label], [[accountEntriesWithAccount objectAtIndex:i] date]);
+    }
     
     //the account entries have all been added and sorted in order of date. This sets up the "running total" of the grant
     int currentTotal = 0;

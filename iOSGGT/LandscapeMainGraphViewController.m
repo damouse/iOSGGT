@@ -116,12 +116,16 @@
             
             //re-add the last entry with the date changed. Copy first.
             if(lastEntry != nil) {
-                [lastEntry setDate:[[entry date] dateByAddingTimeInterval:-1]];
+                
+                NSDate *tmp = [entry date];
+                NSDate *tmp2 = [tmp dateByAddingTimeInterval:-1];
+                
+                [lastEntry setDate:tmp2];
                 [accountEntries addObject:lastEntry];
             }
             
             //add this entry
-            [accountEntries addObject:entry];
+            [accountEntries addObject:[entry copy]];
             lastEntry = [entry copy];
             
             //check to see if this entry breaks the bounds of the graph

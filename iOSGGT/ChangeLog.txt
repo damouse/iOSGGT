@@ -4,16 +4,12 @@ Changelog for iOSGGT
     Current TODO List
 Bugs
 -Main graph did not refresh correctly upon directory add
--Dates are messed up for the current date on the grant controller
--Parsing is incorrect; using the testing directory changes the data for the other grants
-    -Grant detail page does not display a whole pie chart, likely corrupted/misparsed data (use open and paid instead of budget)
 -"Participant" grant lists Suman Banjeree in the wrong place, should this be dynamically checked for or fixed? (argue for fix)
--Agency Award Number is not present in "Participant" grant, create "not entered" fall-through
-    -Fix doesn't work....
 -Fix "last updated" parse bug on GraphView controller
 -Got a "Please enter valid URL" message after creating, successfully adding a directory, deleting, and then trying to create another new directory
--End date parsing is incorrect (as displayed in the root view)
--Inside date parsing is wrong. Account entries have off dates
+-Excel sheets that were removed from the directory still appear on the root view
+-CHECK DATES IN THE LANDSCAPE VERSION
+
 
 
 New Features
@@ -32,9 +28,11 @@ Other
 -Make Fiscal Year headers for Account Entries
 
 
-1.1 Changes 6/2/13
+0.1.1 Changes 6/2/13
 Bug Fixes
 -Main grant detail page now segues to the correct Account Details view
+-Multiple fixes to date formatting, parsing, and caching. 
+-Fixed a bug where the agency award field did not display anything
 
 New Features
 

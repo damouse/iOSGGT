@@ -10,8 +10,10 @@
 
 #import "AccountEntryObject.h"
 
-@implementation AccountEntryObject
-@synthesize date, label, amount, runningTotalToDate, accountName, description;
+@implementation AccountEntryObject {
+    NSDate *date;
+}
+@synthesize label, amount, runningTotalToDate, accountName, description;
 
 -(id) initWithDate:(NSString *)dateString
 {
@@ -29,10 +31,18 @@
     return [date compare: [other date]];
 }
 
+-(NSDate *)date
+{
+    return date;
+}
+
 -(void)setDate:(NSDate *)dateN
 {
-    NSLog(@"%@", dateN);
-    date = dateN;
+    //NSLog(@"%@", dateN);
+    if(date == nil)
+        date = dateN;
+    else
+        NSLog(@"%@", dateN);
 }
 
 - (AccountEntryObject *) copy {

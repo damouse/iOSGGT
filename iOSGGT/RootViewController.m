@@ -139,7 +139,11 @@
             directories = newDirectories;
             [self loadCachedGrants];
         }
-    }        
+    }
+    
+    //hud.detailsLabelText = @"Querying API...";
+    //[hud show:YES];
+    //[self loadCachedGrants];
 }
 
 #pragma mark Saved Directory
@@ -187,10 +191,17 @@
             NSData* save = [NSKeyedArchiver archivedDataWithRootObject:[NSArray arrayWithArray:directories]];
             [[NSUserDefaults standardUserDefaults] setObject:save forKey:@"directories"];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            
+                        
             [hud hide:YES];
             NSLog(@"Hub Finished. Grants: %i", [grants count]);
             [landscape initWithGrantArray:grants];
+            
+            //its not before landscape
+            NSLog(@"INSIDE HUB after landscape");
+            for(int i = 0; i < 8; i++) {
+                NSLog(@"%@ %@", [[[[grants objectAtIndex:0] getEntriesWithAccountNames] objectAtIndex:i] label], [[[[grants objectAtIndex:0] getEntriesWithAccountNames] objectAtIndex:i] date]);
+            }
+            
             [tableMain reloadData];
         }
         else {
@@ -410,6 +421,8 @@
                     grant = tempGrant;
                     [grant setTimeLastAccessed:[data objectForKey:@"modTime"]];
                 }
+                
+
             }
             
             //the grant did not previously exist, create a new one and add it in
@@ -422,6 +435,14 @@
                 [grantArray addObject:tempGrant];
             }
         }
+    }
+    
+    
+    NSMutableDictionary *directory = [directories objectAtIndex:0];
+    NSMutableArray *grantArray = [directory objectForKey:@"grants"];
+    NSLog(@"INSIDE DOWNLOAD");
+    for(int i = 0; i < 8; i++) {
+        NSLog(@"%@ %@", [[[[grantArray objectAtIndex:0] getEntriesWithAccountNames] objectAtIndex:i] label], [[[[grantArray objectAtIndex:0] getEntriesWithAccountNames] objectAtIndex:i] date]);
     }
     
     NSLog(@"API_Download finished");
