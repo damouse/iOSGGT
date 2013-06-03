@@ -8,7 +8,6 @@ Bugs
 
 
 New Features
--Popup on point click on the landscape view
 
 
 Other
@@ -33,6 +32,7 @@ Bug Fixes
 New Features
 -Added manual refresh button to root view
 -The Graph Detail view now segues to Account Details on legend touches as well as pie chart slice touches
+-Added a proof-of-concept popup to the Landscape view that shows the account entry being tapped on 
 
 Miscellanious Changes
 -Landscape graph manipulation is now bounded. Can no longer zoom or scroll out farther than one year earlier and later than the earliest/latest account entry

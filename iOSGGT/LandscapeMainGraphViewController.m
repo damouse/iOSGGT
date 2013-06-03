@@ -16,6 +16,7 @@
 #import "GrantObject.h"
 #import "AccountEntryObject.h"
 #import "CPTPlotRange.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface LandscapeMainGraphViewController () {
     CPTGraph *graph;
@@ -42,6 +43,7 @@
     NSMutableArray *buttonReferences;
     NSMutableArray *colors; //all avaliable colors for coloring plots
     
+    UITextView *popup;
 }
 
 @end
@@ -71,6 +73,17 @@
 
     majorIntervalLengthForX = oneDay * 30 * 6; //half a month. Consider a year?
     majorIntervalLengthForY = 100000;
+    
+    popup = [[UITextView alloc] initWithFrame:CGRectMake(5, 3, 150, 55)];
+    popup.text = @"Label";
+    popup.font = [UIFont fontWithName:@"Helvetica" size:10];
+    popup.alpha = .8;
+    popup.layer.cornerRadius = 2;
+    popup.layer.borderWidth = 1;
+    popup.layer.borderColor = [[UIColor grayColor] CGColor];
+    popup.hidden = YES;
+    
+    [self.view addSubview:popup];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -88,7 +101,8 @@
 //method takes in the grant objects and then makes it "horizontal." If the changes are just plotted by themselves, then each change in the amount of the graph
 //has a slope. Each point must therefor get a second, auxilliary point that sits right before the next point in the grant. This auxilliary point
 // keeps the changes horizontal. Also, each account entry should be processed as a change in the total balance, not a data point
-- (void) initWithGrantArray:(NSMutableArray *)grantArray {
+- (void) initWithGrantArray:(NSMutableArray *)grantArray
+{
     grants = [NSMutableArray array];
     grantObjects = grantArray;
     oneDay = 24 * 60 * 60;
@@ -382,6 +396,9 @@
 //this used to be the coreplot legend method, but its customized to run off buttons linked from IB
 //spin through all grants, make the IB buttons visible, set the color correctly
 -(void)configureLegend {
+    //turn on the popup label
+    [self.view bringSubviewToFront:popup];
+    
     //buttons are tagged from 100 to 119, in order from top to bottom, right to left. Maximum supported grants:20. All start hidden.
     //consider putting them in a table to remove the upper limit
     buttonReferences = [NSMutableArray array];
@@ -453,7 +470,33 @@
 
 //allows the user to click on individual plot points. Consider a popup, or a transistion to another VC
 -(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex: (NSUInteger)index {
-    NSLog(@"plotSymbolWasSelectedAtRecordIndex %d", index);
+    if(!plot.hidden){
+    
+        popup.hidden = NO;
+        
+        int i = [plots indexOfObject:plot];
+        NSArray *accountEntries = [grants objectAtIndex:i];
+        GrantObject *grant = [grantObjects objectAtIndex:i];
+        
+        //actual entries are at EVEN values. The odd values are the horizontal entries; if odd the next entry should be retrieved
+        
+        if(index % 2 != 0)
+            index++;
+        
+        AccountEntryObject *entry = [accountEntries objectAtIndex:index];
+        NSString *title = [[grant getMetadata] objectForKey:@"title"];
+        NSRange stringRange = {0, MIN([title length], 15)};
+        
+        // adjust the range to include dependent chars
+        stringRange = [title rangeOfComposedCharacterSequencesForRange:stringRange];
+        
+        // Now you can create the short string
+        NSString *shortString = [title substringWithRange:stringRange];
+        
+        popup.text = [NSString stringWithFormat:@"%@\n%@\n%i\n", shortString, [entry label], [entry amount]];
+        
+        NSLog(@"plotSymbolWasSelectedAtRecordIndex %d", index);
+    }
 }
 
 #pragma mark Plot Customization Methods
