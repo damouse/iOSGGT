@@ -196,12 +196,6 @@
             NSLog(@"Hub Finished. Grants: %i", [grants count]);
             [landscape initWithGrantArray:grants];
             
-            //its not before landscape
-            NSLog(@"INSIDE HUB after landscape");
-            for(int i = 0; i < 8; i++) {
-                NSLog(@"%@ %@", [[[[grants objectAtIndex:0] getEntriesWithAccountNames] objectAtIndex:i] label], [[[[grants objectAtIndex:0] getEntriesWithAccountNames] objectAtIndex:i] date]);
-            }
-            
             [tableMain reloadData];
         }
         else {

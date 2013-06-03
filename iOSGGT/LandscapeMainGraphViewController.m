@@ -101,7 +101,7 @@
     NSDate *latestDate = [NSDate dateWithTimeIntervalSince1970:0];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM/dd/YY"];
+    [formatter setDateFormat:@"MM/dd/yy"];
     
     //iterate over every grant. NOTE: the accounting entries have already been sorted
     //each element of the overarching array is an array representing a grant. Each element of this array is a dictionary
@@ -122,11 +122,14 @@
                 
                 [lastEntry setDate:tmp2];
                 [accountEntries addObject:lastEntry];
+                NSLog(@"%i %@ %i %@", [entry runningTotalToDate], [formatter stringFromDate:[entry date]], [lastEntry runningTotalToDate], [formatter stringFromDate:[lastEntry date]]);
             }
             
             //add this entry
             [accountEntries addObject:[entry copy]];
             lastEntry = [entry copy];
+            
+
             
             //check to see if this entry breaks the bounds of the graph
             if([earliestDate compare:[entry date]] == NSOrderedDescending) //earliestDate is later than entry date

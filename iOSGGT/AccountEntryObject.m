@@ -39,10 +39,10 @@
 -(void)setDate:(NSDate *)dateN
 {
     //NSLog(@"%@", dateN);
-    if(date == nil)
+    //if(date == nil)
         date = dateN;
-    else
-        NSLog(@"%@", dateN);
+    //else
+      //  NSLog(@"%@", dateN);
 }
 
 - (AccountEntryObject *) copy {
