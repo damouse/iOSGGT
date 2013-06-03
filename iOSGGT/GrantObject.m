@@ -48,7 +48,7 @@
     NSArray *dateSplit = [[[csvFile objectAtIndex:1] objectAtIndex:1] componentsSeparatedByString:@" - "];
     
     //metadata
-    [metadata setObject:[[csvFile objectAtIndex:0] objectAtIndex:0] forKey:@"dateLastAccessed"];
+    //[metadata setObject:[[csvFile objectAtIndex:0] objectAtIndex:0] forKey:@"dateLastAccessed"];
     [metadata setObject:[[csvFile objectAtIndex:2] objectAtIndex:1] forKey:@"name"];
     [metadata setObject:[[csvFile objectAtIndex:3] objectAtIndex:1] forKey:@"accountNumber"];
     [metadata setObject:[[csvFile objectAtIndex:1] objectAtIndex:4] forKey:@"grantor"];
@@ -156,7 +156,8 @@
         i++;
         line = [csvFile objectAtIndex:i];
         cell = [line objectAtIndex:1];
-    }
+    }       
+       
     
     //set the index to the first account withdrawl. New index references the first line with a withdrawl
     cell = [line objectAtIndex:0];
@@ -213,7 +214,9 @@
     [accountEntries sortUsingSelector:@selector(compare:)];
     [accountEntriesWithAccount sortUsingSelector:@selector(compare:)];
     
-
+    
+    //set the time last accessed
+    [metadata setObject:[[accountEntries objectAtIndex:[accountEntries count] - 1] date] forKey:@"dateLastAccessed"];
     
     //the account entries have all been added and sorted in order of date. This sets up the "running total" of the grant
     int currentTotal = 0;

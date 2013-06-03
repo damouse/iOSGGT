@@ -96,6 +96,8 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"true" forKey:@"firstlogin"];
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(buttonRefresh:) name:@"refresh" object:nil];
+    
     //ui customization
     [self.navigationController setNavigationBarHidden:YES];
     tableMain.backgroundColor = [UIColor clearColor];
@@ -106,9 +108,8 @@
     hud.labelText = @"Loading";
 	hud.detailsLabelText = @"Querying API...";
 	hud.square = YES;
-    
+
     [hud show:YES];
-    
     [self loadCachedGrants];
 }
 
@@ -140,10 +141,6 @@
             [self loadCachedGrants];
         }
     }
-    
-    //hud.detailsLabelText = @"Querying API...";
-    //[hud show:YES];
-    //[self loadCachedGrants];
 }
 
 #pragma mark Saved Directory
@@ -205,7 +202,15 @@
             [directoriesThatNeedRefreshing removeObjectAtIndex:0];
             
             currentlyActiveURL = [directory objectForKey:@"url"];
-            [self queryAPI:@"mod" url:currentlyActiveURL file:nil]; // this triggers a API_mod callback, which populates the grantsthatneedref list
+            
+            if(currentlyActiveURL != NULL)
+                [self queryAPI:@"mod" url:currentlyActiveURL file:nil]; // this triggers a API_mod callback, which populates the grantsthatneedref list
+            /*else{
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle:@"Error" message: @"An error occured (null url). Please reset the data from the menu page." delegate:self
+                                      cancelButtonTitle:@"OK" otherButtonTitles:nil]; //@"Connection error! Are you connected to the internet?"
+                [alert show];
+            }*/
         }
     }
     else { //if here, then there are still items in grantsthatneedrefreshing. Make an download call for each
@@ -270,6 +275,14 @@
     return [NSString stringWithFormat:@"%@ of %@ remainng", balanceString, budgetString];
 }
 
+#pragma mark IBAction
+- (IBAction)buttonRefresh:(id)sender
+{
+    hud.detailsLabelText = @"Querying API...";
+    [hud show:YES];
+    [self loadCachedGrants];
+}
+
 #pragma mark Table Style
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -306,7 +319,6 @@
     return cell;
 }
 
-
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -322,11 +334,11 @@
     [self.navigationController pushViewController:mainGraph animated:YES];
 }
 
-
 #pragma mark NSURLConnection Methods
 //callback methods from the API call. Recieves the files and times last accessed
 -(void)API_mod:(NSDictionary *)data {
     NSLog(@"API_mod starting...");
+    NSMutableArray *newGrantArray = [NSMutableArray array];
     
     data = [data objectForKey:@"data"];
     grantsThatNeedRefreshing = [NSMutableArray array];
@@ -351,6 +363,9 @@
                     
                     //check if this grant is the one referenced by the filename
                     if([[grant fileName] isEqualToString:filename]) {
+                        
+                        //add the grants to a new array to get rid of grants that are no longer present in the directory
+                        [newGrantArray addObject:grant];
                         grantExists = YES;
                         
                         NSString *modTime = [data objectForKey:grant.fileName];
@@ -361,11 +376,13 @@
                 
                 //if this grant has never been loaded, must refresh it now
                 #pragma mark DEBUG LINE HERE forces download of every grant
-                //if(grantExists == NO)
+                if(grantExists == NO)
                     [grantsThatNeedRefreshing addObject:filename];
             }
+            [directory setObject:newGrantArray forKey:@"grants"];
         }
     }
+    
     
     NSLog(@" finished");
     [self grantRefreshHub];
@@ -429,14 +446,6 @@
                 [grantArray addObject:tempGrant];
             }
         }
-    }
-    
-    
-    NSMutableDictionary *directory = [directories objectAtIndex:0];
-    NSMutableArray *grantArray = [directory objectForKey:@"grants"];
-    NSLog(@"INSIDE DOWNLOAD");
-    for(int i = 0; i < 8; i++) {
-        NSLog(@"%@ %@", [[[[grantArray objectAtIndex:0] getEntriesWithAccountNames] objectAtIndex:i] label], [[[[grantArray objectAtIndex:0] getEntriesWithAccountNames] objectAtIndex:i] date]);
     }
     
     NSLog(@"API_Download finished");
@@ -533,8 +542,9 @@
     [alert show];
     
     [connection cancel];
-    //connectionInProgress = NO;
-    //[activityIndicator stopAnimating];
+    [hud hide:YES];
+    [self grantRefreshHub];
 }
+
 
 @end

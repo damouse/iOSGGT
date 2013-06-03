@@ -3,36 +3,38 @@ Changelog for iOSGGT
 
     Current TODO List
 Bugs
--Main graph did not refresh correctly upon directory add
 -"Participant" grant lists Suman Banjeree in the wrong place, should this be dynamically checked for or fixed? (argue for fix)
--Fix "last updated" parse bug on GraphView controller
--Got a "Please enter valid URL" message after creating, successfully adding a directory, deleting, and then trying to create another new directory
--Excel sheets that were removed from the directory still appear on the root view
--CHECK DATES IN THE LANDSCAPE VERSION
-
+-Directory will likely break if a new directory is created, another is deleted before initializing the new one, and then a new directory created 
 
 
 New Features
--Manual refresh button on root view
 -Popup on point click on the landscape view
--Segue to account details on legend (table) click 
 
 
 Other
--Clear "[fill url here]" text when the textview becomes first responder
--Problem: grant information is inconsistent; in "Participant Support" the account budgeting does not sum to the overall budget; accounts have negative values throwing off the pie chart
-    -Consider making a "peek" mode to display the the raw data in case of any odd display artifacts
+-Consider making a "peek" mode to display the the raw data in case of any odd display artifacts
 -Make the lines between account entries more distinct
--Change the directory url requirements; remove the need for "http://" and GGT_Handler.php
 -Change some of the darker colors (blue, brown, etc). Just make them brighter. 
 -Make Fiscal Year headers for Account Entries
 
 
+
 0.1.1 Changes 6/2/13
 Bug Fixes
--Main grant detail page now segues to the correct Account Details view
+-Main Grant Detail page now segues to the correct Account Details view
 -Multiple fixes to date formatting, parsing, and caching. 
 -Fixed a bug where the agency award field did not display anything
+-Root view now correctly refreshes after directory editing
+-Multiple small fixes to Directory view controller
+-"Date last updated" field in Grant Detail view controller now correctly lists the date for the last entry on the spreadsheet
+-Directory controller no longer throws an error when a directory is created, deleted before initialization, and another is created
+-Excel files that are removed from the directory no longer persist in cached grants
 
 New Features
+-Added manual refresh button to root view
+-The Graph Detail view now segues to Account Details on legend touches as well as pie chart slice touches
 
+Miscellanious Changes
+-Landscape graph manipulation is now bounded. Can no longer zoom or scroll out farther than one year earlier and later than the earliest/latest account entry
+-Cleared "[fill url here]" text when a directory entry is addded
+-Made directory url entry more lenient; no longer have to include "http://" or "/GGT_Handler.php"

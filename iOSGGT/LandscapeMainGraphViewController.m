@@ -122,7 +122,7 @@
                 
                 [lastEntry setDate:tmp2];
                 [accountEntries addObject:lastEntry];
-                NSLog(@"%i %@ %i %@", [entry runningTotalToDate], [formatter stringFromDate:[entry date]], [lastEntry runningTotalToDate], [formatter stringFromDate:[lastEntry date]]);
+                //NSLog(@"%i %@ %i %@", [entry runningTotalToDate], [formatter stringFromDate:[entry date]], [lastEntry runningTotalToDate], [formatter stringFromDate:[lastEntry date]]);
             }
             
             //add this entry
@@ -161,7 +161,7 @@
     NSTimeInterval latest = [latestDate timeIntervalSinceDate:refDate];
 
     minimumValueForXAxis = earliest - oneDay * 380; //the earliest date, plus a cushion of about a year
-    maximumValueForXAxis = latest + oneDay * 60; //the latest date, plus a cushion of two months
+    maximumValueForXAxis = latest + oneDay ; //the latest date, plus a cushion of two months
     minimumValueForYAxis = smallestValue;
     maximumValueForYAxis = largestValue; 
 }
@@ -487,13 +487,17 @@
             return lastRange;
         
         
-        //constrict the horizontal scrolling to the maximum values + 1yr
-        /*if(newRange.locationDouble < minimumValueForXAxis) { //this is stuttery, values that are only a little smaller will work, big swipes make it ehh
-            //NSLog(@")
+        //constrict the horizontal scrolling to the maximum values + 2yr
+        if(newRange.locationDouble < minimumValueForXAxis - oneDay * 365) { //this is stuttery, values that are only a little smaller will work, big swipes make it ehh
+            //NSLog(@"SMALL %@", newRange);
             return lastRange;
-        }*/
-        
-        
+        }
+        //constrict the horizontal scrolling to the maximum values + 2yr
+        if(newRange.locationDouble > maximumValueForXAxis) {
+            //NSLog(@"BIG %@", newRange);
+            return lastRange;
+        }
+
         //if the length passes a certain amount, resize the interval ticks to keep them readable
         if(newRange.lengthDouble > 140000000)
             axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX * 2);

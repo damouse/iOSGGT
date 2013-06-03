@@ -67,10 +67,13 @@
     //array of colors used to uniquely color slices
     sliceColors = [NSMutableArray arrayWithObjects:[UIColor redColor], [UIColor brownColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor],[UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], [UIColor grayColor], [UIColor brownColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor],[UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], nil];
     
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MMMM dd, yyyy"];
+    
     labelTitle.text = [[grant getMetadata] objectForKey:@"title"];
     labelStartDate.text = [[grant getMetadata] objectForKey:@"startDate"];
     labelEndDate.text = [[grant getMetadata] objectForKey:@"endDate"];
-    labelLastUpdated.text = @"5/15/13";
+    labelLastUpdated.text = [formatter stringFromDate:[[grant getMetadata] objectForKey:@"dateLastAccessed"]];
     labelAccountNumber.text = [[grant getMetadata] objectForKey:@"accountNumber"];
     labelAgencyNumber.text = [[grant getMetadata] objectForKey:@"awardNumber"];
     labelGrantor.text = [[grant getMetadata] objectForKey:@"grantor"];
@@ -239,7 +242,8 @@
     return labelsAndColors.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     AccountLabelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"accountLabel" forIndexPath:indexPath];
     
     if (cell == nil) {
@@ -273,7 +277,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    NSString *account = [[slices objectAtIndex:indexPath.row] accountName];
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
+    AccountTableViewController *detail = [mainStoryboard instantiateViewControllerWithIdentifier: @"accountGraphic"];
+    
+    [detail setGrantObject:grant withAccount:account];
+    detail.labelGrantName.text = [[grant getMetadata] objectForKey:@"title"];
+    [self.navigationController pushViewController:detail animated:YES];
 }
 
 #pragma mark IBOutlet

@@ -114,13 +114,15 @@
 // Override to support conditional editing of the table view.
 // This only needs to be implemented if you are going to be returning NO
 // for some items. By default, all items are editable.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
     // Return YES if you want the specified item to be editable.
     return YES;
 }
 
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [directories removeObjectAtIndex:indexPath.row];
         [self.tableView reloadData];
@@ -128,15 +130,20 @@
         NSData* save = [NSKeyedArchiver archivedDataWithRootObject:[NSArray arrayWithArray:directories]];
         [[NSUserDefaults standardUserDefaults] setObject:save forKey:@"directories"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        editingDirectory = nil;
+        newDirectory = nil;
     }
 }
 
 #pragma mark IBActions
-- (IBAction)buttonBack:(id)sender {
+- (IBAction)buttonBack:(id)sender
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)buttonAddDirectory:(id)sender {
+- (IBAction)buttonAddDirectory:(id)sender
+{
     if(newDirectory == nil) {
         NSMutableDictionary *dir = [NSMutableDictionary dictionary];
             
@@ -163,7 +170,8 @@
 
 #pragma mark Text View
 //save the contents of the box so we know which cell is being editted
--(void) textViewDidBeginEditing:(UITextView *)textView {
+-(void) textViewDidBeginEditing:(UITextView *)textView
+{
     NSLog(@"Text view editing...");
     if(editingDirectory != nil) {
         
@@ -174,9 +182,12 @@
             [alert show];
         }
     }
-    else {
+    else {        
         for(NSMutableDictionary *directory in directories) {
             if([textView.text isEqualToString:[directory objectForKey:@"url"]]) {
+                if([textView.text isEqualToString:@"[fill url here]"])
+                    textView.text = @"";
+                
                 editingDirectory = directory;
                 editingTextView = textView;
             }
@@ -185,13 +196,24 @@
 }
 
 //save the newly given URL, check to see if this is a new
-- (void)textViewDidEndEditing:(UITextView *)textView {
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
     NSLog(@"Text view done editing");
     if(![textView.text isEqualToString:[editingDirectory objectForKey:@"url"]]) { //the URL was changed
     
-        editingTextView = textView; //ping the new URL, see if valid. If so, then change the written URL.
-        
         NSString *stringURL = textView.text;
+        
+        editingTextView = textView; //ping the new URL, see if valid. If so, then change the written URL.
+        NSArray *tmp = [textView.text componentsSeparatedByString:@"http://"];
+        NSArray *tmp2 = [textView.text componentsSeparatedByString:@"%@/GGT_Handler.php"];
+
+        if([[tmp objectAtIndex:0] isEqualToString:textView.text])
+            stringURL = [NSString stringWithFormat:@"http://%@", stringURL];
+        
+        if([[tmp2 objectAtIndex:0] isEqualToString:textView.text])
+            stringURL = [NSString stringWithFormat:@"%@/GGT_Handler.php", stringURL];
+        
+        textView.text = stringURL;
         
         jsonResponse = [NSMutableData data];
         hud.detailsLabelText = @"Checking URL";
@@ -277,6 +299,8 @@
                                   initWithTitle:@"Success" message: @"Directory successfully added. Please return to main table to refresh grants" delegate:self
                                   cancelButtonTitle:@"OK" otherButtonTitles:nil]; //@"Connection error! Are you connected to the internet?"
             [alert show];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh" object:self];
         }
     }
     

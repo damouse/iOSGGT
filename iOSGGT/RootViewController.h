@@ -12,5 +12,6 @@
     
     __weak IBOutlet UITableView *tableMain;
 }
+- (IBAction)buttonRefresh:(id)sender;
 
 @end
