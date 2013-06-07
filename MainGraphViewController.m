@@ -22,18 +22,20 @@
 #import "PieSliceView.h"
 #import "AccountLabelTableViewCell.h"
 #import "QuartzCore/QuartzCore.h"
+#import "BarView.h"
 
 @interface MainGraphViewController () {
     GrantObject *grant;
     NSMutableArray *slices;
     NSMutableArray *sliceColors;
     
+    NSMutableArray *bars; //bars for the bar graph
+    
     NSMutableArray *labelsAndColors; // slice labels paired with their respective colors
     int currentColor;
     
     PieSliceView *currentlyAnimatingSlice;
     int currentlyAnimatingSliceIndex;
-
 }
 
 @end
@@ -80,7 +82,7 @@
     labelOverhead.text = [[grant getMetadata] objectForKey:@"overhead"];
     labelName.text = [[grant getMetadata] objectForKey:@"name"];
     
-    [self populatePieChart];
+    //[self populatePieChart];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -114,27 +116,50 @@
     float percentFillEnd;
     float percentFillStart;
     
-    PieSliceView *slice;
-    slices = [NSMutableArray array];
+    BarView *bar;
+    bars = [NSMutableArray array];
     
     for(NSString *account in accounts) { //TODO: put checks for negative numbers
         if(![account isEqualToString:@""] && ![account isEqualToString:@"Amount"]) {
 
-            slice = [self createNewSlice: account];
+            bar = [self createNewSlice: account];
             
             currentBudget = [[budget objectForKey:account] floatValue]; //fetch value
             percentFillEnd = (currentBudget + runningTotal) / totalBudget; //divide it by total (with current total)
             percentFillStart = runningTotal / totalBudget;
             runningTotal += currentBudget; //increment total
             
-            [slice setAngleEnd:percentFillEnd];
-            [slice setAngleStart:percentFillStart];
-            [slice setProgress:percentFillStart];
+            
+            [bars addObject:bar];
+        }
+    }
+
+    [self animateSlice]; //now animates all slices
+}
+
+- (void) populateBarGraph
+{
+    NSDictionary *budget = [grant getBudgetRow]; 
+    NSDictionary *balance = [grant getBalanceRow]; 
+    NSDictionary *paid = [grant getBalanceRow];
+    NSArray *accounts = [grant getAccounts];
+    
+    labelsAndColors = [NSMutableArray array];
+    currentColor = 0; //this index tracks the used colors so they can be used again in the labels later
+    
+    PieSliceView *slice;
+    slices = [NSMutableArray array];
+    
+    for(NSString *account in accounts) { //TODO: put checks for negative numbers
+        if(![account isEqualToString:@""] && ![account isEqualToString:@"Amount"]) {
+            
+            slice = [self createNewSlice: account];
+
             
             [slices addObject:slice];
         }
     }
-
+    
     [self animateSlice]; //now animates all slices
 }
 
@@ -159,6 +184,8 @@
     
     return slice;
 }
+
+
 
 //return a rect that is centered at the hardcoded coordinates
 -(CGRect) getCenteredRect:(float)size {

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3D8FB3F7175BBF8A00E06A82 /* ChangeLog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3D8FB3F6175BBF8A00E06A82 /* ChangeLog.txt */; };
+		70FFF5BA176011F100F32342 /* BarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70FFF5B9176011F100F32342 /* BarView.m */; };
 		D7002B4F1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */; };
 		D703EEC117404A4E00B21D31 /* DirectoryEditorTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D703EEC017404A4E00B21D31 /* DirectoryEditorTableViewController.m */; };
 		D703EEC517404BD600B21D31 /* DirectoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D703EEC417404BD600B21D31 /* DirectoryTableViewCell.m */; };
@@ -79,6 +80,8 @@
 
 /* Begin PBXFileReference section */
 		3D8FB3F6175BBF8A00E06A82 /* ChangeLog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ChangeLog.txt; sourceTree = "<group>"; };
+		70FFF5B8176011F100F32342 /* BarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarView.h; sourceTree = "<group>"; };
+		70FFF5B9176011F100F32342 /* BarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarView.m; sourceTree = "<group>"; };
 		D7002B4D1721FC5A00F6E6EA /* LandscapeMainGraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeMainGraphViewController.h; sourceTree = "<group>"; };
 		D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeMainGraphViewController.m; sourceTree = "<group>"; };
 		D703EEBF17404A4E00B21D31 /* DirectoryEditorTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryEditorTableViewController.h; sourceTree = "<group>"; };
@@ -401,6 +404,8 @@
 				D7329A371729AA4700D64341 /* GrantObject.m */,
 				D7D680421732FD45008C4B7C /* PieSliceView.h */,
 				D7D680431732FD46008C4B7C /* PieSliceView.m */,
+				70FFF5B8176011F100F32342 /* BarView.h */,
+				70FFF5B9176011F100F32342 /* BarView.m */,
 				D758E5E8173342AB00F93FAC /* Custom Table Cells */,
 			);
 			name = "Auxilliary Classes";
@@ -693,6 +698,7 @@
 				D7DFD07A1741ED4C0073BC53 /* GrantEditorTableViewController.m in Sources */,
 				D7DFD07D1741EE6C0073BC53 /* VisibleGrantsCell.m in Sources */,
 				D7DFD0801741F03F0073BC53 /* TutorialViewController.m in Sources */,
+				70FFF5BA176011F100F32342 /* BarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

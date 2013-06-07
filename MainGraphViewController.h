@@ -26,6 +26,9 @@
     __weak IBOutlet UILabel *labelGrantor;
     __weak IBOutlet UILabel *labelOverhead;
     __weak IBOutlet UILabel *labelName;
+    
+    
+    __weak IBOutlet UIView *viewGraph;
 }
 
 -(void)setGrantObject:(GrantObject *)grantObject;

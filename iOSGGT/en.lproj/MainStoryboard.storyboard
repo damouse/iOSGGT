@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="vDl-4e-9jF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3104" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="vDl-4e-9jF">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -783,7 +783,7 @@ EE5hbWUgb2YgR3JhbnQ
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="24" sectionHeaderHeight="22" sectionFooterHeight="22" id="2I4-u1-iF9">
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="24" sectionHeaderHeight="22" sectionFooterHeight="22" id="2I4-u1-iF9">
                                 <rect key="frame" x="208" y="51" width="112" height="219"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.16580177919708028" alpha="1" colorSpace="calibratedWhite"/>
@@ -938,6 +938,11 @@ EE5hbWUgb2YgR3JhbnQ
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" id="vHm-7C-6UX">
+                                <rect key="frame" x="10" y="51" width="300" height="219"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -953,6 +958,7 @@ EE5hbWUgb2YgR3JhbnQ
                         <outlet property="labelStartDate" destination="Cx4-Wx-NIH" id="tB3-18-XRn"/>
                         <outlet property="labelTitle" destination="aYr-hG-38H" id="pfn-H3-pQM"/>
                         <outlet property="tableSliceLabels" destination="2I4-u1-iF9" id="ORh-5q-QUq"/>
+                        <outlet property="viewGraph" destination="vHm-7C-6UX" id="dP9-gJ-iuI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8ny-eu-5JF" userLabel="First Responder" sceneMemberID="firstResponder"/>

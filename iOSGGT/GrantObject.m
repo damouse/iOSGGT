@@ -267,6 +267,11 @@
     return balance;
 }
 
+-(NSDictionary *)getPaidRow
+{
+    return paid;
+}
+
 -(NSArray *) getEntriesWithAccountNames {
     return accountEntriesWithAccount;
 }
