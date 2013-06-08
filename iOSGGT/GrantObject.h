@@ -24,6 +24,7 @@
 //retrieve the dictionaries that represent the totals rows in the table. Dictionaries are keyed by column headers
 -(NSDictionary *)getBalanceRow;
 -(NSDictionary *)getBudgetRow;
+-(NSDictionary *)getPaidRow;
 
 //Keys: {dateLastAccessed, startDate, endDate, name, accountNumber, grantor, title, overhead, awardNumber}
 - (NSDictionary *) getMetadata;

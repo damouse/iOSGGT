@@ -22,25 +22,49 @@
 #import "PieSliceView.h"
 #import "AccountLabelTableViewCell.h"
 #import "QuartzCore/QuartzCore.h"
-#import "BarView.h"
+
+#import "CorePlot-CocoaTouch.h"
+#import "CPTBarPlot.h"
 
 @interface MainGraphViewController () {
     GrantObject *grant;
     NSMutableArray *slices;
     NSMutableArray *sliceColors;
     
-    NSMutableArray *bars; //bars for the bar graph
-    
     NSMutableArray *labelsAndColors; // slice labels paired with their respective colors
     int currentColor;
     
     PieSliceView *currentlyAnimatingSlice;
     int currentlyAnimatingSliceIndex;
+    
+    
+    //bar chart
+    NSMutableArray *data;
+    CPTGraphHostingView *hostingView;
+    CPTXYGraph *graph;
+    
+    NSArray *accounts;
+    NSDictionary *barSourceBudget;
+    NSDictionary *barSourceBalance;
+    NSDictionary *barSourcePaid;
+    
+    int numberOfBars;
+    NSString *currentlyActivePlot;
 }
 
 @end
 
-@implementation MainGraphViewController 
+@implementation MainGraphViewController
+
+//Constants for the "tutorial" bar chart
+#define BAR_POSITION @"POSITION"
+#define BAR_HEIGHT @"HEIGHT"
+#define COLOR @"COLOR"
+#define CATEGORY @"CATEGORY"
+
+#define AXIS_START 0
+#define AXIS_END 50
+
 
 #pragma mark General Class
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -82,7 +106,36 @@
     labelOverhead.text = [[grant getMetadata] objectForKey:@"overhead"];
     labelName.text = [[grant getMetadata] objectForKey:@"name"];
     
-    //[self populatePieChart];
+    //[self populatePieChart]
+    //[self createTestValues];
+    [self initBarPlot];
+}
+
+- (void) createTestValues
+{
+    data = [NSMutableArray array];
+    
+    int bar_heights[] = {20,30,10,40};
+    UIColor *colors[] = {
+        [UIColor redColor],
+        [UIColor blueColor],
+        [UIColor orangeColor],
+        [UIColor purpleColor]};
+    NSString *categories[] = {@"Plain Milk", @"Milk + Caramel", @"White", @"Dark"};
+    
+    for (int i = 0; i < 4 ; i++){
+        double position = i*10; //Bars will be 10 pts away from each other
+        double height = bar_heights[i];
+        
+        NSDictionary *bar = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithDouble:position],BAR_POSITION,
+                             [NSNumber numberWithDouble:height],BAR_HEIGHT,
+                             colors[i],COLOR,
+                             categories[i],CATEGORY,
+                             nil];
+        [data addObject:bar];
+        
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -93,6 +146,144 @@
     return NO;
 }
 
+#pragma mark Graph Init
+- (void) initBarPlot
+{
+    [self createTestValues];
+    
+    [self createBarChartSource];
+    
+    //set the currently active plot before the graph is init so more than one plot does not appear
+    currentlyActivePlot = @"budget";
+    [self generateBarPlot];
+}
+
+- (void) createBarChartSource
+{
+    //get the corresponding data from the grant. Dont use any special data structures to show it, just do it manually
+    accounts = [grant getAccounts];
+    barSourceBudget = [grant getBudgetRow];
+    barSourceBalance = [grant getBalanceRow];
+    barSourcePaid = [grant getPaidRow];
+    
+    //determine the number of accounts present
+    numberOfBars = 0;
+    for(NSString *account in accounts) { //TODO: put checks for negative numbers
+        if(![account isEqualToString:@""] && ![account isEqualToString:@"Amount"]) {
+            numberOfBars++;
+            
+            //check the maximum numbers
+        }
+    }
+}
+
+- (void)generateBarPlot
+{
+    //Create host view
+    hostingView = [[CPTGraphHostingView alloc]
+                   initWithFrame:viewGraph.frame];
+    [self.view addSubview:hostingView];
+    
+    //Create graph and set it as host view's graph
+    graph = [[CPTXYGraph alloc] initWithFrame:hostingView.bounds];
+    [hostingView setHostedGraph:graph];
+    
+    //graph padding
+    graph.paddingLeft   = 0.0;
+    graph.paddingTop    = 0.0;
+    graph.paddingRight  = 0.0;
+    graph.paddingBottom = 0.0;
+    
+    //set graph padding and theme
+    graph.plotAreaFrame.paddingTop = 0;
+    graph.plotAreaFrame.paddingRight = 0;
+    graph.plotAreaFrame.paddingBottom = 0;
+    graph.plotAreaFrame.paddingLeft = 0;
+    [graph applyTheme:[CPTTheme themeNamed:kCPTDarkGradientTheme]];
+    
+    //set axes ranges
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:
+                        CPTDecimalFromFloat(AXIS_START)
+                                                    length:CPTDecimalFromFloat((AXIS_END - AXIS_START)+5)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:
+                        CPTDecimalFromFloat(AXIS_START)
+                                                    length:CPTDecimalFromFloat((AXIS_END - AXIS_START)+5)];
+    
+    //remove that weird line area
+    graph.plotAreaFrame.borderLineStyle = nil;
+    graph.plotAreaFrame.cornerRadius    = 0.0;
+    
+    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
+    
+    //set axes' title, labels and their text styles
+    CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
+    textStyle.fontName = @"Helvetica";
+    textStyle.fontSize = 14;
+    textStyle.color = [CPTColor whiteColor];
+    //axisSet.xAxis.title = @"CHOCOLATE";
+    //axisSet.yAxis.title = @"AWESOMENESS";
+    axisSet.xAxis.titleTextStyle = textStyle;
+    axisSet.yAxis.titleTextStyle = textStyle;
+    axisSet.xAxis.titleOffset = 30.0f;
+    axisSet.yAxis.titleOffset = 40.0f;
+    axisSet.xAxis.labelTextStyle = textStyle;
+    axisSet.xAxis.labelOffset = 3.0f;
+    axisSet.yAxis.labelTextStyle = textStyle;
+    axisSet.yAxis.labelOffset = 3.0f;
+    
+    //set axes' line styles and interval ticks
+    CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
+    lineStyle.lineColor = [CPTColor grayColor];
+    lineStyle.lineWidth = 3.0f;
+    
+    //set line style for y axis: none
+    CPTMutableLineStyle *lineStyleX = [CPTMutableLineStyle lineStyle];
+    lineStyleX.lineColor = [CPTColor clearColor];
+    
+    axisSet.xAxis.axisLineStyle = lineStyleX;
+    axisSet.yAxis.axisLineStyle = lineStyle;
+    
+    axisSet.xAxis.majorTickLineStyle = lineStyleX;
+    axisSet.yAxis.majorTickLineStyle = lineStyle;
+    
+    axisSet.xAxis.majorIntervalLength = CPTDecimalFromFloat(5.0f);
+    axisSet.yAxis.majorIntervalLength = CPTDecimalFromFloat(5.0f);
+    axisSet.xAxis.majorTickLength = 7.0f;
+    axisSet.yAxis.majorTickLength = 7.0f;
+    axisSet.xAxis.minorTickLineStyle = lineStyleX;
+    axisSet.yAxis.minorTickLineStyle = lineStyle;
+    axisSet.xAxis.minorTicksPerInterval = 1;
+    axisSet.yAxis.minorTicksPerInterval = 1;
+    axisSet.xAxis.minorTickLength = 5.0f;
+    axisSet.yAxis.minorTickLength = 5.0f;
+    
+    NSMutableArray *identifiers = [NSMutableArray arrayWithObjects:@"balance", @"budget", @"paid", nil];
+    
+    for(int i = 0; i < 3; i++) {
+        // Create bar plot and add it to the graph
+        CPTBarPlot *plot = [[CPTBarPlot alloc] init] ;
+        plot.dataSource = self;
+        plot.delegate = self;
+        
+        //HAS to be dynamic
+        
+        plot.barWidth = [[NSDecimalNumber decimalNumberWithString:@"5.0"] decimalValue];
+        plot.barOffset = [[NSDecimalNumber decimalNumberWithString:@"10.0"] decimalValue];
+        
+        plot.barCornerRadius = 2.0;
+        
+        // Remove bar outlines
+        //CPTMutableLineStyle *borderLineStyle = [CPTMutableLineStyle lineStyle];
+        //borderLineStyle.lineColor = [CPTColor clearColor];
+        //plot.lineStyle = borderLineStyle;
+
+        plot.identifier = [identifiers objectAtIndex:0];
+        [identifiers removeObjectAtIndex:0];
+        [graph addPlot:plot];
+    }
+}
+
 #pragma mark Data
 -(void)setGrantObject:(GrantObject *)grantObject
 {
@@ -100,10 +291,74 @@
     labelTitle.text = [[grant getMetadata] objectForKey:@"title"];
 }
 
+#pragma mark Graph Delegate and DataSource
+-(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+{
+    if ( [plot.identifier isEqual:@"balance"] )
+        return [data count];
+    
+    return 0;
+
+}
+
+-(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+{
+    if ( [plot.identifier isEqual:@"balance"] )
+    {
+        NSDictionary *bar = [data objectAtIndex:index];
+        
+        if(fieldEnum == CPTBarPlotFieldBarLocation)
+            return [bar valueForKey:BAR_POSITION];
+        else if(fieldEnum ==CPTBarPlotFieldBarTip)
+            return [bar valueForKey:BAR_HEIGHT];
+    }
+    return [NSNumber numberWithFloat:0];
+}
+
+-(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index
+{
+    if ( [plot.identifier isEqual: @"balance"] )
+    {
+        CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
+        textStyle.fontName = @"Helvetica";
+        textStyle.fontSize = 14;
+        textStyle.color = [CPTColor whiteColor];
+        
+        NSDictionary *bar = [data objectAtIndex:index];
+        CPTTextLayer *label = [[CPTTextLayer alloc] initWithText:[NSString stringWithFormat:@"%@", [bar valueForKey:@"CATEGORY"]]];
+        label.textStyle =textStyle;
+        
+        return label;
+    }
+    
+    CPTTextLayer *defaultLabel = [[CPTTextLayer alloc] initWithText:@"Label"];
+    return defaultLabel;
+    
+}
+
+-(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
+{
+    if ( [barPlot.identifier isEqual:@"balance"] )
+    {
+        NSDictionary *bar = [data objectAtIndex:index];
+        CPTGradient *gradient = [CPTGradient gradientWithBeginningColor:[CPTColor whiteColor]
+                                                            endingColor:[bar valueForKey:@"COLOR"]
+                                                      beginningPosition:0.0 endingPosition:0.3 ];
+        [gradient setGradientType:CPTGradientTypeAxial];
+        [gradient setAngle:320.0];
+        
+        CPTFill *fill = [CPTFill fillWithColor:[bar valueForKey:@"COLOR"]];
+        
+        return fill;
+        
+    }
+    return [CPTFill fillWithColor:[CPTColor colorWithComponentRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
+    
+}
+
 #pragma mark Pie Chart
-//use the array of slices to populate the pie chart. Slices animate when they are assigned percentFill!
-//Note: slices should be added onto a running total of the fraction of total budget.
-- (void) populatePieChart {
+- (void) populatePieChart
+{
     NSDictionary *budget = [grant getBudgetRow]; //used to figure out percentFills
     NSDictionary *balance = [grant getBalanceRow]; //consider making an inside slice that expands outward based on remaining balance
     NSArray *accounts = [grant getAccounts];
@@ -116,13 +371,13 @@
     float percentFillEnd;
     float percentFillStart;
     
-    BarView *bar;
-    bars = [NSMutableArray array];
+    PieSliceView *slice;
+    slices = [NSMutableArray array];
     
     for(NSString *account in accounts) { //TODO: put checks for negative numbers
         if(![account isEqualToString:@""] && ![account isEqualToString:@"Amount"]) {
 
-            bar = [self createNewSlice: account];
+            slice = [self createNewSlice: account];
             
             currentBudget = [[budget objectForKey:account] floatValue]; //fetch value
             percentFillEnd = (currentBudget + runningTotal) / totalBudget; //divide it by total (with current total)
@@ -130,41 +385,15 @@
             runningTotal += currentBudget; //increment total
             
             
-            [bars addObject:bar];
-        }
-    }
-
-    [self animateSlice]; //now animates all slices
-}
-
-- (void) populateBarGraph
-{
-    NSDictionary *budget = [grant getBudgetRow]; 
-    NSDictionary *balance = [grant getBalanceRow]; 
-    NSDictionary *paid = [grant getBalanceRow];
-    NSArray *accounts = [grant getAccounts];
-    
-    labelsAndColors = [NSMutableArray array];
-    currentColor = 0; //this index tracks the used colors so they can be used again in the labels later
-    
-    PieSliceView *slice;
-    slices = [NSMutableArray array];
-    
-    for(NSString *account in accounts) { //TODO: put checks for negative numbers
-        if(![account isEqualToString:@""] && ![account isEqualToString:@"Amount"]) {
-            
-            slice = [self createNewSlice: account];
-
-            
             [slices addObject:slice];
         }
     }
-    
+
     [self animateSlice]; //now animates all slices
 }
 
-//create a new pieslice centered at the middle of the screen. Add the label to 
--(PieSliceView *) createNewSlice:(NSString *)accountName {
+-(PieSliceView *) createNewSlice:(NSString *)accountName
+{
     PieSliceView *slice = [[PieSliceView alloc] initWithFrame:[self getCenteredRect:200]]; //this defines the size of the slice
     
     [slice setAccountName:accountName];
@@ -185,10 +414,8 @@
     return slice;
 }
 
-
-
-//return a rect that is centered at the hardcoded coordinates
--(CGRect) getCenteredRect:(float)size {
+-(CGRect) getCenteredRect:(float)size
+{
     float halfWidth = self.view.frame.size.width  / 3;
     float xOrigin = halfWidth - size / 2 - 2;
     
@@ -199,8 +426,8 @@
 }
 
 #pragma mark Slice Delegate
-//This method checks incoming touches against the boundraries of present slices. Consider disabling when animations are running. 
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event  {
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
     UITouch *touch = [touches anyObject];
     int i = 0;
     int indexOfTouchedSlice = -1; //use this to decide which slice was touched (since underlying slices also recieve touches)
@@ -228,9 +455,8 @@
     }
 }
 
-
-//Recursive call to animate the slice open. TODO: make a logarithmic timer so the animation is smoother.
-- (void) animateSlice {    
+- (void) animateSlice
+{
     //intialize with the first slice
     if(currentlyAnimatingSlice == nil){
         currentlyAnimatingSliceIndex = 0;

@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "GrantObject.h"
 #import "PieSliceView.h"
+#import "CorePlot-CocoaTouch.h"
+
 @class PieSliceView;
 
-@interface MainGraphViewController : UIViewController {
+@interface MainGraphViewController : UIViewController <CPTBarPlotDataSource, CPTBarPlotDelegate> {
 
     __weak IBOutlet UILabel *labelTitle;
     __weak IBOutlet UITableView *tableSliceLabels;
