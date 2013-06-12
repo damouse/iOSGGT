@@ -16,6 +16,14 @@ Other
 -Change some of the darker colors (blue, brown, etc). Just make them brighter. 
 -Make Fiscal Year headers for Account Entries
 
+0.1.2 Changes 6/9/13
+Bug Fixes
+
+New Features
+-Removed the pie chart view from the Graph Detail controller and implemented a bar graph instead. 
+
+Miscellanious Changes
+
 
 
 0.1.1 Changes 6/2/13

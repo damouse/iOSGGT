@@ -43,7 +43,7 @@
     CPTGraphHostingView *hostingView;
     CPTXYGraph *graph;
     
-    NSArray *accounts;
+    NSMutableArray *accounts;
     NSDictionary *barSourceBudget;
     NSDictionary *barSourceBalance;
     NSDictionary *barSourcePaid;
@@ -61,9 +61,9 @@
 #define BAR_HEIGHT @"HEIGHT"
 #define COLOR @"COLOR"
 #define CATEGORY @"CATEGORY"
-
+/*
 #define AXIS_START 0
-#define AXIS_END 50
+#define AXIS_END 50*/
 
 
 #pragma mark General Class
@@ -111,33 +111,6 @@
     [self initBarPlot];
 }
 
-- (void) createTestValues
-{
-    data = [NSMutableArray array];
-    
-    int bar_heights[] = {20,30,10,40};
-    UIColor *colors[] = {
-        [UIColor redColor],
-        [UIColor blueColor],
-        [UIColor orangeColor],
-        [UIColor purpleColor]};
-    NSString *categories[] = {@"Plain Milk", @"Milk + Caramel", @"White", @"Dark"};
-    
-    for (int i = 0; i < 4 ; i++){
-        double position = i*10; //Bars will be 10 pts away from each other
-        double height = bar_heights[i];
-        
-        NSDictionary *bar = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithDouble:position],BAR_POSITION,
-                             [NSNumber numberWithDouble:height],BAR_HEIGHT,
-                             colors[i],COLOR,
-                             categories[i],CATEGORY,
-                             nil];
-        [data addObject:bar];
-        
-    }
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     if (interfaceOrientation == UIInterfaceOrientationPortrait) {    // Or whatever orientation it will be presented in.
@@ -151,33 +124,107 @@
 {
     [self createTestValues];
     
-    [self createBarChartSource];
+    float max = [self createBarChartSource];
     
     //set the currently active plot before the graph is init so more than one plot does not appear
     currentlyActivePlot = @"budget";
-    [self generateBarPlot];
+    [self generateBarPlot:max];
 }
 
-- (void) createBarChartSource
+- (void) createTestValues
+{
+    data = [NSMutableArray array];
+    
+    int bar_heights[] = {20,30,10,40};
+    UIColor *colors[] = {
+        [UIColor redColor],
+        [UIColor blueColor],
+        [UIColor orangeColor],
+        [UIColor purpleColor]};
+    NSString *categories[] = {@"Plain Milk", @"Milk + Caramel", @"White", @"Dark"};
+    
+    for (int i = 0; i < 4 ; i++){
+        double position = i; //Bars will be 10 pts away from each other
+        double height = bar_heights[i];
+        
+        NSDictionary *bar = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithDouble:position],BAR_POSITION,
+                             [NSNumber numberWithDouble:height],BAR_HEIGHT,
+                             colors[i],COLOR,
+                             categories[i],CATEGORY,
+                             nil];
+        [data addObject:bar];
+        
+    }
+    /*
+     $1 = 0x07232df0 <__NSArrayM 0x7232df0>(
+     {
+         CATEGORY = "Plain Milk";
+         COLOR = "UIDeviceRGBColorSpace 1 0 0 1";
+         HEIGHT = 20;
+         POSITION = 0;
+     },
+     {
+         CATEGORY = "Milk + Caramel";
+         COLOR = "UIDeviceRGBColorSpace 0 0 1 1";
+         HEIGHT = 30;
+         POSITION = 10;
+     },
+     {
+         CATEGORY = White;
+         COLOR = "UIDeviceRGBColorSpace 1 0.5 0 1";
+         HEIGHT = 10;
+         POSITION = 20;
+     },
+     {
+         CATEGORY = Dark;
+         COLOR = "UIDeviceRGBColorSpace 0.5 0 0.5 1";
+         HEIGHT = 40;
+         POSITION = 30;
+     }
+     )*/
+}
+
+- (float) createBarChartSource
 {
     //get the corresponding data from the grant. Dont use any special data structures to show it, just do it manually
-    accounts = [grant getAccounts];
+    //returns the highest value times a constant
+    
+    //remove all the empty accounts and the "Amount" column
+    accounts = [NSMutableArray array];
+    for(NSString *account in [grant getAccounts]) {
+        if(![account isEqualToString:@""] && ![account isEqualToString:@"Amount"])
+           [accounts addObject:account];
+    }
+
     barSourceBudget = [grant getBudgetRow];
     barSourceBalance = [grant getBalanceRow];
     barSourcePaid = [grant getPaidRow];
     
+    float max = 0;
+    float temp;
+    
     //determine the number of accounts present
     numberOfBars = 0;
     for(NSString *account in accounts) { //TODO: put checks for negative numbers
-        if(![account isEqualToString:@""] && ![account isEqualToString:@"Amount"]) {
-            numberOfBars++;
-            
-            //check the maximum numbers
-        }
+        numberOfBars++;
+        
+        //check the maximum numbers from each account to set the max height of the graph
+        if([[barSourceBudget objectForKey:account] floatValue] > max)
+            max = [[barSourceBudget objectForKey:account] floatValue];
+        
+        if([[barSourceBalance objectForKey:account] floatValue] > max)
+            max = [[barSourceBudget objectForKey:account] floatValue];
+        
+        if([[barSourcePaid objectForKey:account] floatValue] > max)
+            max = [[barSourceBudget objectForKey:account] floatValue];
     }
+    
+    //creat a little buffer on the top edge of the graph
+    return max * 1.2;
 }
 
-- (void)generateBarPlot
+- (void) generateBarPlot:(float) max
 {
     //Create host view
     hostingView = [[CPTGraphHostingView alloc]
@@ -204,11 +251,11 @@
     //set axes ranges
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:
-                        CPTDecimalFromFloat(AXIS_START)
-                                                    length:CPTDecimalFromFloat((AXIS_END - AXIS_START)+5)];
+                        CPTDecimalFromFloat(0)
+                                                    length:CPTDecimalFromFloat(numberOfBars  * 2)];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:
-                        CPTDecimalFromFloat(AXIS_START)
-                                                    length:CPTDecimalFromFloat((AXIS_END - AXIS_START)+5)];
+                        CPTDecimalFromFloat(0)
+                                                    length:CPTDecimalFromFloat(max)];
     
     //remove that weird line area
     graph.plotAreaFrame.borderLineStyle = nil;
@@ -259,7 +306,8 @@
     axisSet.yAxis.minorTickLength = 5.0f;
     
     NSMutableArray *identifiers = [NSMutableArray arrayWithObjects:@"balance", @"budget", @"paid", nil];
-    
+    float width = viewGraph.frame.size.width;
+
     for(int i = 0; i < 3; i++) {
         // Create bar plot and add it to the graph
         CPTBarPlot *plot = [[CPTBarPlot alloc] init] ;
@@ -267,9 +315,8 @@
         plot.delegate = self;
         
         //HAS to be dynamic
-        
-        plot.barWidth = [[NSDecimalNumber decimalNumberWithString:@"5.0"] decimalValue];
-        plot.barOffset = [[NSDecimalNumber decimalNumberWithString:@"10.0"] decimalValue];
+        plot.barWidth = [[NSDecimalNumber decimalNumberWithString:@"1.0"] decimalValue];
+        plot.barOffset = [[NSDecimalNumber decimalNumberWithString:@"0.0"] decimalValue];
         
         plot.barCornerRadius = 2.0;
         
@@ -295,7 +342,7 @@
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
     if ( [plot.identifier isEqual:@"balance"] )
-        return [data count];
+        return [accounts count];
     
     return 0;
 
@@ -305,18 +352,21 @@
 {
     if ( [plot.identifier isEqual:@"balance"] )
     {
-        NSDictionary *bar = [data objectAtIndex:index];
+        //NSDictionary *bar = [data objectAtIndex:index];
         
+        NSString *accountName = [accounts objectAtIndex:index];
+        NSString *value = [barSourceBudget objectForKey:accountName];
+
         if(fieldEnum == CPTBarPlotFieldBarLocation)
-            return [bar valueForKey:BAR_POSITION];
+            return [NSNumber numberWithInt:(index * 2 + 1)];
         else if(fieldEnum ==CPTBarPlotFieldBarTip)
-            return [bar valueForKey:BAR_HEIGHT];
+            return value;
     }
     return [NSNumber numberWithFloat:0];
 }
 
 -(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index
-{
+{    
     if ( [plot.identifier isEqual: @"balance"] )
     {
         CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
@@ -324,8 +374,8 @@
         textStyle.fontSize = 14;
         textStyle.color = [CPTColor whiteColor];
         
-        NSDictionary *bar = [data objectAtIndex:index];
-        CPTTextLayer *label = [[CPTTextLayer alloc] initWithText:[NSString stringWithFormat:@"%@", [bar valueForKey:@"CATEGORY"]]];
+        //NSDictionary *bar = [data objectAtIndex:index];
+        CPTTextLayer *label = [[CPTTextLayer alloc] initWithText:[accounts objectAtIndex:index]];
         label.textStyle =textStyle;
         
         return label;
@@ -338,22 +388,12 @@
 
 -(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
 {
-    if ( [barPlot.identifier isEqual:@"balance"] )
-    {
-        NSDictionary *bar = [data objectAtIndex:index];
-        CPTGradient *gradient = [CPTGradient gradientWithBeginningColor:[CPTColor whiteColor]
-                                                            endingColor:[bar valueForKey:@"COLOR"]
-                                                      beginningPosition:0.0 endingPosition:0.3 ];
-        [gradient setGradientType:CPTGradientTypeAxial];
-        [gradient setAngle:320.0];
-        
-        CPTFill *fill = [CPTFill fillWithColor:[bar valueForKey:@"COLOR"]];
-        
-        return fill;
-        
-    }
-    return [CPTFill fillWithColor:[CPTColor colorWithComponentRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
-    
+    return [CPTFill fillWithColor:[sliceColors objectAtIndex:index]];
+}
+
+- (void)barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)index
+{
+    NSLog(@"Bar was selected at index %i", index);
 }
 
 #pragma mark Pie Chart
