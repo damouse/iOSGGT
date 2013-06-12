@@ -64,7 +64,7 @@
     [metadata setObject:tmp forKey:@"title"];
     
     tmp = [metadata objectForKey:@"grantor"];
-    tmp = [[tmp componentsSeparatedByString:@"Grantor: "] objectAtIndex:1];
+    tmp = [[tmp componentsSeparatedByString:@"Grantor:"] objectAtIndex:1];
     [metadata setObject:tmp forKey:@"grantor"];
     
     tmp = [metadata objectForKey:@"awardNumber"];
@@ -176,6 +176,9 @@
         //NSLog(@"Spinning 3: %i", i);
         
         if(![cell isEqualToString:@""]) {
+            //emptyRow represents an error in the spreadsheet where the entry is not listed under any account, leading to an iobe error in the loop below. 
+            BOOL emptyRow = NO; 
+            
             //get the date, amount, and label of the entry
             AccountEntryObject *entry = [[AccountEntryObject alloc] initWithDate:[line objectAtIndex:0]];
             [entry setLabel:cell];
@@ -190,11 +193,20 @@
             cell = [line objectAtIndex:j]; //first column of account entries
             while([cell isEqualToString:@""]){
                 j++;
+                
+                //use emptyRow to check if the row has an entry error
+                if(j == 20) {
+                    emptyRow = YES;
+                    break;
+                }
+                
                 cell = [line objectAtIndex:j];
             } //j holds index (offset) to the correct header
             
-            [entry setAccountName:[columnHeaders objectAtIndex:(j - 6)]];
-            [accountEntriesWithAccount addObject:entry];
+            if(!emptyRow) {
+                [entry setAccountName:[columnHeaders objectAtIndex:(j - 6)]];
+                [accountEntriesWithAccount addObject:entry];
+            }
             //end part 2
             
             emptyCells = 0; //reset empty cell count

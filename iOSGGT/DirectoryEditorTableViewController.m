@@ -205,7 +205,7 @@
         
         editingTextView = textView; //ping the new URL, see if valid. If so, then change the written URL.
         NSArray *tmp = [textView.text componentsSeparatedByString:@"http://"];
-        NSArray *tmp2 = [textView.text componentsSeparatedByString:@"%@/GGT_Handler.php"];
+        NSArray *tmp2 = [textView.text componentsSeparatedByString:@"/GGT_Handler.php"];
 
         if([[tmp objectAtIndex:0] isEqualToString:textView.text])
             stringURL = [NSString stringWithFormat:@"http://%@", stringURL];

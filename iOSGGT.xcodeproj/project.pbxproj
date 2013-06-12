@@ -52,7 +52,6 @@
 		D795D9111741B5CD00E8D5FC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D795D90F1741B5CD00E8D5FC /* MBProgressHUD.m */; };
 		D7A917B6170A587500B005E5 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A917B5170A587500B005E5 /* MenuViewController.m */; };
 		D7D680441732FD46008C4B7C /* PieSliceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7D680431732FD46008C4B7C /* PieSliceView.m */; };
-		D7DFD07A1741ED4C0073BC53 /* GrantEditorTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DFD0791741ED4C0073BC53 /* GrantEditorTableViewController.m */; };
 		D7DFD07D1741EE6C0073BC53 /* VisibleGrantsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DFD07C1741EE6C0073BC53 /* VisibleGrantsCell.m */; };
 		D7DFD0801741F03F0073BC53 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DFD07F1741F03F0073BC53 /* TutorialViewController.m */; };
 		D7DFD0861741FA400073BC53 /* tut_account.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DFD0811741FA400073BC53 /* tut_account.png */; };
@@ -142,8 +141,6 @@
 		D7A917B5170A587500B005E5 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		D7D680421732FD45008C4B7C /* PieSliceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSliceView.h; sourceTree = "<group>"; };
 		D7D680431732FD46008C4B7C /* PieSliceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceView.m; sourceTree = "<group>"; };
-		D7DFD0781741ED4C0073BC53 /* GrantEditorTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GrantEditorTableViewController.h; path = ../GrantEditorTableViewController.h; sourceTree = "<group>"; };
-		D7DFD0791741ED4C0073BC53 /* GrantEditorTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GrantEditorTableViewController.m; path = ../GrantEditorTableViewController.m; sourceTree = "<group>"; };
 		D7DFD07B1741EE6C0073BC53 /* VisibleGrantsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisibleGrantsCell.h; sourceTree = "<group>"; };
 		D7DFD07C1741EE6C0073BC53 /* VisibleGrantsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisibleGrantsCell.m; sourceTree = "<group>"; };
 		D7DFD07E1741F03F0073BC53 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
@@ -409,8 +406,6 @@
 		D7A917B7170A589000B005E5 /* Modal View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D7DFD0781741ED4C0073BC53 /* GrantEditorTableViewController.h */,
-				D7DFD0791741ED4C0073BC53 /* GrantEditorTableViewController.m */,
 				D703EEBF17404A4E00B21D31 /* DirectoryEditorTableViewController.h */,
 				D703EEC017404A4E00B21D31 /* DirectoryEditorTableViewController.m */,
 				D7A917B4170A587500B005E5 /* MenuViewController.h */,
@@ -690,7 +685,6 @@
 				D795D9101741B5CD00E8D5FC /* MBProgressHUD.m in Sources */,
 				D751724B1741CE5A0025455A /* UINonrotatingNavigationController.m in Sources */,
 				D751725B1741E8E90025455A /* InfoViewController.m in Sources */,
-				D7DFD07A1741ED4C0073BC53 /* GrantEditorTableViewController.m in Sources */,
 				D7DFD07D1741EE6C0073BC53 /* VisibleGrantsCell.m in Sources */,
 				D7DFD0801741F03F0073BC53 /* TutorialViewController.m in Sources */,
 			);

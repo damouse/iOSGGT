@@ -310,7 +310,7 @@
     //set up and run the progress bar
     NSDecimalNumber *budget = [self formatCurrency:[[grant getBudgetRow] objectForKey:@"Amount"]];
     NSDecimalNumber *balance = [self formatCurrency:[[grant getBalanceRow] objectForKey:@"Amount"]];
-    NSDecimalNumber *percent = [balance decimalNumberByDividingBy:budget];
+    NSDecimalNumber *percent = [[NSDecimalNumber alloc] initWithFloat:0.4f];//[balance decimalNumberByDividingBy:budget];
     [cell setCompletion:[percent floatValue]];
     
     //set up the progress bar note
