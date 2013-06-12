@@ -82,6 +82,7 @@
     popup.layer.borderWidth = 1;
     popup.layer.borderColor = [[UIColor grayColor] CGColor];
     popup.hidden = YES;
+    popup.editable = NO;
     
     [self.view addSubview:popup];
 }

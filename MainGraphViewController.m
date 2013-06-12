@@ -108,7 +108,12 @@
     
     //[self populatePieChart]
     //[self createTestValues];
-    [self initBarPlot];
+
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+        [self initBarPlot];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -143,7 +148,9 @@
         [UIColor purpleColor]};
     NSString *categories[] = {@"Plain Milk", @"Milk + Caramel", @"White", @"Dark"};
     
+    NSLog(@"Building test values...");
     for (int i = 0; i < 4 ; i++){
+
         double position = i; //Bars will be 10 pts away from each other
         double height = bar_heights[i];
         
@@ -156,6 +163,8 @@
         [data addObject:bar];
         
     }
+    
+    NSLog(@"Building test values done");
     /*
      $1 = 0x07232df0 <__NSArrayM 0x7232df0>(
      {
@@ -206,6 +215,8 @@
     
     //determine the number of accounts present
     numberOfBars = 0;
+    
+    NSLog(@"building real values...");
     for(NSString *account in accounts) { //TODO: put checks for negative numbers
         numberOfBars++;
         
@@ -220,12 +231,16 @@
             max = [[barSourceBudget objectForKey:account] floatValue];
     }
     
+    NSLog(@"building real values done");
+    
     //creat a little buffer on the top edge of the graph
     return max * 1.2;
 }
 
 - (void) generateBarPlot:(float) max
 {
+    NSLog(@"building bar plot...");
+    
     //Create host view
     hostingView = [[CPTGraphHostingView alloc]
                    initWithFrame:viewGraph.frame];
@@ -329,6 +344,8 @@
         [identifiers removeObjectAtIndex:0];
         [graph addPlot:plot];
     }
+    
+    NSLog(@"building bar plot done");
 }
 
 #pragma mark Data
@@ -341,6 +358,8 @@
 #pragma mark Graph Delegate and DataSource
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
+    NSLog(@"number of records for plot");
+
     if ( [plot.identifier isEqual:@"balance"] )
         return [accounts count];
     
@@ -350,6 +369,8 @@
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
+    NSLog(@"number for plot");
+    
     if ( [plot.identifier isEqual:@"balance"] )
     {
         //NSDictionary *bar = [data objectAtIndex:index];
@@ -366,7 +387,9 @@
 }
 
 -(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index
-{    
+{
+    NSLog(@"data label for plot");
+    
     if ( [plot.identifier isEqual: @"balance"] )
     {
         CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
@@ -388,6 +411,7 @@
 
 -(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
 {
+    NSLog(@"bar fill for plot");
     return [CPTFill fillWithColor:[sliceColors objectAtIndex:index]];
 }
 
@@ -399,6 +423,8 @@
 #pragma mark Pie Chart
 - (void) populatePieChart
 {
+    NSLog(@"!");
+    
     NSDictionary *budget = [grant getBudgetRow]; //used to figure out percentFills
     NSDictionary *balance = [grant getBalanceRow]; //consider making an inside slice that expands outward based on remaining balance
     NSArray *accounts = [grant getAccounts];
@@ -434,6 +460,9 @@
 
 -(PieSliceView *) createNewSlice:(NSString *)accountName
 {
+    NSLog(@"!");
+
+    
     PieSliceView *slice = [[PieSliceView alloc] initWithFrame:[self getCenteredRect:200]]; //this defines the size of the slice
     
     [slice setAccountName:accountName];
@@ -456,6 +485,9 @@
 
 -(CGRect) getCenteredRect:(float)size
 {
+    NSLog(@"!");
+
+    
     float halfWidth = self.view.frame.size.width  / 3;
     float xOrigin = halfWidth - size / 2 - 2;
     
@@ -468,6 +500,9 @@
 #pragma mark Slice Delegate
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    NSLog(@"!");
+
+    
     UITouch *touch = [touches anyObject];
     int i = 0;
     int indexOfTouchedSlice = -1; //use this to decide which slice was touched (since underlying slices also recieve touches)
@@ -497,6 +532,9 @@
 
 - (void) animateSlice
 {
+    NSLog(@"!");
+
+    
     //intialize with the first slice
     if(currentlyAnimatingSlice == nil){
         currentlyAnimatingSliceIndex = 0;
@@ -527,16 +565,25 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSLog(@"!");
+
+    
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSLog(@"!");
+
+    
     return labelsAndColors.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"!");
+
+    
     AccountLabelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"accountLabel" forIndexPath:indexPath];
     
     if (cell == nil) {
@@ -570,6 +617,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"!");
+
+    
     NSString *account = [[slices objectAtIndex:indexPath.row] accountName];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
     AccountTableViewController *detail = [mainStoryboard instantiateViewControllerWithIdentifier: @"accountGraphic"];

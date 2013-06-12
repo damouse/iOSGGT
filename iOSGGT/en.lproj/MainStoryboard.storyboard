@@ -1142,7 +1142,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="eWq-57-OVa"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="P2M-uN-AEF">
+                            <button hidden="YES" opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="P2M-uN-AEF">
                                 <rect key="frame" x="362" y="44" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1158,7 +1158,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="CAS-MP-Bpl"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UF4-zj-EY9">
+                            <button hidden="YES" opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="UF4-zj-EY9">
                                 <rect key="frame" x="362" y="68" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1174,7 +1174,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="DRJ-aU-WYd"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="52O-xk-B8S">
+                            <button hidden="YES" opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="52O-xk-B8S">
                                 <rect key="frame" x="362" y="92" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1190,7 +1190,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="Hrm-Ux-xy5"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hmY-Xs-dhj">
+                            <button hidden="YES" opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="hmY-Xs-dhj">
                                 <rect key="frame" x="362" y="115" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1206,7 +1206,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="Wav-d6-h1f"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="105" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ikc-CO-9xI">
+                            <button hidden="YES" opaque="NO" tag="105" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="Ikc-CO-9xI">
                                 <rect key="frame" x="362" y="138" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1222,7 +1222,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="v6W-XK-CVV"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="106" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QPq-cv-3jt">
+                            <button hidden="YES" opaque="NO" tag="106" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="QPq-cv-3jt">
                                 <rect key="frame" x="362" y="160" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1238,7 +1238,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="0MX-hC-scG"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="107" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="oFJ-LH-Mc9">
+                            <button hidden="YES" opaque="NO" tag="107" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="oFJ-LH-Mc9">
                                 <rect key="frame" x="362" y="185" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1254,7 +1254,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="weH-xl-4Nt"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="108" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Fl8-hJ-XtM">
+                            <button hidden="YES" opaque="NO" tag="108" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="Fl8-hJ-XtM">
                                 <rect key="frame" x="362" y="209" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1270,7 +1270,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="cVV-Uu-5KH"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="109" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="FhK-Jg-RjY">
+                            <button hidden="YES" opaque="NO" tag="109" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="FhK-Jg-RjY">
                                 <rect key="frame" x="362" y="233" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1286,7 +1286,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="rhN-Z6-D5c"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="110" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8RS-8k-2zE">
+                            <button hidden="YES" opaque="NO" tag="110" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="8RS-8k-2zE">
                                 <rect key="frame" x="233" y="20" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1302,7 +1302,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="DHJ-02-Now"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="111" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GOu-nN-yP5">
+                            <button hidden="YES" opaque="NO" tag="111" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="GOu-nN-yP5">
                                 <rect key="frame" x="233" y="44" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1318,7 +1318,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="lYy-SE-jXV"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="112" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="cTS-pL-i4A">
+                            <button hidden="YES" opaque="NO" tag="112" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="cTS-pL-i4A">
                                 <rect key="frame" x="233" y="68" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1334,7 +1334,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="NeQ-7t-E6x"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="113" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="J45-Pj-Ax9">
+                            <button hidden="YES" opaque="NO" tag="113" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="J45-Pj-Ax9">
                                 <rect key="frame" x="233" y="92" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1350,7 +1350,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="Ibw-Gd-y2k"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="114" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DHo-Ep-UHk">
+                            <button hidden="YES" opaque="NO" tag="114" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="DHo-Ep-UHk">
                                 <rect key="frame" x="233" y="115" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1366,7 +1366,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="WO2-Ph-KN8"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="115" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ZAj-HQ-cbF">
+                            <button hidden="YES" opaque="NO" tag="115" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="ZAj-HQ-cbF">
                                 <rect key="frame" x="233" y="138" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1382,7 +1382,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="MEQ-kz-TcL"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="116" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zJK-XP-mpQ">
+                            <button hidden="YES" opaque="NO" tag="116" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="zJK-XP-mpQ">
                                 <rect key="frame" x="233" y="161" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1398,7 +1398,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="VSt-cF-5o1"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="117" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="shc-Yb-s2T">
+                            <button hidden="YES" opaque="NO" tag="117" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="shc-Yb-s2T">
                                 <rect key="frame" x="233" y="185" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1414,7 +1414,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="MF5-n5-Ezc"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="118" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="n1k-gL-N0b">
+                            <button hidden="YES" opaque="NO" tag="118" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="n1k-gL-N0b">
                                 <rect key="frame" x="233" y="209" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1430,7 +1430,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <action selector="buttonPress:" destination="yCa-j4-yPf" eventType="touchUpInside" id="KcD-3u-Idd"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" tag="119" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="i7b-Oh-mBW">
+                            <button hidden="YES" opaque="NO" tag="119" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="i7b-Oh-mBW">
                                 <rect key="frame" x="233" y="233" width="118" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -1522,9 +1522,6 @@ EE5hbWUgb2YgR3JhbnQ
                 <relationship kind="outlet" name="textfieldNickname" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="textviewURL" candidateClass="UITextView"/>
             </relationships>
-        </class>
-        <class className="GrantEditorTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GrantEditorTableViewController.h"/>
         </class>
         <class className="GrantTableCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GrantTableCell.h"/>

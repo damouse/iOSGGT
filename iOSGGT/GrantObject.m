@@ -81,13 +81,45 @@
     tmp = [[tmp componentsSeparatedByString:@"Account #: "] objectAtIndex:1];
     [metadata setObject:tmp forKey:@"accountNumber"];
     
+    if([[metadata objectForKey:@"awardNumber"] isEqualToString:@"CNS-1137558 "])
+        NSLog(@"error in budget columns");
     
     //column headers, main three
     columnHeaders = [NSMutableArray arrayWithArray:[csvFile objectAtIndex:5]];
-    NSArray *budgetLine = [csvFile objectAtIndex:12]; //these are here so they can be replaced if we need to find them dynamically
-    NSArray *balanceLine = [csvFile objectAtIndex:13];
-    NSArray *paidLine = [csvFile objectAtIndex:15];
-    int i = 0;
+    
+    NSArray *line;
+    NSString *cell;
+    
+    //get the budget, balance, paid lines from the spreadsheet
+    NSArray *budgetLine;
+    NSArray *balanceLine;
+    NSArray *paidLine;
+    //loop begins in the row of the column headers and keeps going until it finds the appropriate rows for budget, balance, paid
+    for(int g = 5; g < 25; g++) {
+        cell = [[csvFile objectAtIndex:g] objectAtIndex:1];
+        
+        NSLog(@"%@", [csvFile objectAtIndex:g]);
+        
+        if([cell isEqualToString:@"Balance as of:"])
+            balanceLine = [csvFile objectAtIndex:g];
+        
+        if([cell isEqualToString:@"Current Budget:"])
+            budgetLine = [csvFile objectAtIndex:g];
+        
+        if([cell isEqualToString:@"Total Open and Paid:"])
+            paidLine = [csvFile objectAtIndex:g];
+        
+        //if we have found all the lines, break the loop
+        if(budgetLine != nil && balanceLine != nil && paidLine != nil)
+            break;
+    }
+    
+    //fallthrough: if the above loop did not find the correct lines then assign them statically
+    if(budgetLine == nil && balanceLine == nil && paidLine == nil) {
+        budgetLine = [csvFile objectAtIndex:12]; //these are here so they can be replaced if we need to find them dynamically
+        balanceLine = [csvFile objectAtIndex:13];
+        paidLine = [csvFile objectAtIndex:15];
+    }    int i = 0;
     
     //remove the extraneous columns in headers
     NSString *header = [columnHeaders objectAtIndex:0];
@@ -107,8 +139,8 @@
     //Build an array of account entries
     i = 6; //budget allocations start on row 7 of the spreadsheet
 
-    NSArray *line = [csvFile objectAtIndex:i];
-    NSString *cell = [line objectAtIndex:1];
+    line = [csvFile objectAtIndex:i];
+    cell = [line objectAtIndex:1];
 
     //parse the allocations
     while(![cell isEqualToString:@"Current Budget:"]) {

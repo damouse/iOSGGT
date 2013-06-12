@@ -37,6 +37,7 @@
     
     MBProgressHUD *hud;
     BOOL needsRefresh;
+    BOOL hubRunning;
 }
 
 @end
@@ -127,7 +128,8 @@
                 hud.detailsLabelText = @"Querying API...";
                 [hud show:YES];
                 
-                [self loadCachedGrants];
+                if(!hubRunning)
+                    [self loadCachedGrants];
                 break;
             }
         }
@@ -138,7 +140,8 @@
             [hud show:YES];
             
             directories = newDirectories;
-            [self loadCachedGrants];
+            if(!hubRunning)
+                [self loadCachedGrants];
         }
     }
 }
@@ -146,6 +149,7 @@
 #pragma mark Saved Directory
 //load and unarchive the cached grants. If this is the first time the app launched, include a temporary directory
 -(void) loadCachedGrants {
+    hubRunning = YES;
     //remember to remove grants that are no longer present!
     
     NSData *save = [[NSUserDefaults standardUserDefaults] objectForKey:@"directories"]; //note: init this in rootviewcontroller
@@ -193,6 +197,7 @@
             NSLog(@"Hub Finished. Grants: %i", [grants count]);
             [landscape initWithGrantArray:grants];
             
+            hubRunning = NO;
             [tableMain reloadData];
         }
         else {
@@ -310,7 +315,7 @@
     //set up and run the progress bar
     NSDecimalNumber *budget = [self formatCurrency:[[grant getBudgetRow] objectForKey:@"Amount"]];
     NSDecimalNumber *balance = [self formatCurrency:[[grant getBalanceRow] objectForKey:@"Amount"]];
-    NSDecimalNumber *percent = [[NSDecimalNumber alloc] initWithFloat:0.4f];//[balance decimalNumberByDividingBy:budget];
+    NSDecimalNumber *percent = /*[[NSDecimalNumber alloc] initWithFloat:0.4f];*/[balance decimalNumberByDividingBy:budget];
     [cell setCompletion:[percent floatValue]];
     
     //set up the progress bar note
