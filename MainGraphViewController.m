@@ -108,12 +108,11 @@
     
     //[self populatePieChart]
     //[self createTestValues];
-
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
-        [self initBarPlot];
+    [self initBarPlot];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -127,7 +126,7 @@
 #pragma mark Graph Init
 - (void) initBarPlot
 {
-    [self createTestValues];
+    //[self createTestValues];
     
     float max = [self createBarChartSource];
     

@@ -59,30 +59,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)awakeFromNib
-{
-    isShowingLandscapeView = NO;
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-}
-
-- (void)orientationChanged:(NSNotification *)notification
-{
-    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-    if(self.navigationController.topViewController == self) {
-        if (UIDeviceOrientationIsLandscape(deviceOrientation) && !isShowingLandscapeView && self.navigationController.visibleViewController == self) {
-            [self presentViewController:landscape animated:NO completion:nil];
-            isShowingLandscapeView = YES;
-        }
-        
-        else if (UIDeviceOrientationIsPortrait(deviceOrientation) && isShowingLandscapeView) {
-            [self dismissViewControllerAnimated:NO completion:nil];
-            isShowingLandscapeView = NO;
-        }
-    }
-}
-
 #pragma mark View Did Load
 - (void)viewDidLoad
 {
@@ -115,7 +91,8 @@
 }
 
 //check to make sure no new directories were added since last time we were here
--(void)viewWillAppear:(BOOL)animated {
+-(void)viewWillAppear:(BOOL)animated
+{
     NSData *save = [[NSUserDefaults standardUserDefaults] objectForKey:@"directories"]; //note: init this in rootviewcontroller
     
     if(save != nil) {
@@ -148,7 +125,8 @@
 
 #pragma mark Saved Directory
 //load and unarchive the cached grants. If this is the first time the app launched, include a temporary directory
--(void) loadCachedGrants {
+-(void) loadCachedGrants
+{
     hubRunning = YES;
     //remember to remove grants that are no longer present!
     
@@ -172,7 +150,8 @@
 
 //this is the stateless, hub method for all the action that happens upon refresh or download. This method is called at the end of every
 //download call, mod call, and login; it establishes what happens next.
--(void)grantRefreshHub {
+-(void)grantRefreshHub
+{
     //If the directoriesthatneedrefreshing and grantsthatneedrefreshing are empty, we are done
     NSLog(@"Hub: grantsRereshing: %i directoriesRefreshing: %i", [grantsThatNeedRefreshing count], [directoriesThatNeedRefreshing count]);
     
@@ -228,7 +207,8 @@
 
 //this method is a modified copy from the directoryeditor class; make a new dir
 //directories have the following items: {nickname, dateAdded, url, NSArray grants}
--(NSMutableDictionary *) createNewTutorialDirectory {
+-(NSMutableDictionary *) createNewTutorialDirectory
+{
     NSMutableDictionary *dir = [NSMutableDictionary dictionary];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -246,7 +226,8 @@
 
 #pragma mark Helper
 //given a grant, return the end date properly formatted
-- (NSString *) formatEndDate:(GrantObject *)grant {
+- (NSString *) formatEndDate:(GrantObject *)grant
+{
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"mm/dd/YYYY"];
@@ -257,7 +238,8 @@
 }
 
 //given a string of currency, format it correctly and return it as an int
-- (NSDecimalNumber *) formatCurrency:(NSString *)amount {
+- (NSDecimalNumber *) formatCurrency:(NSString *)amount
+{
     NSString *ret = [[amount stringByReplacingOccurrencesOfString:@"\"" withString:@""] stringByReplacingOccurrencesOfString:@"," withString:@""];
     ret = [[ret componentsSeparatedByString:@"."] objectAtIndex:0];
     
@@ -265,7 +247,8 @@
 }
 
 //given a grant, format balance and budget so it reads: "balance$ out of budget$ remaining"
-- (NSString *) formatBalance:(GrantObject *)grant {
+- (NSString *) formatBalance:(GrantObject *)grant
+{
     NSDecimalNumber *budget = [self formatCurrency:[[grant getBudgetRow] objectForKey:@"Amount"]];
     NSDecimalNumber *balance = [self formatCurrency:[[grant getBalanceRow] objectForKey:@"Amount"]];
     
@@ -286,6 +269,12 @@
     hud.detailsLabelText = @"Querying API...";
     [hud show:YES];
     [self loadCachedGrants];
+}
+
+- (IBAction)landscapePressed:(id)sender
+{
+    //manually present the landscape controller
+    [self presentViewController:landscape animated:YES completion:nil];
 }
 
 #pragma mark Table Style

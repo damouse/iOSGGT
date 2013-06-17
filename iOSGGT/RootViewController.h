@@ -13,5 +13,6 @@
     __weak IBOutlet UITableView *tableMain;
 }
 - (IBAction)buttonRefresh:(id)sender;
+- (IBAction)landscapePressed:(id)sender;
 
 @end

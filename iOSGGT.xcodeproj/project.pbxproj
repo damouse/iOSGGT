@@ -794,6 +794,8 @@
 		D7806F89170A306A00D5598A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Mihnea Barboi (MBE45279K3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Mihnea Barboi (MBE45279K3)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Binaries/MacOS\"",
@@ -801,7 +803,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOSGGT/iOSGGT-Prefix.pch";
 				INFOPLIST_FILE = "iOSGGT/iOSGGT-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Binaries/iOS\"",
@@ -812,6 +814,8 @@
 					"-Objc",
 				);
 				PRODUCT_NAME = "Graphic Grant";
+				PROVISIONING_PROFILE = "2B4A5135-D780-4384-A1EC-F0100809B0C3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B4A5135-D780-4384-A1EC-F0100809B0C3";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -819,6 +823,8 @@
 		D7806F8A170A306A00D5598A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Mihnea Barboi (MBE45279K3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Mihnea Barboi (MBE45279K3)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Binaries/MacOS\"",
@@ -826,7 +832,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOSGGT/iOSGGT-Prefix.pch";
 				INFOPLIST_FILE = "iOSGGT/iOSGGT-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Binaries/iOS\"",
@@ -837,6 +843,8 @@
 					"-Objc",
 				);
 				PRODUCT_NAME = "Graphic Grant";
+				PROVISIONING_PROFILE = "2B4A5135-D780-4384-A1EC-F0100809B0C3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B4A5135-D780-4384-A1EC-F0100809B0C3";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

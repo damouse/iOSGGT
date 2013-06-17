@@ -97,7 +97,6 @@
         [self initPlot];
 }
 
-
 #pragma mark Data Init
 //method takes in the grant objects and then makes it "horizontal." If the changes are just plotted by themselves, then each change in the amount of the graph
 //has a slope. Each point must therefor get a second, auxilliary point that sits right before the next point in the grant. This auxilliary point
@@ -182,7 +181,8 @@
 }
 
 #pragma mark - Chart behavior
--(void)initPlot {
+-(void)initPlot
+{
     //create array of avaliable colors for coloring plots
     colors = [NSMutableArray arrayWithObjects:[CPTColor redColor], [CPTColor greenColor], [CPTColor blueColor], [CPTColor cyanColor], [CPTColor yellowColor],[CPTColor magentaColor],[CPTColor orangeColor],[CPTColor purpleColor], [CPTColor whiteColor], nil];
     
@@ -202,7 +202,8 @@
     
 }
 
--(void)configureHost {
+-(void)configureHost
+{
 	// set up view frame
 	CGRect parentRect = self.view.bounds;
 	parentRect = CGRectMake(parentRect.origin.x, parentRect.origin.y, parentRect.size.width, parentRect.size.height);
@@ -213,7 +214,8 @@
 	[self.view addSubview:self.hostView];
 }
 
--(void)configureGraph {
+-(void)configureGraph
+{
 	// 1 - Create and initialise graph
 	graph = [[CPTXYGraph alloc] initWithFrame:self.hostView.bounds];
     
@@ -258,7 +260,8 @@
 
 }
 
--(void) configureXYChart {
+-(void) configureXYChart
+{
     // Setup plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(minimumValueForXAxis)
