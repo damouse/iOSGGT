@@ -29,4 +29,7 @@
 //Keys: {dateLastAccessed, startDate, endDate, name, accountNumber, grantor, title, overhead, awardNumber}
 - (NSDictionary *) getMetadata;
 
+//to be used only when making the supergrant in landscape!
+- (void) setMetadata:(NSMutableDictionary *)data;
+
 @end

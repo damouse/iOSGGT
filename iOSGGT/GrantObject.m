@@ -81,9 +81,6 @@
     tmp = [[tmp componentsSeparatedByString:@"Account #: "] objectAtIndex:1];
     [metadata setObject:tmp forKey:@"accountNumber"];
     
-    if([[metadata objectForKey:@"awardNumber"] isEqualToString:@"CNS-1137558 "])
-        NSLog(@"error in budget columns");
-    
     //column headers, main three
     columnHeaders = [NSMutableArray arrayWithArray:[csvFile objectAtIndex:5]];
     
@@ -98,13 +95,13 @@
     for(int g = 5; g < 25; g++) {
         cell = [[csvFile objectAtIndex:g] objectAtIndex:1];
         
-        NSLog(@"%@", [csvFile objectAtIndex:g]);
-        
-        if([cell isEqualToString:@"Balance as of:"])
-            balanceLine = [csvFile objectAtIndex:g];
-        
-        if([cell isEqualToString:@"Current Budget:"])
+        //NSLog(@"%@", [csvFile objectAtIndex:g]);
+
+        if([cell isEqualToString:@"Current Budget:"]) {
             budgetLine = [csvFile objectAtIndex:g];
+            balanceLine = [csvFile objectAtIndex:g+1];
+            
+        }
         
         if([cell isEqualToString:@"Total Open and Paid:"])
             paidLine = [csvFile objectAtIndex:g];
@@ -113,13 +110,18 @@
         if(budgetLine != nil && balanceLine != nil && paidLine != nil)
             break;
     }
+
+    //TODO: FIX ME
+    //hardcoded fix below because of a nasty spreadsheet parse error, may need to check the parser
     
     //fallthrough: if the above loop did not find the correct lines then assign them statically
-    if(budgetLine == nil && balanceLine == nil && paidLine == nil) {
+    if((budgetLine == nil && balanceLine == nil && paidLine == nil)) {
         budgetLine = [csvFile objectAtIndex:12]; //these are here so they can be replaced if we need to find them dynamically
         balanceLine = [csvFile objectAtIndex:13];
         paidLine = [csvFile objectAtIndex:15];
     }    int i = 0;
+    
+    
     
     //remove the extraneous columns in headers
     NSString *header = [columnHeaders objectAtIndex:0];
@@ -318,6 +320,10 @@
 
 -(NSArray *) getEntriesWithAccountNames {
     return accountEntriesWithAccount;
+}
+
+- (void) setMetadata:(NSMutableDictionary *)data {
+    metadata = data;
 }
 
 #pragma mark Coder/Archiver

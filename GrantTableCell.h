@@ -15,6 +15,7 @@
     IBOutlet KOAProgressBar *progressBar;
 }
 @property (weak, nonatomic) IBOutlet UILabel *labelRemaining;
+@property (weak, nonatomic) IBOutlet UILabel *labelGrantFileName;
 
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UILabel *date;

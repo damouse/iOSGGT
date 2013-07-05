@@ -5,7 +5,7 @@ Changelog for iOSGGT
 Bugs
 -"Participant" grant lists Suman Banjeree in the wrong place, should this be dynamically checked for or fixed? (argue for fix)
 -Directory will likely break if a new directory is created, another is deleted before initializing the new one, and then a new directory created 
-
+-landscape popup should change the direction it spawns from depending on which part of the graph it spawns from (else it goes over the bounds)
 
 New Features
 
@@ -16,14 +16,33 @@ Other
 -Change some of the darker colors (blue, brown, etc). Just make them brighter. 
 -Make Fiscal Year headers for Account Entries
 
-0.1.2 Changes 6/9/13
+
+0.1.3 Changes 7/5/13
 Bug Fixes
+-Fixed the landscape rotation forcing
+-Display error on the x axis scrolling
 
 New Features
--Removed the pie chart view from the Graph Detail controller and implemented a bar graph instead. 
+-Landscape popup now moves to the touched point correctly and is dismissed by any other touch
+-Added currency labels where needed
 
 Miscellanious Changes
+-Changed the bar chart back to a pie chart, introduced the buttons to switch view types
 
+
+0.1.2 Changes 6/9/13
+Bug Fixes
+-Fixes bar graph loading times
+-Fixed an issue where the parse included incorrect data in the budgetLine section
+
+New Features
+-Removed the pie chart view from the Graph Detail controller and implemented a bar graph instead
+    -bar graph allows display of budget, balance and paid account entries
+-Added button to manually refresh on the main screen
+-Main screen now displays the written name of the grant as well as the title
+
+Miscellanious Changes
+-Landscape graph view now presents in protrait mode, but displays vertically (consider changing)
 
 
 0.1.1 Changes 6/2/13

@@ -35,14 +35,21 @@
     // Dispose of any resources that can be recreated.
 }
 
--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [self.topViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+- (BOOL)shouldAutorotate;
+{   
+    //if compare is the top view controller, check and see if theere is a modal above it AND if the modal has a preference
+    if ([[self topViewController] respondsToSelector:@selector(shouldAutorotate)])
+        return [[self topViewController] shouldAutorotate];
+    else
+        return NO;
 }
 
-- (BOOL)shouldAutorotate
+- (NSUInteger)supportedInterfaceOrientations
 {
-    return NO;
+    if ([[self topViewController] respondsToSelector:@selector(supportedInterfaceOrientations)])
+        return [[self topViewController] supportedInterfaceOrientations];
+    else
+        return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

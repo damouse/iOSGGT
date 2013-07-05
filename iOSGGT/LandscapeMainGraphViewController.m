@@ -29,14 +29,15 @@
     double majorIntervalLengthForY;
     
     CPTPlotRange *test;
-    CPTPlotRange *lastRange;
+    CPTPlotRange *lastRangeX;
+    CPTPlotRange *lastRangeY;
     
     NSMutableArray *plots; //array of the plots created, just get the index of each to fetch grants
     NSMutableArray *plotsOfEndDates;
     NSMutableArray *grants; //array of arrays of dictionarys. Grants[ Accounts {entries}]
     NSMutableArray *endDateValues; //same as above
     
-    NSArray *grantObjects; //saved just to retain metadata
+    NSMutableArray *grantObjects; //saved just to retain metadata
     NSDate *refDate;
     NSTimeInterval oneDay;
     
@@ -44,6 +45,11 @@
     NSMutableArray *colors; //all avaliable colors for coloring plots
     
     UITextView *popup;
+    UIButton *back;
+    
+    //assign these programatically for varying screen sizes. For now, just set in init
+    int constCoordinateOffsetY;
+    int constCoordinateOffsetX;
 }
 
 @end
@@ -63,48 +69,76 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationController setNavigationBarHidden:YES];
+
+    //init the popup index tracker
+    
+    constCoordinateOffsetX = 22;
+    constCoordinateOffsetY = -45;
     
  //reference date is 2006
     plots = [NSMutableArray array];
     plotsOfEndDates = [NSMutableArray array];
     endDateValues = [NSMutableArray array];
-    lastRange = nil;
+    lastRangeY = nil;
+    lastRangeX = nil;
 
     majorIntervalLengthForX = oneDay * 30 * 6; //half a month. Consider a year?
     majorIntervalLengthForY = 100000;
     
-    popup = [[UITextView alloc] initWithFrame:CGRectMake(5, 3, 150, 55)];
-    popup.text = @"Label";
-    popup.font = [UIFont fontWithName:@"Helvetica" size:10];
-    popup.alpha = .8;
-    popup.layer.cornerRadius = 2;
-    popup.layer.borderWidth = 1;
-    popup.layer.borderColor = [[UIColor grayColor] CGColor];
-    popup.hidden = YES;
-    popup.editable = NO;
+    [self initPopup];
     
-    [self.view addSubview:popup];
+    //init the back button
+    back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [back setFrame:CGRectMake(220, 0, 80, 20)];
+    [back setTitle:@"Back" forState:UIControlStateNormal];
+    [back addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:back];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
--(void) viewWillAppear:(BOOL)animated {
+-(void) viewWillAppear:(BOOL)animated
+{
+    [self.view layoutSubviews];
+    
     if(graph == nil)
         [self initPlot];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskLandscapeLeft;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationMaskLandscape;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (interfaceOrientation == UIInterfaceOrientationLandscapeLeft) {    // Or whatever orientation it will be presented in.
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark Data Init
 //method takes in the grant objects and then makes it "horizontal." If the changes are just plotted by themselves, then each change in the amount of the graph
 //has a slope. Each point must therefor get a second, auxilliary point that sits right before the next point in the grant. This auxilliary point
 // keeps the changes horizontal. Also, each account entry should be processed as a change in the total balance, not a data point
-- (void) initWithGrantArray:(NSMutableArray *)grantArray
-{
+- (void) initWithGrantArray:(NSMutableArray *)grantArray {
     grants = [NSMutableArray array];
-    grantObjects = grantArray;
+    grantObjects = [grantArray mutableCopy];
     oneDay = 24 * 60 * 60;
     refDate = [NSDate dateWithTimeIntervalSinceReferenceDate:157680000]; //2006 is the reference date
     
@@ -117,10 +151,13 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MM/dd/yy"];
     
+    //create the SUM grant, aggregate accounting entries into one supergrant
+    //[grantObjects addObject:[self calculateGrantsSum:grantArray]];
+    
     //iterate over every grant. NOTE: the accounting entries have already been sorted
     //each element of the overarching array is an array representing a grant. Each element of this array is a dictionary
     //with the date as a key and the account entry as the object
-    for(GrantObject *grant in grantArray) {
+    for(GrantObject *grant in grantObjects) {
         NSMutableArray *accountEntries = [NSMutableArray array];
         
         AccountEntryObject *lastEntry;
@@ -136,7 +173,7 @@
                 
                 [lastEntry setDate:tmp2];
                 [accountEntries addObject:lastEntry];
-                //NSLog(@"%i %@ %i %@", [entry runningTotalToDate], [formatter stringFromDate:[entry date]], [lastEntry runningTotalToDate], [formatter stringFromDate:[lastEntry date]]);
+                //NSLog(@"%i %@", [entry runningTotalToDate], [formatter stringFromDate:[entry date]]);
             }
             
             //add this entry
@@ -180,6 +217,38 @@
     maximumValueForYAxis = largestValue; 
 }
 
+- (GrantObject *) calculateGrantsSum:(NSMutableArray *)grantArray {
+    //given all of the grants, create one grant called "sum" that is the sum of all accounting entries
+    NSMutableArray *allAccountingEntries = [NSMutableArray array];
+    
+    for(GrantObject *grant in [grantArray copy]) {
+        for(AccountEntryObject *entry in [grant accountEntries])
+            [allAccountingEntries addObject:[entry copy]];
+    }
+    
+    //have all of the entries in the account, sort by date then calculate running totals
+    [allAccountingEntries sortUsingSelector:@selector(compare:)];
+    
+    int currentTotal = 0;
+    for(AccountEntryObject *entry in allAccountingEntries) {
+        currentTotal = currentTotal + [entry amount];
+        [entry setRunningTotalToDate:currentTotal];
+        
+        //NSLog(@"e: %@ a: %i t: %i", [entry label], [entry amount], [entry runningTotalToDate]);
+    }
+    
+    GrantObject *superGrant = [[GrantObject alloc] init];
+    [superGrant setAccountEntries:allAccountingEntries];
+    
+    //fake the metadata
+    NSMutableDictionary *metaData = [NSMutableDictionary dictionary];
+    [metaData setObject:@"SUM" forKey:@"title"];
+    [metaData setObject:@"0" forKey:@"endDate"];
+    [superGrant setMetadata:metaData];
+    
+    return superGrant;
+}
+
 #pragma mark - Chart behavior
 -(void)initPlot
 {
@@ -199,7 +268,7 @@
         button.alpha = 0.5f;
         
     }*/
-    
+    [self.view bringSubviewToFront:back];
 }
 
 -(void)configureHost
@@ -247,7 +316,7 @@
     graph.plotAreaFrame.paddingLeft   = 20.0;
     graph.plotAreaFrame.paddingTop    = 20.0;
     graph.plotAreaFrame.paddingRight  = 20.0;
-    graph.plotAreaFrame.paddingBottom = 35.0;
+    graph.plotAreaFrame.paddingBottom = 25.0;
     
     //remove that weird line area
     graph.plotAreaFrame.borderLineStyle = nil;
@@ -271,7 +340,8 @@
                                                     length:CPTDecimalFromDouble(ceil( (maximumValueForYAxis - minimumValueForYAxis) / majorIntervalLengthForY ) * majorIntervalLengthForY)];
     
     test = plotSpace.yRange;
-    lastRange = plotSpace.xRange;
+    lastRangeY = plotSpace.yRange;
+    lastRangeX = plotSpace.xRange;
     
     // this allows the plot to respond to touch events
     [plotSpace setDelegate:self]; //set delegate fromm other file  ABE: what does this mean?
@@ -299,6 +369,7 @@
     x.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX * 2);
     x.minorTicksPerInterval = 0;
     x.orthogonalCoordinateDecimal = CPTDecimalFromString(@"1"); //added for date, adjust x line
+    x.axisConstraints       = [CPTConstraints constraintWithLowerOffset:0.0]; //where is the y axis?
     x.minorTickLength = 5.0f;
     x.majorTickLength = 7.0f;
     x.labelOffset = 3.0f;
@@ -312,9 +383,10 @@
     
     //number formatter for y, makes it into thousands. Still need to add a $ sign
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setPositiveFormat:@"$0k"];
     [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [numberFormatter setMaximumFractionDigits:0];
-    //[numberFormatter setMultiplier:[NSNumber numberWithDouble:.001]]; //removed the 1/1000 conversion
+    [numberFormatter setMultiplier:[NSNumber numberWithDouble:.001]]; //removed the 1/1000 conversion
     
     //set up y axis
     CPTXYAxis *y = axisSet.yAxis;
@@ -331,8 +403,6 @@
     y.majorGridLineStyle = yGridLines;
     
     //TEST
-
-    
     //y axis label
     //y.title = @"(thousands)";
     //y.titleLocation =
@@ -475,8 +545,6 @@
 //allows the user to click on individual plot points. Consider a popup, or a transistion to another VC
 -(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex: (NSUInteger)index {
     if(!plot.hidden){
-    
-        popup.hidden = NO;
         
         int i = [plots indexOfObject:plot];
         NSArray *accountEntries = [grants objectAtIndex:i];
@@ -496,16 +564,70 @@
         
         // Now you can create the short string
         NSString *shortString = [title substringWithRange:stringRange];
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [formatter setMaximumFractionDigits:0];
         
-        popup.text = [NSString stringWithFormat:@"%@\n%@\n%i\n", shortString, [entry label], [entry amount]];
+        NSString *amount = [formatter stringFromNumber:[NSNumber numberWithInt:[entry amount]]];
         
-        NSLog(@"plotSymbolWasSelectedAtRecordIndex %d", index);
+        popup.text = [NSString stringWithFormat:@"%@\n%@\n%@\n", shortString, [entry label], amount];
+        
+        //NSLog(@"plotSymbolWasSelectedAtRecordIndex %d", index);
+        
+        //present the info po©pup
+        NSDecimal plotPoint[2];
+        NSNumber *plotXvalue = [self numberForPlot:plot field:CPTScatterPlotFieldX recordIndex:index];
+        plotPoint[CPTCoordinateX] = plotXvalue.decimalValue;
+        
+        NSNumber *plotYvalue = [self numberForPlot:plot field:CPTScatterPlotFieldY recordIndex:index];
+        plotPoint[CPTCoordinateY] = plotYvalue.decimalValue;
+        
+        CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
+        
+        // convert from data coordinates to plot area coordinates
+        CGPoint dataPoint = [plotSpace plotAreaViewPointForPlotPoint:plotPoint];
+        
+        // convert from plot area coordinates to graph (and hosting view) coordinates
+        //dataPoint = [graph convertPoint:dataPoint fromLayer:graph.plotAreaFrame];
+        
+        // convert from hosting view coordinates to self.view coordinates (if needed)
+        dataPoint = [self.view convertPoint:dataPoint fromView:self.hostView];
+        
+        //NSLog(@"datapoint coordinates tapped: %@", NSStringFromCGPoint(dataPoint));
+        
+        int diff;
+        if(dataPoint.y > 160) {
+            //if greater than 160, subtract diff *2
+            diff = dataPoint.y - 160;
+            dataPoint.y -= diff*2;
+        }
+        else {
+            diff = 160 - dataPoint.y;
+            dataPoint.y += diff*2;
+        }
+        
+        //because of the borders, the coordinates don't seem to be right on. This is a hardcoded fix
+        //TODO: fix this dynamically
+        dataPoint.y += constCoordinateOffsetY;
+        dataPoint.x += constCoordinateOffsetX;
+        
+        //NSLog(@"datapoint coordinates tapped: %@", NSStringFromCGPoint(dataPoint));
+        
+        //0,0 is top LEFT in the view window. In the hostview, 0,0 is bottom left
+        popup.frame = CGRectMake(dataPoint.x, dataPoint.y, popup.frame.size.width, popup.frame.size.height);
+        
+        popup.hidden = NO;
+        [UIView animateWithDuration:.5 animations:^{
+            popup.alpha = .8;
+        }];
     }
 }
 
 #pragma mark Plot Customization Methods
 //when a button is pressed, toggle opacity of button and visibility of plot
 - (IBAction)buttonPress:(id)sender {
+    [self removePopup];
+    
     UIButton *button = (UIButton *)sender;
     int index = [buttonReferences indexOfObject:button];
     CPTScatterPlot *plot = [plots objectAtIndex:index];
@@ -523,7 +645,20 @@
     }
 }
 
--(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate {    
+
+- (void) back:(id)sender
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (void) movePopup {
+    //move the popup in the graph view
+    
+}
+
+-(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate {
+    
+    
     if(coordinate == 0) {//if x coordinate, allow modification
         //NSLog(@"%@", newRange);
         
@@ -531,18 +666,19 @@
         
         //set the maximum zoom
         if(newRange.lengthDouble <= 15000000)
-            return lastRange;
+            return lastRangeX;
         
         
         //constrict the horizontal scrolling to the maximum values + 2yr
         if(newRange.locationDouble < minimumValueForXAxis - oneDay * 365) { //this is stuttery, values that are only a little smaller will work, big swipes make it ehh
             //NSLog(@"SMALL %@", newRange);
-            return lastRange;
+            return lastRangeX;
         }
+        
         //constrict the horizontal scrolling to the maximum values + 2yr
         if(newRange.locationDouble > maximumValueForXAxis) {
             //NSLog(@"BIG %@", newRange);
-            return lastRange;
+            return lastRangeX;
         }
 
         //if the length passes a certain amount, resize the interval ticks to keep them readable
@@ -556,14 +692,35 @@
             axisSet.xAxis.majorIntervalLength = CPTDecimalFromDouble(majorIntervalLengthForX);
         
         //remember the last range in case we want to freeze
-        lastRange = newRange;
+        lastRangeX = newRange;
         return newRange;
     }
-    else //dont let the y axis zoom or scroll
+    else  { //y axis, allow some scrolling and zooming
+        //set the maximum zoom
+        //if(newRange.lengthDouble <= 15000000)
+        //    return lastRange;
+        
+        
+        //constrict the horizontal scrolling to the maximum values + 2yr
+        if(newRange.locationDouble < minimumValueForYAxis) { //this is stuttery, values that are only a little smaller will work, big swipes make it ehh
+            //NSLog(@"SMALL %@", newRange);
+            return lastRangeY;
+        }
+        
+        //constrict the horizontal scrolling to the maximum values + 2yr
+        if(newRange.locationDouble > maximumValueForYAxis) {
+            //NSLog(@"BIG %@", newRange);
+            return lastRangeY;
+        }
+        
+        //remember the last range in case we want to freeze
+        lastRangeY = newRange;
+        return newRange;
+        
+        //NSLog(@"%@", newRange);
         return test;
+    }
 }
-
-
 
 ///////////////////////////////////// CODE from the other project, kepy around for referance on how to change
 
@@ -633,6 +790,42 @@
     return YES;
 }
 
-#pragma mark Auxilliary
+#pragma mark Popup 
+- (void) initPopup {
+    popup = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 150, 55)];
+    popup.text = @"Label";
+    popup.font = [UIFont fontWithName:@"Helvetica" size:12];
+    popup.alpha = .8;
+    popup.layer.cornerRadius = 2;
+    popup.layer.borderWidth = 1;
+    popup.layer.borderColor = [[UIColor grayColor] CGColor];
+    popup.hidden = YES;
+    popup.editable = NO;
+    
+    [self.view addSubview:popup];
+}
 
+- (void) removePopup {
+    //plotSymbolWasSelected is the appear method, this should animate the hide
+    if(popup.alpha != 0) {
+        [UIView animateWithDuration:.5 animations:^{
+            popup.alpha = 0;
+        } completion:^(BOOL finished) {
+            popup.hidden = YES;
+        }];
+    }
+}
+
+#pragma mark Auxilliary
+-(BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDownEvent:(id)event atPoint:(CGPoint)point {
+    //NSLog(@"Touch!");
+    
+    //remove popup
+    [self removePopup];
+    return YES;
+}
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"Touches!");
+}
 @end

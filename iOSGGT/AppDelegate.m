@@ -22,12 +22,13 @@
 //http://stackoverflow.com/questions/8303155/adding-splashscreen-to-iphone-app-in-appdelegate for splash screen
 
 #import "AppDelegate.h"
+#import "UINonrotatingNavigationController.h"
+#import "RootViewController.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
     return YES;
 }
 							

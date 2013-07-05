@@ -37,4 +37,8 @@
 - (void) touchFromSlice:(PieSliceView *)slice;
 - (IBAction)buttonBack:(id)sender;
 
+//buttons to switch the active bar plot
+- (IBAction)buttonBalance:(id)sender;
+- (IBAction)buttonBudget:(id)sender;
+- (IBAction)buttonPaid:(id)sender;
 @end

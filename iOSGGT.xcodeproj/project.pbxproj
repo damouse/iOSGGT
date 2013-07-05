@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3D8FB3F7175BBF8A00E06A82 /* ChangeLog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3D8FB3F6175BBF8A00E06A82 /* ChangeLog.txt */; };
+		3D987C1417826A2C00C61B49 /* LandscapeTransferViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D987C1217826A2C00C61B49 /* LandscapeTransferViewController.m */; };
 		D7002B4F1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */; };
 		D703EEC117404A4E00B21D31 /* DirectoryEditorTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D703EEC017404A4E00B21D31 /* DirectoryEditorTableViewController.m */; };
 		D703EEC517404BD600B21D31 /* DirectoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D703EEC417404BD600B21D31 /* DirectoryTableViewCell.m */; };
@@ -78,6 +79,8 @@
 
 /* Begin PBXFileReference section */
 		3D8FB3F6175BBF8A00E06A82 /* ChangeLog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ChangeLog.txt; sourceTree = "<group>"; };
+		3D987C1117826A2C00C61B49 /* LandscapeTransferViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeTransferViewController.h; sourceTree = "<group>"; };
+		3D987C1217826A2C00C61B49 /* LandscapeTransferViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeTransferViewController.m; sourceTree = "<group>"; };
 		D7002B4D1721FC5A00F6E6EA /* LandscapeMainGraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeMainGraphViewController.h; sourceTree = "<group>"; };
 		D7002B4E1721FC5A00F6E6EA /* LandscapeMainGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeMainGraphViewController.m; sourceTree = "<group>"; };
 		D703EEBF17404A4E00B21D31 /* DirectoryEditorTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryEditorTableViewController.h; sourceTree = "<group>"; };
@@ -390,6 +393,8 @@
 		D7806F93170A310C00D5598A /* Auxilliary Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3D987C1117826A2C00C61B49 /* LandscapeTransferViewController.h */,
+				3D987C1217826A2C00C61B49 /* LandscapeTransferViewController.m */,
 				D75172491741CE590025455A /* UINonrotatingNavigationController.h */,
 				D751724A1741CE5A0025455A /* UINonrotatingNavigationController.m */,
 				D7329A3A1729B0A600D64341 /* AccountEntryObject.h */,
@@ -687,6 +692,7 @@
 				D751725B1741E8E90025455A /* InfoViewController.m in Sources */,
 				D7DFD07D1741EE6C0073BC53 /* VisibleGrantsCell.m in Sources */,
 				D7DFD0801741F03F0073BC53 /* TutorialViewController.m in Sources */,
+				3D987C1417826A2C00C61B49 /* LandscapeTransferViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -794,8 +800,8 @@
 		D7806F89170A306A00D5598A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Mihnea Barboi (MBE45279K3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Mihnea Barboi (MBE45279K3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Binaries/MacOS\"",
@@ -814,8 +820,8 @@
 					"-Objc",
 				);
 				PRODUCT_NAME = "Graphic Grant";
-				PROVISIONING_PROFILE = "2B4A5135-D780-4384-A1EC-F0100809B0C3";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B4A5135-D780-4384-A1EC-F0100809B0C3";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -823,8 +829,8 @@
 		D7806F8A170A306A00D5598A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Mihnea Barboi (MBE45279K3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Mihnea Barboi (MBE45279K3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Binaries/MacOS\"",
@@ -843,8 +849,8 @@
 					"-Objc",
 				);
 				PRODUCT_NAME = "Graphic Grant";
-				PROVISIONING_PROFILE = "2B4A5135-D780-4384-A1EC-F0100809B0C3";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B4A5135-D780-4384-A1EC-F0100809B0C3";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

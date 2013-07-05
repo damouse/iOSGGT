@@ -15,6 +15,7 @@
 #import "GrantTableCell.h"
 #import "MBProgressHUD.h"
 #import "TutorialViewController.h"
+#import "LandscapeTransferViewController.h"
 
 @interface RootViewController () {
     NSMutableArray *grants; //holds all grants
@@ -23,7 +24,7 @@
     int numberOfGrants; //the number f grants expected
     BOOL isShowingLandscapeView;
     
-    LandscapeMainGraphViewController *landscape;
+    //LandscapeMainGraphViewController *landscape;
     
     CPTGraph *graph;
     NSMutableArray *newData;
@@ -64,7 +65,7 @@
 {
     [super viewDidLoad];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
-    landscape = [mainStoryboard instantiateViewControllerWithIdentifier: @"rootLandscape"];
+    //landscape = [mainStoryboard instantiateViewControllerWithIdentifier: @"rootLandscape"];
     
     if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"firstlogin"] isEqualToString:@"true"]){
         TutorialViewController *vc = [mainStoryboard instantiateViewControllerWithIdentifier: @"tutorial"];
@@ -123,6 +124,42 @@
     }
 }
 
+/*
+- (void)awakeFromNib
+{
+    isShowingLandscapeView = NO;
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+    if(self.navigationController.topViewController == self) {
+        if (UIDeviceOrientationIsLandscape(deviceOrientation) && !isShowingLandscapeView && self.navigationController.visibleViewController == self) {
+            [self presentViewController:landscape animated:NO completion:nil];
+            isShowingLandscapeView = YES;
+        }
+        
+        else if (UIDeviceOrientationIsPortrait(deviceOrientation) && isShowingLandscapeView) {
+            [self dismissViewControllerAnimated:NO completion:nil];
+            isShowingLandscapeView = NO;
+        }
+    }
+}
+ */
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark Saved Directory
 //load and unarchive the cached grants. If this is the first time the app launched, include a temporary directory
 -(void) loadCachedGrants
@@ -174,7 +211,8 @@
                         
             [hud hide:YES];
             NSLog(@"Hub Finished. Grants: %i", [grants count]);
-            [landscape initWithGrantArray:grants];
+            
+            //[landscape initWithGrantArray:grants];
             
             hubRunning = NO;
             [tableMain reloadData];
@@ -273,8 +311,14 @@
 
 - (IBAction)landscapePressed:(id)sender
 {
+    //try pushing on an intermediate view controller and seeing if it goes to landscape
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
+    LandscapeTransferViewController *transfer = [mainStoryboard instantiateViewControllerWithIdentifier: @"landTransfer"];
+    
+    [self.navigationController pushViewController:transfer animated:NO];
+    [transfer initWithGrantArray:grants];
     //manually present the landscape controller
-    [self presentViewController:landscape animated:YES completion:nil];
+    //[self.navigationController pushViewController:landscape animated:YES];
 }
 
 #pragma mark Table Style
@@ -309,6 +353,7 @@
     
     //set up the progress bar note
     cell.labelRemaining.text = [self formatBalance:grant];
+    cell.labelGrantFileName.text = [[[grant fileName] componentsSeparatedByString:@".xls"] objectAtIndex:0];
     
     return cell;
 }
@@ -420,6 +465,9 @@
                 
                 if([[grant fileName] isEqualToString:[data objectForKey:@"fileName"]]) { //found the grant; update not a make
                     makeNewGrant = NO;
+                    
+                    if([[grant fileName] isEqualToString:@"QU85.xls"])
+                        NSLog(@"fuckme");
                     
                     //pass the json into the parse method with this grant as part of this directory
                     GrantObject *tempGrant = [[GrantObject alloc] initWithCSVArray:[data objectForKey:@"data"]];
