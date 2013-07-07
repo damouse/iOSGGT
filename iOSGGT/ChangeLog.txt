@@ -25,6 +25,7 @@ Bug Fixes
 New Features
 -Landscape popup now moves to the touched point correctly and is dismissed by any other touch
 -Added currency labels where needed
+-Added sum mode to the graph view, snaps to new bounds when pressed
 
 Miscellanious Changes
 -Changed the bar chart back to a pie chart, introduced the buttons to switch view types

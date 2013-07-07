@@ -24,6 +24,7 @@
     double maximumValueForXAxis;
     double minimumValueForYAxis;
     double maximumValueForYAxis;
+    double maximumValueForYAxisSum;
     
     double majorIntervalLengthForX;
     double majorIntervalLengthForY;
@@ -31,6 +32,8 @@
     CPTPlotRange *test;
     CPTPlotRange *lastRangeX;
     CPTPlotRange *lastRangeY;
+    CPTPlotRange *savedRangeX;
+    CPTPlotRange *savedRangeY;
     
     NSMutableArray *plots; //array of the plots created, just get the index of each to fetch grants
     NSMutableArray *plotsOfEndDates;
@@ -152,7 +155,8 @@
     [formatter setDateFormat:@"MM/dd/yy"];
     
     //create the SUM grant, aggregate accounting entries into one supergrant
-    //[grantObjects addObject:[self calculateGrantsSum:grantArray]];
+    GrantObject *sumGrant = [self calculateGrantsSum];
+    [grantObjects addObject:sumGrant];
     
     //iterate over every grant. NOTE: the accounting entries have already been sorted
     //each element of the overarching array is an array representing a grant. Each element of this array is a dictionary
@@ -180,18 +184,17 @@
             [accountEntries addObject:[entry copy]];
             lastEntry = [entry copy];
             
-
-            
-            //check to see if this entry breaks the bounds of the graph
-            if([earliestDate compare:[entry date]] == NSOrderedDescending) //earliestDate is later than entry date
-                earliestDate = [entry date];
-            if([latestDate compare:[entry date]] == NSOrderedAscending) //latestDate is earlier than entry date
-                latestDate = [entry date];
-            if(largestValue < [entry runningTotalToDate])
-                largestValue = [entry runningTotalToDate];
-            if(smallestValue > [entry runningTotalToDate])
-                smallestValue = [entry runningTotalToDate];
-            
+            if(grant != sumGrant) {
+                //check to see if this entry breaks the bounds of the graph
+                if([earliestDate compare:[entry date]] == NSOrderedDescending) //earliestDate is later than entry date
+                    earliestDate = [entry date];
+                if([latestDate compare:[entry date]] == NSOrderedAscending) //latestDate is earlier than entry date
+                    latestDate = [entry date];
+                if(largestValue < [entry runningTotalToDate])
+                    largestValue = [entry runningTotalToDate];
+                if(smallestValue > [entry runningTotalToDate])
+                    smallestValue = [entry runningTotalToDate];
+            }            
         }   //END ENTRY LOOP
         
         [lastEntry setDate:[[lastEntry date] dateByAddingTimeInterval:1]]; //add this just so the end of the graph is level
@@ -214,16 +217,26 @@
     minimumValueForXAxis = earliest - oneDay * 380; //the earliest date, plus a cushion of about a year
     maximumValueForXAxis = latest + oneDay ; //the latest date, plus a cushion of two months
     minimumValueForYAxis = smallestValue;
-    maximumValueForYAxis = largestValue; 
+    maximumValueForYAxis = largestValue;
 }
 
-- (GrantObject *) calculateGrantsSum:(NSMutableArray *)grantArray {
+- (GrantObject *) calculateGrantsSum {
     //given all of the grants, create one grant called "sum" that is the sum of all accounting entries
     NSMutableArray *allAccountingEntries = [NSMutableArray array];
+    NSMutableArray *grantArrayCopy = [grantObjects copy];
+    NSInteger sumLargestValue = 0; //the largest value seen over all (aggregate) entries
     
-    for(GrantObject *grant in [grantArray copy]) {
-        for(AccountEntryObject *entry in [grant accountEntries])
-            [allAccountingEntries addObject:[entry copy]];
+    //if the graph is nil, then we haven't instantiated the graph yet; if the graph is up and the plot is not hidden, include it
+    for(int i = 0; i < [grantArrayCopy count]; i++) {
+        if(graph == nil || !((CPTScatterPlot *)[plots objectAtIndex:i]).hidden) {
+            GrantObject *grant = [grantArrayCopy objectAtIndex:i];
+            
+            //make sure we're not including the sum graph in this calculation (if this is not the first run)
+            if(![[[grant getMetadata] objectForKey:@"title"] isEqualToString:@"SUM"]) {
+                for(AccountEntryObject *entry in [grant accountEntries])
+                    [allAccountingEntries addObject:[entry copy]];
+            }
+        }
     }
     
     //have all of the entries in the account, sort by date then calculate running totals
@@ -235,10 +248,16 @@
         [entry setRunningTotalToDate:currentTotal];
         
         //NSLog(@"e: %@ a: %i t: %i", [entry label], [entry amount], [entry runningTotalToDate]);
+        
+        //calculate max
+        if(sumLargestValue < [entry runningTotalToDate])
+            sumLargestValue = [entry runningTotalToDate];
     }
     
     GrantObject *superGrant = [[GrantObject alloc] init];
     [superGrant setAccountEntries:allAccountingEntries];
+    
+    maximumValueForYAxisSum = sumLargestValue; //the highest bounds for the aggregate graph
     
     //fake the metadata
     NSMutableDictionary *metaData = [NSMutableDictionary dictionary];
@@ -250,7 +269,7 @@
 }
 
 #pragma mark - Chart behavior
--(void)initPlot
+-(void) initPlot
 {
     //create array of avaliable colors for coloring plots
     colors = [NSMutableArray arrayWithObjects:[CPTColor redColor], [CPTColor greenColor], [CPTColor blueColor], [CPTColor cyanColor], [CPTColor yellowColor],[CPTColor magentaColor],[CPTColor orangeColor],[CPTColor purpleColor], [CPTColor whiteColor], nil];
@@ -271,7 +290,7 @@
     [self.view bringSubviewToFront:back];
 }
 
--(void)configureHost
+-(void) configureHost
 {
 	// set up view frame
 	CGRect parentRect = self.view.bounds;
@@ -283,7 +302,7 @@
 	[self.view addSubview:self.hostView];
 }
 
--(void)configureGraph
+-(void) configureGraph
 {
 	// 1 - Create and initialise graph
 	graph = [[CPTXYGraph alloc] initWithFrame:self.hostView.bounds];
@@ -325,8 +344,6 @@
 	// 4 - Set theme
 	self.selectedTheme = [CPTTheme themeNamed:kCPTDarkGradientTheme];
 	[graph applyTheme:self.selectedTheme];
-    
-
 }
 
 -(void) configureXYChart
@@ -464,6 +481,11 @@
         
         //end part 2
         indexColor++; //get the next color in the array
+        
+        //if this is the sum graph, start hidden
+        /*if([(NSString *)dataSourceLinePlot.identifier isEqualToString:@"SUM"]) {
+            dataSourceLinePlot.hidden = YES;
+        }*/
     }
 }
 
@@ -478,11 +500,12 @@
     buttonReferences = [NSMutableArray array];
     int buttonTagIndex = 100;
     int colorIndex = 0;
+    UIButton *button;
     
     NSArray *plotColors = [NSArray arrayWithObjects:[UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor],[UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], [UIColor grayColor], [UIColor whiteColor], nil];
     
     for(GrantObject *grant in grantObjects) {
-        UIButton *button = (UIButton *)[self.view viewWithTag:buttonTagIndex];
+        button = (UIButton *)[self.view viewWithTag:buttonTagIndex];
         [button setTitle:[[grant getMetadata] objectForKey:@"title"] forState:UIControlStateNormal];
         
         UIColor *temp = [plotColors objectAtIndex:colorIndex];
@@ -502,6 +525,9 @@
         [self.view bringSubviewToFront:button];
         [buttonReferences addObject:button];
     }
+    
+    //after all of the buttons are made, button as listed above is the last button: call hide on it
+    [self buttonPress:button];
 }
 
 #pragma mark - CPTPlotDataSource methods
@@ -643,8 +669,18 @@
         plot.hidden = NO;
         end.hidden = NO;
     }
+    
+    //call the sumGrant method to change the graphs included in the sum
+    GrantObject *sum = [self calculateGrantsSum];
+    [grants replaceObjectAtIndex:[grants count] - 1 withObject:[sum accountEntries]];
+    [[plots objectAtIndex:[plots count] - 1] reloadData];
+    
+    BOOL isSum = NO;
+    if(index == [buttonReferences count] - 1)
+        isSum = YES;
+    
+    [self resizeGraph:YES];
 }
-
 
 - (void) back:(id)sender
 {
@@ -827,5 +863,31 @@
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     NSLog(@"Touches!");
+}
+
+- (void) resizeGraph:(BOOL) sumButtonPressed {
+    //if button.hidden, then we should save the current view and resize. Else revert to a previously saved view
+    
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
+
+    //if the sum plot is hidden AND the sumButtonPressed, then switch to old view. If the button is not pressed
+    if(((CPTScatterPlot *)[plots objectAtIndex:[plots count] - 1]).hidden && sumButtonPressed) {
+        if(savedRangeX != nil) {
+            plotSpace.xRange = savedRangeX;
+            plotSpace.yRange = savedRangeY;
+        }
+    }
+    
+    //if the sum plot is not hidden, then always redraw
+    if(!((CPTScatterPlot *)[plots objectAtIndex:[plots count] - 1]).hidden) {
+        savedRangeX = plotSpace.xRange;
+        savedRangeY = plotSpace.yRange;
+        
+        plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(minimumValueForXAxis)
+                                                        length:CPTDecimalFromDouble(ceil( (maximumValueForXAxis - minimumValueForXAxis) / majorIntervalLengthForX ) * majorIntervalLengthForX)];
+        
+        plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(minimumValueForYAxis)
+                                                        length:CPTDecimalFromDouble(ceil( (maximumValueForYAxisSum - minimumValueForYAxis) / majorIntervalLengthForY ) * majorIntervalLengthForY)];
+    }
 }
 @end

@@ -33,7 +33,6 @@
     
     PieSliceView *currentlyAnimatingSlice;
     int currentlyAnimatingSliceIndex;
-    
 }
 
 @end
