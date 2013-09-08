@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="vDl-4e-9jF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="vDl-4e-9jF">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -222,14 +222,11 @@ EE5hbWUgb2YgR3JhbnQ
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="i3g-kD-6V8" kind="modal" id="9Vv-2E-ZxX"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yBP-BP-DxT">
                                 <rect key="frame" x="38" y="64" width="245" height="58"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Edit Grant Directories" backgroundImage="green_button.png">
+                                <state key="normal" title="Edit Grant Directory" backgroundImage="green_button.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -237,7 +234,7 @@ EE5hbWUgb2YgR3JhbnQ
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="wfb-w4-L0r" kind="modal" id="IV4-eS-XhY"/>
+                                    <segue destination="HRh-Wo-3yf" kind="modal" id="k23-0Z-eHo"/>
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="67n-t3-fg4">
@@ -354,7 +351,6 @@ EE5hbWUgb2YgR3JhbnQ
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="buttonBack:" destination="wfb-w4-L0r" eventType="touchUpInside" id="lAZ-Qr-Pj7"/>
                                     <action selector="buttonDone:" destination="DP3-Hr-7vb" eventType="touchUpInside" id="rdN-Jn-Lbn"/>
                                 </connections>
                             </button>
@@ -404,9 +400,6 @@ EE5hbWUgb2YgR3JhbnQ
                                     <state key="highlighted">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <connections>
-                                        <action selector="buttonBack:" destination="wfb-w4-L0r" eventType="touchUpInside" id="J9R-S2-mam"/>
-                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -442,7 +435,7 @@ EE5hbWUgb2YgR3JhbnQ
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fYB-45-qa3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1802" y="401"/>
+            <point key="canvasLocation" x="1808" y="350"/>
         </scene>
         <!--Info View Controller-->
         <scene sceneID="cN0-z3-w8I">
@@ -519,156 +512,130 @@ EE5hbWUgb2YgR3JhbnQ
             </objects>
             <point key="canvasLocation" x="2218" y="401"/>
         </scene>
-        <!--Directory Editor Table View Controller-->
-        <scene sceneID="Em5-jl-ZPl">
+        <!--Directory View Controller-->
+        <scene sceneID="ctl-CA-o4M">
             <objects>
-                <tableViewController id="wfb-w4-L0r" customClass="DirectoryEditorTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="200" sectionHeaderHeight="22" sectionFooterHeight="22" id="wbS-1V-UVh" customClass="DirectoryEditor">
+                <viewController id="HRh-Wo-3yf" customClass="DirectoryViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ov3-Md-fBY">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="OzH-9Y-PxW">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="81"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="header_gradient.png" id="Byu-pP-IEA">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="82"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Edit Grant Directories" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7eK-Fx-Jbf">
-                                    <rect key="frame" x="52" y="6" width="218" height="26"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4rL-cF-Ot2">
-                                    <rect key="frame" x="7" y="35" width="70" height="41"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" title="Back" backgroundImage="green_button.png">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="buttonBack:" destination="wfb-w4-L0r" eventType="touchUpInside" id="OIb-eq-9PX"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="RG4-jL-36t">
-                                    <rect key="frame" x="248" y="35" width="70" height="41"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" title="Info" backgroundImage="green_button.png">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <segue destination="kwt-HG-viH" kind="modal" id="mxz-Op-Nfj"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3O7-fJ-h27">
-                                    <rect key="frame" x="73" y="35" width="174" height="41"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" title="Add New Directory" backgroundImage="green_button.png">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="buttonAddDirectory:" destination="wfb-w4-L0r" eventType="touchUpInside" id="LAT-7p-qds"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        </view>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cellDirectory" rowHeight="200" id="eFH-xm-axc" customClass="DirectoryTableViewCell">
-                                <rect key="frame" x="0.0" y="103" width="320" height="200"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="single_divider.png" id="Jma-RY-GwE">
-                                            <rect key="frame" x="0.0" y="-3" width="320" height="202"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </imageView>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" id="4rq-6j-y0c">
-                                            <rect key="frame" x="14" y="63" width="286" height="63"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                            <color key="textColor" red="0.062639817504562489" green="1" blue="0.16103877895649088" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                            <connections>
-                                                <outlet property="delegate" destination="wfb-w4-L0r" id="xlc-lQ-QpW"/>
-                                            </connections>
-                                        </textView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fEW-ET-4cj">
-                                            <rect key="frame" x="161" y="43" width="113" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Directory Nickname" textAlignment="center" minimumFontSize="17" id="3fU-Xu-R6r">
-                                            <rect key="frame" x="14" y="8" width="286" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" white="0.39036838503649635" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
-                                            <connections>
-                                                <outlet property="delegate" destination="wfb-w4-L0r" id="HKL-R1-y4a"/>
-                                            </connections>
-                                        </textField>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Date Added:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7Tw-PE-3pg">
-                                            <rect key="frame" x="58" y="43" width="95" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" id="emU-JJ-s1c">
-                                            <rect key="frame" x="14" y="124" width="280" height="64"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        </textView>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="gradient_background.png" id="fAf-4W-ZQm">
+                                <rect key="frame" x="0.0" y="-44" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.99997437" blue="0.99999129769999995" alpha="1" colorSpace="calibratedRGB"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" id="Cg2-xZ-4nr">
+                                <rect key="frame" x="-1" y="0.0" width="321" height="55"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="header_gradient.png" id="UKu-Y5-XWN">
+                                        <rect key="frame" x="-1" y="-1" width="322" height="88"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Edit Directory" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ffv-bE-lYq">
+                                        <rect key="frame" x="91" y="9" width="138" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="HLe-P9-vxN">
+                                        <rect key="frame" x="0.0" y="4" width="70" height="41"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" title="Back" backgroundImage="green_button.png">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="buttonBack:" destination="HRh-Wo-3yf" eventType="touchUpInside" id="cyF-fB-aTz"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="sk9-sr-5BY">
+                                        <rect key="frame" x="251" y="4" width="70" height="41"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" title="Info" backgroundImage="green_button.png">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="kwt-HG-viH" kind="modal" id="FRb-gF-PCS"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" id="Tzo-sp-cRy">
+                                <rect key="frame" x="19" y="241" width="280" height="101"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="CS Login" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7VC-dD-XoV">
+                                <rect key="frame" x="34" y="74" width="253" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Encryption Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cPA-aN-lSX">
+                                <rect key="frame" x="34" y="143" width="253" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="1Q3-vu-OKU">
+                                <rect key="frame" x="34" y="97" width="253" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <outlet property="labelDate" destination="fEW-ET-4cj" id="zhR-oq-hjH"/>
-                                    <outlet property="textfieldGrants" destination="emU-JJ-s1c" id="0xn-Ic-7JV"/>
-                                    <outlet property="textfieldNickname" destination="3fU-Xu-R6r" id="PZR-6O-lJc"/>
-                                    <outlet property="textviewURL" destination="4rq-6j-y0c" id="lep-Y1-xdV"/>
+                                    <outlet property="delegate" destination="HRh-Wo-3yf" id="W1z-y7-wz3"/>
                                 </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="wfb-w4-L0r" id="O2E-Vc-gpx"/>
-                            <outlet property="delegate" destination="wfb-w4-L0r" id="t7e-Go-U2P"/>
-                        </connections>
-                    </tableView>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="Nb9-5Z-qyo">
+                                <rect key="frame" x="34" y="172" width="253" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hQ5-Ky-hPe">
+                                <rect key="frame" x="76" y="210" width="167" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Check Directory" backgroundImage="green_button.png">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="buttonCheckDirectory:" destination="HRh-Wo-3yf" eventType="touchUpInside" id="7f2-4m-ewo"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="3jW-O8-yo6"/>
                     <connections>
-                        <outletCollection property="buttons" destination="3O7-fJ-h27" id="p9f-lp-bmo"/>
-                        <outletCollection property="buttons" destination="RG4-jL-36t" id="GDM-l3-Vt7"/>
-                        <outletCollection property="buttons" destination="4rL-cF-Ot2" id="5vG-JP-kIC"/>
+                        <outlet property="textLogin" destination="1Q3-vu-OKU" id="VI8-xu-ScL"/>
+                        <outlet property="textPassword" destination="Nb9-5Z-qyo" id="pdc-rv-mgE"/>
+                        <outlet property="textviewGrants" destination="Tzo-sp-cRy" id="sFS-B3-2xg"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5g2-ml-aZx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="utw-fX-dRH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1802" y="1074"/>
+            <point key="canvasLocation" x="1802" y="1097"/>
         </scene>
         <!--Info View Controller-->
         <scene sceneID="SG2-ac-bsr">
@@ -745,7 +712,7 @@ EE5hbWUgb2YgR3JhbnQ
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xyp-Zk-7Up" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2224" y="1066"/>
+            <point key="canvasLocation" x="2218" y="1097"/>
         </scene>
         <!--Main Graph View Controller-->
         <scene sceneID="Lwz-IS-m14">
@@ -1577,8 +1544,122 @@ EE5hbWUgb2YgR3JhbnQ
         <image name="green_button.png" width="52" height="37"/>
         <image name="header_gradient.png" width="1050" height="153"/>
         <image name="listCell.png" width="604" height="122"/>
-        <image name="single_divider.png" width="487" height="200"/>
     </resources>
+    <classes>
+        <class className="AccountEntryTableCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AccountEntryTableCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="labelAccountName" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelAmount" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelDate" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelDetail" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelName" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="AccountLabelTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AccountLabelTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="labelName" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="viewColor" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="AccountTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AccountTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonBack:"/>
+                <relationship kind="outlet" name="labelAccountName" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelGrantName" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="DirectoryViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DirectoryViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonBack:"/>
+                <relationship kind="action" name="buttonCheckDirectory:"/>
+                <relationship kind="outlet" name="textLogin" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="textPassword" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="textviewGrants" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="GrantTableCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GrantTableCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="date" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelGrantFileName" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelRemaining" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="name" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="progressBar" candidateClass="KOAProgressBar"/>
+            </relationships>
+        </class>
+        <class className="InfoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonDone:"/>
+            </relationships>
+        </class>
+        <class className="KOAProgressBar" superclassName="UIProgressView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/KOAProgressBar.h"/>
+        </class>
+        <class className="LandscapeMainGraphViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LandscapeMainGraphViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonPress:"/>
+            </relationships>
+        </class>
+        <class className="LandscapeTransferViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LandscapeTransferViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="pushGraph:"/>
+            </relationships>
+        </class>
+        <class className="MainGraphViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainGraphViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonBack:"/>
+                <relationship kind="action" name="buttonBalance:"/>
+                <relationship kind="action" name="buttonBudget:"/>
+                <relationship kind="action" name="buttonPaid:"/>
+                <relationship kind="outlet" name="labelAccountNumber" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelAgencyNumber" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelEndDate" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelGrantor" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelLastUpdated" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelName" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelOverhead" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelStartDate" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelTitle" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="tableSliceLabels" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="viewGraph" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="MenuViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MenuViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonBack:"/>
+                <relationship kind="outletCollection" name="buttons" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="RootViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RootViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonRefresh:"/>
+                <relationship kind="action" name="landscapePressed:"/>
+                <relationship kind="outlet" name="tableMain" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="TutorialViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TutorialViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonDone:"/>
+                <relationship kind="outlet" name="labelDetails" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+            </relationships>
+        </class>
+        <class className="UINonrotatingNavigationController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UINonrotatingNavigationController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

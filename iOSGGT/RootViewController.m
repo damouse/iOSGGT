@@ -17,6 +17,8 @@
 #import "TutorialViewController.h"
 #import "LandscapeTransferViewController.h"
 
+#import <CommonCrypto/CommonDigest.h>
+
 @interface RootViewController () {
     NSMutableArray *grants; //holds all grants
     NSArray *parsed;
@@ -30,7 +32,7 @@
     NSMutableArray *newData;
     
     NSMutableData *jsonResponse;
-    NSMutableArray *directories; //an array of all the directory objects, each containing grants
+    NSMutableDictionary *directory; //an array of all the directory objects, each containing grants
     
     NSString *currentlyActiveURL; //the URL currently being API called.
     NSMutableArray *grantsThatNeedRefreshing;
@@ -64,6 +66,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
     //landscape = [mainStoryboard instantiateViewControllerWithIdentifier: @"rootLandscape"];
     
@@ -86,7 +89,7 @@
     hud.labelText = @"Loading";
 	hud.detailsLabelText = @"Querying API...";
 	hud.square = YES;
-
+    
     [hud show:YES];
     [self loadCachedGrants];
 }
@@ -96,59 +99,21 @@
 {
     NSData *save = [[NSUserDefaults standardUserDefaults] objectForKey:@"directories"]; //note: init this in rootviewcontroller
     
+    [hud show:YES];
+    currentlyActiveURL = [NSString stringWithFormat:@"http://pages.cs.wisc.edu/~%@/ggt/sheets/ggt_handler.php", [directory objectForKey:@"url"]];
+    [self queryAPI:@"mod" url:currentlyActiveURL file:nil]; // this triggers a API_mod callback, which populates the grantsthatneedref list
+    
     if(save != nil) {
-        NSMutableArray *newDirectories = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:save]];
-        
-        //this adds new grants from newly-added directories
-        for(int i = 0; i < [directories count]; i++) {
-            NSArray *grantArray = [[directories objectAtIndex:i] objectForKey:@"grants"];
-            if([grantArray count] == 0) {
-                hud.detailsLabelText = @"Querying API...";
-                [hud show:YES];
-                
-                if(!hubRunning)
-                    [self loadCachedGrants];
-                break;
-            }
-        }
-        
-        //remove grants from directories that have been removed
-        if([newDirectories count] != [directories count]) {
+        NSArray *grantArray = [directory objectForKey:@"grants"];
+        if([grantArray count] == 0) {
             hud.detailsLabelText = @"Querying API...";
             [hud show:YES];
             
-            directories = newDirectories;
             if(!hubRunning)
                 [self loadCachedGrants];
         }
     }
 }
-
-/*
-- (void)awakeFromNib
-{
-    isShowingLandscapeView = NO;
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-}
-
-- (void)orientationChanged:(NSNotification *)notification
-{
-    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-    if(self.navigationController.topViewController == self) {
-        if (UIDeviceOrientationIsLandscape(deviceOrientation) && !isShowingLandscapeView && self.navigationController.visibleViewController == self) {
-            [self presentViewController:landscape animated:NO completion:nil];
-            isShowingLandscapeView = YES;
-        }
-        
-        else if (UIDeviceOrientationIsPortrait(deviceOrientation) && isShowingLandscapeView) {
-            [self dismissViewControllerAnimated:NO completion:nil];
-            isShowingLandscapeView = NO;
-        }
-    }
-}
- */
 
 - (BOOL)shouldAutorotate
 {
@@ -170,17 +135,11 @@
     NSData *save = [[NSUserDefaults standardUserDefaults] objectForKey:@"directories"]; //note: init this in rootviewcontroller
     
     //if nothing exists, then this is the first time this has launched; add in my url for testing
-    if(save == nil) {
-        directories = [NSMutableArray array];
-        NSMutableDictionary *directory = [NSMutableDictionary dictionary];
-        
+    if(save == nil) {        
         directory = [self createNewTutorialDirectory];
-        [directories addObject:directory];
     }
     else
-        directories = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:save]];
-    
-    directoriesThatNeedRefreshing = [NSMutableArray arrayWithArray:directories];
+        directory = [NSKeyedUnarchiver unarchiveObjectWithData:save];
     
     [self grantRefreshHub];
 }
@@ -192,50 +151,24 @@
     //If the directoriesthatneedrefreshing and grantsthatneedrefreshing are empty, we are done
     NSLog(@"Hub: grantsRereshing: %i directoriesRefreshing: %i", [grantsThatNeedRefreshing count], [directoriesThatNeedRefreshing count]);
     
-    if([grantsThatNeedRefreshing count] == 0){
-        if([directoriesThatNeedRefreshing count] == 0) {
-            
-            //we are done refreshing, load the table and landscape and resume normal operation
-            grants = [NSMutableArray array];
-            
-            for(NSMutableDictionary *directory in directories) {
-                NSArray *grantArray = [directory objectForKey:@"grants"];
-                    for(GrantObject *grant in grantArray) {
-                        [grants addObject:grant];
-                }
-            }
-            
-            NSData* save = [NSKeyedArchiver archivedDataWithRootObject:[NSArray arrayWithArray:directories]];
-            [[NSUserDefaults standardUserDefaults] setObject:save forKey:@"directories"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-                        
-            [hud hide:YES];
-            NSLog(@"Hub Finished. Grants: %i", [grants count]);
-            
-            //[landscape initWithGrantArray:grants];
-            
-            hubRunning = NO;
-            [tableMain reloadData];
-        }
-        else {
-            
-            //grantsrefresh is empty, but directories is not. Load the next set of grants into the array, change active url, keep going
-            NSMutableDictionary *directory = [directoriesThatNeedRefreshing objectAtIndex:0];
-            [directoriesThatNeedRefreshing removeObjectAtIndex:0];
-            
-            currentlyActiveURL = [directory objectForKey:@"url"];
-            
-            if(currentlyActiveURL != NULL)
-                [self queryAPI:@"mod" url:currentlyActiveURL file:nil]; // this triggers a API_mod callback, which populates the grantsthatneedref list
-            /*else{
-                UIAlertView *alert = [[UIAlertView alloc]
-                                      initWithTitle:@"Error" message: @"An error occured (null url). Please reset the data from the menu page." delegate:self
-                                      cancelButtonTitle:@"OK" otherButtonTitles:nil]; //@"Connection error! Are you connected to the internet?"
-                [alert show];
-            }*/
-        }
+    if([grantsThatNeedRefreshing count] == 0){            
+        //we are done refreshing, load the table and landscape and resume normal operation
+        grants = [directory objectForKey:@"grants"];
+        
+        NSData* save = [NSKeyedArchiver archivedDataWithRootObject:directory];
+        [[NSUserDefaults standardUserDefaults] setObject:save forKey:@"directories"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+        [hud hide:YES];
+        NSLog(@"Hub Finished. Grants: %i", [grants count]);
+        
+        //[landscape initWithGrantArray:grants];
+        
+        hubRunning = NO;
+        [tableMain reloadData];
     }
     else { //if here, then there are still items in grantsthatneedrefreshing. Make an download call for each
+
         NSString *grantFileName = [grantsThatNeedRefreshing objectAtIndex:0];
         [grantsThatNeedRefreshing removeObjectAtIndex:0];
         
@@ -249,18 +182,13 @@
 {
     NSMutableDictionary *dir = [NSMutableDictionary dictionary];
     
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM/dd/YY"];
-    NSString *date = [formatter stringFromDate:[NSDate date]];
-    
-    [dir setObject:@"Temporary Tutorial Directory" forKey:@"nickname"];
-    [dir setObject:date forKey:@"dateAdded"];
-    [dir setObject:@"http://pages.cs.wisc.edu/~mihnea/GGT_Handler.php" forKey:@"url"];
+    //[dir setObject:@"Temporary Tutorial Directory" forKey:@"nickname"];
+    //[dir setObject:date forKey:@"dateAdded"];
+    [dir setObject:@"mihnea" forKey:@"url"];
+    [dir setObject:@"test" forKey:@"pass"];
     
     return dir;
 }
-
-#pragma mark Parsing Methods
 
 #pragma mark Helper
 //given a grant, return the end date properly formatted
@@ -374,6 +302,31 @@
 }
 
 #pragma mark NSURLConnection Methods
+- (NSString *) hashKey:(NSString *)key {
+    //has the string using sha2
+    //CC_sh
+}
+
+- (NSString *) SHA2HashWithString:(NSString *)input
+{
+    const char *cstr = [input cStringUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [NSData dataWithBytes:cstr length:input.length];
+    uint8_t digest[CC_SHA256_DIGEST_LENGTH];
+    
+    // This is an iOS5-specific method.
+    // It takes in the data, how much data, and then output format, which in this case is an int array.
+    CC_SHA256(data.bytes, data.length, digest);
+    
+    NSMutableString* output = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
+    
+    // Parse through the CC_SHA256 results (stored inside of digest[]).
+    for(int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++) {
+        [output appendFormat:@"%02x", digest[i]];
+    }
+    
+    return output;
+}
+
 //callback methods from the API call. Recieves the files and times last accessed
 -(void)API_mod:(NSDictionary *)data {
     NSLog(@"API_mod starting...");
@@ -381,46 +334,40 @@
     
     data = [data objectForKey:@"data"];
     grantsThatNeedRefreshing = [NSMutableArray array];
- 
-    //spin through every grant in every directory, pull aside those corresponding to the active url
-    for(NSMutableDictionary *directory in directories) {
-        
-        //check to make sure we have the correct dir being refreshed
-        if([[directory objectForKey:@"url"] isEqualToString:currentlyActiveURL]) {
-            NSMutableArray *grantArray = [directory objectForKey:@"grants"];
-        
-            //if this is the first time this directory is being loaded, must create array of grants
-            if(grantArray == nil ) {
-                grantArray = [NSMutableArray array];
-                [directory setObject:grantArray forKey:@"grants"];
-            }
-            
-            for(NSString *filename in [data keyEnumerator]) {
-                BOOL grantExists = NO;
-                //check each grant's filename against the returned filenames/times, add to refresh list if needed
-                for(GrantObject *grant in grantArray) {
-                    
-                    //check if this grant is the one referenced by the filename
-                    if([[grant fileName] isEqualToString:filename]) {
-                        
-                        //add the grants to a new array to get rid of grants that are no longer present in the directory
-                        [newGrantArray addObject:grant];
-                        grantExists = YES;
-                        
-                        NSString *modTime = [data objectForKey:grant.fileName];
-                        if(![grant.timeLastAccessed isEqualToString:modTime])
-                            [grantsThatNeedRefreshing addObject:grant.fileName];
-                    }
-                }
-                
-                //if this grant has never been loaded, must refresh it now
-                #pragma mark DEBUG LINE HERE forces download of every grant
-                if(grantExists == NO)
-                    [grantsThatNeedRefreshing addObject:filename];
-            }
-            [directory setObject:newGrantArray forKey:@"grants"];
-        }
+
+    
+    NSMutableArray *grantArray = [directory objectForKey:@"grants"];
+
+    //if this is the first time this directory is being loaded, must create array of grants
+    if(grantArray == nil ) {
+        grantArray = [NSMutableArray array];
+        [directory setObject:grantArray forKey:@"grants"];
     }
+    
+    for(NSString *filename in [data keyEnumerator]) {
+        BOOL grantExists = NO;
+        //check each grant's filename against the returned filenames/times, add to refresh list if needed
+        for(GrantObject *grant in grantArray) {
+            
+            //check if this grant is the one referenced by the filename
+            if([[grant fileName] isEqualToString:filename]) {
+                
+                //add the grants to a new array to get rid of grants that are no longer present in the directory
+                [newGrantArray addObject:grant];
+                grantExists = YES;
+                
+                NSString *modTime = [data objectForKey:grant.fileName];
+                if(![grant.timeLastAccessed isEqualToString:modTime])
+                    [grantsThatNeedRefreshing addObject:grant.fileName];
+            }
+        }
+        
+        //if this grant has never been loaded, must refresh it now
+        #pragma mark DEBUG LINE HERE forces download of every grant
+        if(grantExists == NO)
+            [grantsThatNeedRefreshing addObject:filename];
+    }
+    [directory setObject:newGrantArray forKey:@"grants"];
     
     
     NSLog(@" finished");
@@ -452,42 +399,33 @@
     NSLog(@"API_Download starting...");
     BOOL makeNewGrant = YES;
     
-    //spin through the directories, find the right directory this belongs to, update or create the grant
-    for(int j = 0; j < [directories count]; j++) {
-        NSMutableDictionary *directory = [directories objectAtIndex:j];
+    NSMutableArray *grantArray = [directory objectForKey:@"grants"];
         
-        if([[directory objectForKey:@"url"] isEqualToString:currentlyActiveURL]) {
-            NSMutableArray *grantArray = [directory objectForKey:@"grants"];
-                
-            //find the appropriate grant
-            for(int i = 0; i < [grantArray count]; i++) {
-                GrantObject *grant = [grantArray objectAtIndex:i];
-                
-                if([[grant fileName] isEqualToString:[data objectForKey:@"fileName"]]) { //found the grant; update not a make
-                    makeNewGrant = NO;
-                    
-                    if([[grant fileName] isEqualToString:@"QU85.xls"])
-                        NSLog(@"fuckme");
-                    
-                    //pass the json into the parse method with this grant as part of this directory
-                    GrantObject *tempGrant = [[GrantObject alloc] initWithCSVArray:[data objectForKey:@"data"]];
-                    grant = tempGrant;
-                    [grant setTimeLastAccessed:[data objectForKey:@"modTime"]];
-                }
-                
-
-            }
+    //find the appropriate grant
+    for(int i = 0; i < [grantArray count]; i++) {
+        GrantObject *grant = [grantArray objectAtIndex:i];
+        
+        if([[grant fileName] isEqualToString:[data objectForKey:@"fileName"]]) { //found the grant; update not a make
+            makeNewGrant = NO;
             
-            //the grant did not previously exist, create a new one and add it in
-            if(makeNewGrant) {
-                //pass the json into the parse method with this grant as part of this directory
-                GrantObject *tempGrant = [[GrantObject alloc] initWithCSVArray:[data objectForKey:@"data"]];
-                [tempGrant setTimeLastAccessed:[NSString stringWithFormat:@"%@", [data objectForKey:@"modTime"]]];
-                [tempGrant setFileName:[data objectForKey:@"fileName"]];
-                
-                [grantArray addObject:tempGrant];
-            }
+            if([[grant fileName] isEqualToString:@"QU85.xls"])
+                NSLog(@"fuckme");
+            
+            //pass the json into the parse method with this grant as part of this directory
+            GrantObject *tempGrant = [[GrantObject alloc] initWithCSVArray:[data objectForKey:@"data"]];
+            grant = tempGrant;
+            [grant setTimeLastAccessed:[data objectForKey:@"modTime"]];
         }
+    }
+    
+    //the grant did not previously exist, create a new one and add it in
+    if(makeNewGrant) {
+        //pass the json into the parse method with this grant as part of this directory
+        GrantObject *tempGrant = [[GrantObject alloc] initWithCSVArray:[data objectForKey:@"data"]];
+        [tempGrant setTimeLastAccessed:[NSString stringWithFormat:@"%@", [data objectForKey:@"modTime"]]];
+        [tempGrant setFileName:[data objectForKey:@"fileName"]];
+        
+        [grantArray addObject:tempGrant];
     }
     
     NSLog(@"API_Download finished");
@@ -502,7 +440,8 @@
     
     if([callType isEqualToString:@"download"]) {
         hud.detailsLabelText = [NSString stringWithFormat:@"Downloading %@", file];
-        NSString *tmp = [NSString stringWithFormat:@"%@?type=%@&fname=%@", path, callType, file];
+        NSString *key = [self SHA2HashWithString:[directory objectForKey:@"pass"]];
+        NSString *tmp = [NSString stringWithFormat:@"%@?type=%@&fname=%@&key=%@", path, callType, file, key];
         url = [NSURL URLWithString:[tmp stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     else {
@@ -533,6 +472,8 @@
     NSError *error = nil;
     NSDictionary *data = [NSJSONSerialization JSONObjectWithData:jsonResponse options:nil error:&error];
     NSLog(@"Connection finished");
+    
+    //NSString *string = [[NSString alloc] initWithData:jsonResponse encoding:NSASCIIStringEncoding];
     
     if (error != nil)
     {

@@ -67,27 +67,7 @@
     return NO;
 }
 
-#pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [directories count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"cellDirectory";
-    DirectoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    if(cell == nil ) {
-        cell = [[DirectoryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    NSDictionary *directory = [directories objectAtIndex:indexPath.row];
+/*    NSDictionary *directory = [directories objectAtIndex:indexPath.row];
     
     cell.textfieldNickname.text = [directory objectForKey:@"nickname"];
     cell.labelDate.text = [directory objectForKey:@"dateAdded"];
@@ -99,42 +79,7 @@
         grants = [NSString stringWithFormat:@"%@ \"%@\"", grants, [[grant getMetadata] objectForKey:@"title"]];
     }
     
-    cell.textfieldGrants.text = grants;
-    
-    return cell;
-}
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-}
-
-// Override to support conditional editing of the table view.
-// This only needs to be implemented if you are going to be returning NO
-// for some items. By default, all items are editable.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return YES if you want the specified item to be editable.
-    return YES;
-}
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [directories removeObjectAtIndex:indexPath.row];
-        [self.tableView reloadData];
-        
-        NSData* save = [NSKeyedArchiver archivedDataWithRootObject:[NSArray arrayWithArray:directories]];
-        [[NSUserDefaults standardUserDefaults] setObject:save forKey:@"directories"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        editingDirectory = nil;
-        newDirectory = nil;
-    }
-}
+    cell.textfieldGrants.text = grants;*/
 
 #pragma mark IBActions
 - (IBAction)buttonBack:(id)sender
