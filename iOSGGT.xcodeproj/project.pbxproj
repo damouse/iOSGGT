@@ -291,7 +291,6 @@
 		D7806F44170A306900D5598A = {
 			isa = PBXGroup;
 			children = (
-				D7E0F14E170E63C400386698 /* QuartzCore.framework */,
 				D7806F59170A306900D5598A /* iOSGGT */,
 				D7FD6D54172B792700A63DD1 /* Assets */,
 				D7E0F157170E6C5500386698 /* TEMP CODE */,
@@ -314,6 +313,7 @@
 		D7806F52170A306900D5598A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D7E0F14E170E63C400386698 /* QuartzCore.framework */,
 				D7806F53170A306900D5598A /* UIKit.framework */,
 				D7806F55170A306900D5598A /* Foundation.framework */,
 				D7806F57170A306900D5598A /* CoreGraphics.framework */,
